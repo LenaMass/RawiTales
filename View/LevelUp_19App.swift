@@ -12,7 +12,7 @@ import Combine
 struct LevelUp_19App: App {
     var body: some Scene {
         WindowGroup {
-            Savedstory_view()
+            HomePageView()
                 .background{
                     Image("NightDay_Background")
                     

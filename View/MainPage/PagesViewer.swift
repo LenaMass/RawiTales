@@ -13,8 +13,6 @@ struct PagesViewer: View {
 
     var body: some View {
         ZStack {
-            Color.black
-                .ignoresSafeArea()
 
             Group {
                 switch vm.selectedTab {

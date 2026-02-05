@@ -11,9 +11,19 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		93573EEE2F30AFA5003ADB48 /* LevelUp_19 */ = {
+		93573EEE2F30AFA5003ADB48 /* View */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = LevelUp_19;
+			path = View;
+			sourceTree = "<group>";
+		};
+		BF25F4372F3494FE004BD158 /* Model */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Model;
+			sourceTree = "<group>";
+		};
+		BF25F4382F349504004BD158 /* ViewModel */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -32,7 +42,9 @@
 		93573EE32F30AFA4003ADB48 = {
 			isa = PBXGroup;
 			children = (
-				93573EEE2F30AFA5003ADB48 /* LevelUp_19 */,
+				BF25F4382F349504004BD158 /* ViewModel */,
+				BF25F4372F3494FE004BD158 /* Model */,
+				93573EEE2F30AFA5003ADB48 /* View */,
 				93573EED2F30AFA5003ADB48 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -61,7 +73,9 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				93573EEE2F30AFA5003ADB48 /* LevelUp_19 */,
+				93573EEE2F30AFA5003ADB48 /* View */,
+				BF25F4372F3494FE004BD158 /* Model */,
+				BF25F4382F349504004BD158 /* ViewModel */,
 			);
 			name = LevelUp_19;
 			packageProductDependencies = (
@@ -78,7 +92,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2600;
-				LastUpgradeCheck = 2600;
+				LastUpgradeCheck = 2620;
 				TargetAttributes = {
 					93573EEB2F30AFA5003ADB48 = {
 						CreatedOnToolsVersion = 26.0.1;
@@ -183,6 +197,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -239,6 +254,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};
