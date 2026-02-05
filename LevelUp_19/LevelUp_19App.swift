@@ -6,12 +6,20 @@
 //
 
 import SwiftUI
+import Combine
 
 @main
 struct LevelUp_19App: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            Savedstory_view()
+                .background{
+                    Image("NightDay_Background")
+                    
+                    
+                }
+            
         }
+        
     }
 }
