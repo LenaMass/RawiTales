@@ -27,13 +27,9 @@ struct HeroRingWidget: View {
 
             Circle()
                 .fill(Color.clear)
-                .glassEffect(.clear)
-                .overlay(Circle().strokeBorder(.white.opacity(0.20), lineWidth: 1))
-                .frame(width: vm.centerSize, height: vm.centerSize)
+//                .frame(width: vm.centerSize, height: vm.centerSize)
                 .overlay(
-                    Image(systemName: "person.fill")
-                        .font(.system(size: 34, weight: .bold))
-                        .foregroundStyle(.primary.opacity(0.85))
+                    Image("grandpa")
                 )
         }
         .frame(width: vm.ringWidth, height: vm.ringHeight)
@@ -46,7 +42,7 @@ private struct RingIcon: View {
     var body: some View {
         Image(systemName: symbol)
             .font(.system(size: 12, weight: .semibold))
-            .foregroundStyle(.primary.opacity(0.9))
+            .foregroundStyle(.black.opacity(0.6))
             .frame(width: 20, height: 20)
             .background {
                 Circle().fill(Color.clear).glassEffect(.clear)

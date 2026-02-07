@@ -9,15 +9,22 @@ struct HomePageView: View {
 
     var body: some View {
         ZStack {
-
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 16) {
                     TopHeroWidget(heroVM: vm.heroVM)
                         .padding(.top, 6)
 
-                    ForEach(vm.genres) { genre in
-                        StoryRowView(genre: genre, onStoryTap: onStoryTap)
-                            .padding(.horizontal, 16)
+                    ForEach(Array(vm.genres.enumerated()), id: \.element.id) { index, genre in
+                        VStack(spacing: 0) {
+                            StoryRowView(genre: genre, showFilterButton: index == 0, onStoryTap: onStoryTap)
+                                .padding(.horizontal, 16)
+
+                            if index < vm.genres.count - 1 {
+                                Divider()
+                                    .background(Color.white)
+                                    .padding(.vertical, 8)
+                            }
+                        }
                     }
 
                     Spacer().frame(height: 120)
@@ -36,7 +43,7 @@ private struct TopHeroWidget: View {
                 Image(systemName: "gearshape.fill")
                     .font(.system(size: 18, weight: .semibold))
                     .frame(width: 34, height: 34)
-                    .foregroundStyle(.primary.opacity(0.9))
+                    .foregroundStyle(.white.opacity(0.9))
             }
             .buttonStyle(.plain)
             .background {
@@ -53,19 +60,8 @@ private struct TopHeroWidget: View {
 
             Spacer()
 
-            Button {} label: {
-                Image(systemName: "line.3.horizontal")
-                    .font(.system(size: 18, weight: .semibold))
-                    .frame(width: 34, height: 34)
-                    .foregroundStyle(.primary.opacity(0.9))
-            }
-            .buttonStyle(.plain)
-            .background {
-                Circle().fill(Color.clear).glassEffect(.clear)
-            }
-            .overlay {
-                Circle().strokeBorder(.white.opacity(0.18), lineWidth: 1)
-            }
+            Color.clear
+                .frame(width: 34, height: 34)
         }
         .padding(.horizontal, 16)
         .padding(.top, 24)
@@ -75,18 +71,32 @@ private struct TopHeroWidget: View {
 
 private struct StoryRowView: View {
     let genre: StoryGenre
+    let showFilterButton: Bool
     let onStoryTap: (Story) -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 8) {
-                Image(systemName: "leaf")
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundStyle(.primary.opacity(0.85))
                 Text(genre.name)
                     .font(.system(size: 15, weight: .semibold, design: .rounded))
-                    .foregroundStyle(.primary.opacity(0.9))
+                    .foregroundStyle(.white.opacity(0.9))
                 Spacer()
+
+                if showFilterButton {
+                    Button {} label: {
+                        Image(systemName: "line.3.horizontal")
+                            .font(.system(size: 18, weight: .semibold))
+                            .frame(width: 34, height: 34)
+                            .foregroundStyle(.white.opacity(0.9))
+                    }
+                    .buttonStyle(.plain)
+                    .background {
+                        Circle().fill(Color.clear).glassEffect(.clear)
+                    }
+                    .overlay {
+                        Circle().strokeBorder(.white.opacity(0.18), lineWidth: 1)
+                    }
+                }
             }
 
             ScrollView(.horizontal, showsIndicators: false) {
@@ -120,22 +130,24 @@ private struct StoryCardButtonView: View {
                                 .strokeBorder(.white.opacity(0.12), lineWidth: 1)
                         )
 
-                    if let assetName = story.assetName {
-                        Image(assetName)
+                    if let name = story.assetName, !name.isEmpty {
+                        Image(name)
+                            .renderingMode(.original)
                             .resizable()
                             .scaledToFill()
                             .frame(width: 86, height: 108)
                             .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                            .clipped()
                     } else {
-                        Image(systemName: "OverthegardenwallStory")
-                            .font(.system(size: 24, weight: .bold))
-                            .foregroundStyle(.red.opacity(0.65))
+                        Image(systemName: "book.fill")
+                            .font(.system(size: 26, weight: .bold))
+                            .foregroundStyle(.white.opacity(0.75))
                     }
                 }
 
                 Text(story.title)
                     .font(.system(size: 12, weight: .semibold, design: .rounded))
-                    .foregroundStyle(.primary.opacity(0.9))
+                    .foregroundStyle(.white.opacity(0.9))
                     .lineLimit(1)
                     .frame(width: 86)
             }
@@ -146,6 +158,6 @@ private struct StoryCardButtonView: View {
 
 #Preview {
     HomePageView()
+        .background(.black)
 }
-
 

@@ -20,18 +20,23 @@ struct DynamicSearch: View {
                 }
             }
             .animation(.easeOut(duration: 0.22), value: vm.isSearching) // <--- change later :D
-
             Button {
                 if vm.isSearching { vm.end() } else { vm.begin() }
             } label: {
-                Image(systemName: "magnifyingglass")
-                    .font(.system(size: 32, weight: .semibold))
-                    .frame(width: 60, height: 60)
-                    .foregroundStyle(.iconsC)
+                ZStack {
+                    RoundedRectangle(cornerRadius: 20)
+                        .glassEffect(.clear)
+                        .frame(width: 60, height: 60)
+
+                    Image(systemName: "magnifyingglass")
+                        .font(.system(size: 32, weight: .semibold))
+                        .frame(width: 60, height: 60)
+                        .foregroundStyle(.iconsC)
+                }
             }
             .buttonStyle(.plain)
-            .glassEffect(.clear)
             .frame(width: 60)
+
         }
         .onChange(of: vm.isSearching) { _, active in
             if active {

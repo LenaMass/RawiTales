@@ -30,11 +30,11 @@ final class HeroRingWidgetViewModel: ObservableObject {
     static var preset: HeroRingWidgetViewModel {
         HeroRingWidgetViewModel(
             segments: [
-                .init(from: 0.04, to: 0.18, color: Color.blue, icon: "heart", iconAngleDegrees: 65),
-                .init(from: 0.23, to: 0.35, color: Color.red, icon: "moon.stars", iconAngleDegrees: 126),
-                .init(from: 0.40, to: 0.53, color: Color.green.opacity(0.65), icon: "leaf", iconAngleDegrees: 191),
-                .init(from: 0.58, to: 0.69, color: Color.blue.opacity(0.65), icon: "brain.head.profile", iconAngleDegrees: -110),
-                .init(from: 0.74, to: 0.99, color: Color.orange.opacity(0.65), icon: "sparkles", iconAngleDegrees: -3)
+                .init(from: 0.04, to: 0.18, color: Color.pastelO, icon: "heart", iconAngleDegrees: 65),
+                .init(from: 0.23, to: 0.35, color: Color.pastelM, icon: "moon.stars", iconAngleDegrees: 126),
+                .init(from: 0.40, to: 0.53, color: Color.pastelP, icon: "leaf", iconAngleDegrees: 191),
+                .init(from: 0.58, to: 0.69, color: Color.pastelY, icon: "brain.head.profile", iconAngleDegrees: -110),
+                .init(from: 0.74, to: 0.99, color: Color.pastelB, icon: "sparkles", iconAngleDegrees: -3)
             ]
         )
     }
