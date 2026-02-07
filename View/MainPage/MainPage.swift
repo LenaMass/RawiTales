@@ -127,9 +127,9 @@ private struct StoryCardButtonView: View {
                             .frame(width: 86, height: 108)
                             .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                     } else {
-                        Image(systemName: "book.closed.fill")
+                        Image(systemName: "OverthegardenwallStory")
                             .font(.system(size: 24, weight: .bold))
-                            .foregroundStyle(.white.opacity(0.65))
+                            .foregroundStyle(.red.opacity(0.65))
                     }
                 }
 
