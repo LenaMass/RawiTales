@@ -32,7 +32,7 @@ struct StoryIntroView: View {
                     .aspectRatio(contentMode: .fill)
                     .frame(height: UIScreen.main.bounds.height * 0.55)
                     .clipShape(HeaderCurve())
-                    .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 5)
+                    .shadow(color: Color.primary.opacity(0.2), radius: 10, x: 0, y: 5)
                 
                 // Top Navigation Bar
                 HStack {
@@ -40,19 +40,22 @@ struct StoryIntroView: View {
                         Image(systemName: "chevron.left")
                             .font(.system(size: 20, weight: .bold))
                             .padding(10)
-                            .background(Circle().fill(Color.black.opacity(0.4)))
+                            .background(Circle().fill(Color.primary.opacity(0.25)))
                         
                         Spacer()
                         
                         Text("Story Title")
                             .font(.headline)
-                            .foregroundColor(.black)
+                            .foregroundColor(.primary)
                         
                         Spacer()
                     }
-                    .padding(.horizontal, 8)
-                    .frame(width: 280, height: 50)
-                    .background(Capsule().fill(Color.white.opacity(0.9)))
+                    .padding(.horizontal, 16)
+                    .frame(maxWidth: .infinity, minHeight: 50)
+                    .background(.ultraThinMaterial)
+                    .clipShape(Capsule())
+                    .padding(.leading, 20)
+                    .padding(.trailing, 60)
                     
                     Spacer()
                     
@@ -61,8 +64,8 @@ struct StoryIntroView: View {
                         Image(systemName: "character.bubble.fill")
                             .font(.title2)
                             .padding(12)
-                            .background(Circle().fill(Color.white.opacity(0.9)))
-                            .foregroundColor(.black)
+                            .background(.ultraThinMaterial)
+                            .foregroundColor(.primary)
                             .shadow(radius: 2)
                     }
                 }
@@ -80,6 +83,7 @@ struct StoryIntroView: View {
                     .multilineTextAlignment(.center)
                     .lineSpacing(6)
                     .padding(.horizontal, 40)
+                    .foregroundColor(.primary)
                 
                 // Bottom Buttons
                 HStack(spacing: 20) {
@@ -87,14 +91,14 @@ struct StoryIntroView: View {
                         Text("Start Reading")
                             .frame(width:186 , height: 54)
                             .font(.headline)
-                            .foregroundColor(.black)
+                            .foregroundColor(.primary)
 //                            .padding(.vertical, 18)
 //                            .padding(.horizontal, 40)
                             .background(
                                 Capsule()
-                                    .fill(LinearGradient(colors: [Color.yellow.opacity(0.5), .yellow], startPoint: .top, endPoint: .bottom))
+                                    .fill(LinearGradient(colors: [Color.accentColor.opacity(0.7), Color.accentColor], startPoint: .top, endPoint: .bottom))
                             )
-                            .shadow(color: .yellow.opacity(0.3), radius: 10, y: 5)
+                            .shadow(color: Color.accentColor.opacity(0.3), radius: 10, y: 5)
                     }
                     
                     Button(action: {}) {
@@ -103,16 +107,16 @@ struct StoryIntroView: View {
                             .padding(15)
                             .background(Color(.clear))
                             .glassEffect(.clear)
-                            .foregroundColor(.black)
+                            .foregroundColor(.primary)
 //                            .shadow(color: .black.opacity(0.1), radius: 5)
                     }
                 }
                 .padding(.bottom, 50)
             }
             .frame(maxWidth: .infinity)
-            .background(Color(.white))
+            .background(Color(.systemBackground))
         }
-        .edgesIgnoringSafeArea(.all)
+        .ignoresSafeArea()
     }
 }
 
