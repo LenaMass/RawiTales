@@ -16,6 +16,11 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		A1A4439A2F38E7070082EB41 /* Data */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Data;
+			sourceTree = "<group>";
+		};
 		BF25F4372F3494FE004BD158 /* Model */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Model;
@@ -42,6 +47,7 @@
 		93573EE32F30AFA4003ADB48 = {
 			isa = PBXGroup;
 			children = (
+				A1A4439A2F38E7070082EB41 /* Data */,
 				BF25F4382F349504004BD158 /* ViewModel */,
 				BF25F4372F3494FE004BD158 /* Model */,
 				93573EEE2F30AFA5003ADB48 /* View */,
@@ -74,6 +80,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				93573EEE2F30AFA5003ADB48 /* View */,
+				A1A4439A2F38E7070082EB41 /* Data */,
 				BF25F4372F3494FE004BD158 /* Model */,
 				BF25F4382F349504004BD158 /* ViewModel */,
 			);
@@ -269,6 +276,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = plzz;
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = plzz;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -300,6 +309,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = plzz;
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = plzz;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

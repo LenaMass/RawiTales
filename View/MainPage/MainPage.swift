@@ -130,7 +130,7 @@ private struct StoryCardButtonView: View {
                                 .strokeBorder(.white.opacity(0.12), lineWidth: 1)
                         )
 
-                    if let name = story.assetName, !name.isEmpty {
+                    if let name = story.cover, !name.isEmpty {
                         Image(name)
                             .renderingMode(.original)
                             .resizable()
