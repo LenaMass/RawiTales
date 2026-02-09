@@ -11,25 +11,26 @@
 import Foundation
 import SwiftUI
 import Combine
+import SwiftData
 
 class SavedStoryViewModel: ObservableObject {
-    @Published var allStories: [SavedStoryModel] = [
-        SavedStoryModel(
+    @Published var allStories: [SavedStoryData] = [
+        SavedStoryData(
             imageName: "LittlewomanStory",
             pages: ["Once upon a time...", "She lived in a small house.", "The end."],
             Readingprogress: 0
         ),
-        SavedStoryModel(
+        SavedStoryData(
             imageName: "SleepingbeautyStory",
             pages: ["The princess fell asleep.", "A hundred years passed.", "The prince arrived."],
             Readingprogress: 0
         ),
-        SavedStoryModel(
+        SavedStoryData(
             imageName: "UnforgivableStory",
             pages: ["It was a dark night.", "Nobody said a word."],
             Readingprogress: 0
         ),
-        SavedStoryModel(
+        SavedStoryData(
             imageName: "CinderellaStory",
             pages: ["Once upon a time...", "there was a girl living with a stepmom and two step sisters", "after the father died, cinderella started havingi a miserable life, her stepmom and sisters would always tease her", "one day, a prince came to visit her and they got married", "and they had a happy life together"],
             Readingprogress: 0
@@ -37,7 +38,7 @@ class SavedStoryViewModel: ObservableObject {
     ]
     
     // Don't forget your update function here too!
-    func updateReadingProgress(for storyId: UUID, currentPageIndex: Int) {
+   /* func updateReadingProgress(for storyId: UUID, currentPageIndex: Int) {
         if let index = allStories.firstIndex(where: { $0.id == storyId }) {
             let totalPages = allStories[index].pages.count
             if totalPages > 0 {
@@ -45,5 +46,5 @@ class SavedStoryViewModel: ObservableObject {
                 allStories[index].Readingprogress = Int(calculated)
             }
         }
-    }
+    }*/
 }

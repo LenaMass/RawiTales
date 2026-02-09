@@ -7,9 +7,13 @@
 
 import SwiftUI
 import Combine
+import SwiftData
+
 
 @main
 struct LevelUp_19App: App {
+    @Environment(\.modelContext) private var modelContext
+    
     var body: some Scene {
         WindowGroup {
             //PagesViewer()
@@ -19,8 +23,18 @@ struct LevelUp_19App: App {
                     
                     
                 }
-            
+                .modelContainer(for: SavedStoryData.self)
         }
         
+        
+        
+    }
+    
+    
+    func addInitialStories() {
+        let newStory = SavedStoryData(imageName: "CinderellaStory", pages: ["Page 1", "Page 2"])
+        modelContext.insert(newStory)
     }
 }
+
+

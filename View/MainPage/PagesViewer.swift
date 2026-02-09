@@ -1,10 +1,13 @@
 /*
 issues notes
-the navigation works fine, however the back naviation is double one from the savedstoriesview and the other is from this page. 
+the navigation works fine, however the back naviation is double one from the savedstoriesview and the other is from this page.
  
  
 */
 import SwiftUI
+import SwiftData
+import Combine
+
 
 struct PagesViewer: View {
     @StateObject private var vm = PagesViewerViewModel()
@@ -26,8 +29,6 @@ struct PagesViewer: View {
                     HomePageView()
                 case .reading:
                     Savedstory_view()
-                   /* Text("Reading Page")
-                        .foregroundStyle(.white)*/
                 case .dictionary:
                     WordsBankList()
                 }

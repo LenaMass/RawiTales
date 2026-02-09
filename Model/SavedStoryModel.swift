@@ -9,6 +9,8 @@
 import SwiftUI
 import Combine
 import Foundation
+import SwiftData
+
 
 struct SavedStoryModel: Identifiable {
         let id = UUID()

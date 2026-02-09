@@ -8,10 +8,11 @@
 import SwiftUI
 import Combine
 import Foundation
+import SwiftData
 
 struct Savedstory_view: View {
     
-    @StateObject var viewModel = SavedStoryViewModel()
+   // @StateObject var viewModel = SavedStoryViewModel()
 
     
     var body: some View {
@@ -41,7 +42,7 @@ struct Savedstory_view: View {
                     }
                     
                     // Pass the existing viewModel here
-                    StoriesScrollbar(viewModel: viewModel)
+                    StoriesScrollbar()
                 }
             }
             
