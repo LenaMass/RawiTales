@@ -8,10 +8,11 @@
 import SwiftUI
 import AVFoundation
 import Speech
+import Combine
 //import stories
 
 struct StoryView: View {
-    @State private var story: Story = stories[0]
+    @State var story: Story
     @State private var showArabic: Bool = false
     private let speechSynthesizer = AVSpeechSynthesizer()
     @State private var isRecording = false
@@ -347,5 +348,10 @@ struct CircleButton: View {
 }
 
 #Preview {
-    StoryView()
+    StoryView(story: Story(
+            title: "The Golden Gazelle",
+            progress: 0,
+            currentPage: 0,
+            summary: "A beautiful desert tale."
+        ))
 }

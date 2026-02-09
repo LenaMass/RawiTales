@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 struct StoriesScrollbar: View {
     // CHANGE: Use ObservedObject so it shares data with the parent
-    @ObservedObject var viewModel: StoryViewModel
+    @ObservedObject var viewModel: SavedStoryViewModel
     
     let columns = [
         GridItem(.flexible(), spacing: 30),

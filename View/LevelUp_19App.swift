@@ -13,7 +13,7 @@ struct LevelUp_19App: App {
     var body: some Scene {
         WindowGroup {
             //PagesViewer()
-            Savedstory_view()
+            PagesViewer()
                 .background{
                     Image("NightDay_Background")
                     

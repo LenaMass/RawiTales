@@ -10,17 +10,13 @@ import Combine
 
 struct StoryDetailView: View {
     
-    @ObservedObject var viewModel: StoryViewModel
-    let story: StoryModel
+    @ObservedObject var viewModel: SavedStoryViewModel
+    let story: SavedStoryModel
     @State private var currentPage = 0
 
     var body: some View {
         ZStack {
-            // This ensures your universal background stays visible
-           
-          /*  Image("NightDay_Background")
-            .resizable()
-            .ignoresSafeArea()*/
+          
             // TabView makes it a "Side-Swiper" instead of a vertical list
             TabView(selection: $currentPage) {
                 ForEach(0..<story.pages.count, id: \.self) { index in

@@ -20,6 +20,7 @@
 
 
 import Foundation
+import Combine
 
 struct Story: Identifiable, Hashable {
     let id: UUID
@@ -32,6 +33,12 @@ struct Story: Identifiable, Hashable {
     var progress: Int // Calculates progress based on number of pages read
     var currentPage: Int
     let summary: String?
+    
+    // this added
+    var pages: [String] {
+            return englishStory ?? []
+        }
+    
     
     //let assets: [String]
     init(id: UUID = UUID(), title: String,cover: String? = nil, assets:[String]? = nil, arabicStory: [String]? = nil, englishStory: [String]? = nil, progress: Int, currentPage: Int, summary: String? = nil) {

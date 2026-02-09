@@ -1,3 +1,9 @@
+/*
+issues notes
+the navigation works fine, however the back naviation is double one from the savedstoriesview and the other is from this page. 
+ 
+ 
+*/
 import SwiftUI
 
 struct PagesViewer: View {
@@ -6,7 +12,7 @@ struct PagesViewer: View {
     private var title: String {
         switch vm.selectedTab {
         case .library: return ""
-        case .reading: return "Reading"
+        case .reading: return ""//"Reading"
         case .dictionary: return "Saved Words"
         }
     }
@@ -19,8 +25,9 @@ struct PagesViewer: View {
                 case .library:
                     HomePageView()
                 case .reading:
-                    Text("Reading Page")
-                        .foregroundStyle(.white)
+                    Savedstory_view()
+                   /* Text("Reading Page")
+                        .foregroundStyle(.white)*/
                 case .dictionary:
                     WordsBankList()
                 }

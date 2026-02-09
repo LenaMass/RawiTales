@@ -3,6 +3,8 @@ import SwiftUI
 struct HomePageView: View {
     @StateObject private var vm = HomePageViewModel()
 
+    
+    @StateObject private var savedStoryVM = SavedStoryViewModel()
     var onStoryTap: (Story) -> Void = { story in
         print("Tapped story:", story.title)
     }
@@ -73,7 +75,13 @@ private struct StoryRowView: View {
     let genre: StoryGenre
     let showFilterButton: Bool
     let onStoryTap: (Story) -> Void
-
+    //  let title: String
+    
+    @StateObject var savedVM = SavedStoryViewModel()
+        
+     
+       
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 8) {
@@ -99,7 +107,7 @@ private struct StoryRowView: View {
                 }
             }
 
-            ScrollView(.horizontal, showsIndicators: false) {
+           /* ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 33) {
                     ForEach(genre.stories) { story in
                         StoryCardButtonView(story: story) {
@@ -107,7 +115,18 @@ private struct StoryRowView: View {
                         }
                     }
                 }
-                .padding(.vertical, 4)
+                .padding(.vertical, 4)*/
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 33) {
+                                // 2. Loop through the actual stories in your ViewModel
+                                ForEach(savedVM.allStories) { storyItem in
+                                    StoryCardButtonView(story: storyItem) {
+                                        print("Tapped: \(storyItem.imageName)")
+                                    }
+                                }
+                            }
+                            .padding(.vertical, 4)
             }
         }
         .padding(.vertical, 6)
@@ -115,44 +134,65 @@ private struct StoryRowView: View {
 }
 
 private struct StoryCardButtonView: View {
-    let story: Story
+    let story: SavedStoryModel
     let onTap: () -> Void
+    
+    
 
     var body: some View {
+     
+        // adjusted new code
+        
         Button(action: onTap) {
-            VStack(spacing: 8) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .fill(Color.white.opacity(0.08))
-                        .frame(width: 86, height: 108)
-                        .overlay(
+                    VStack(spacing: 8) {
+                        ZStack(alignment: .bottom) {
                             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .strokeBorder(.white.opacity(0.12), lineWidth: 1)
-                        )
+                                .fill(Color.white.opacity(0.08))
+                                .frame(width: 86, height: 108)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                        .strokeBorder(.white.opacity(0.12), lineWidth: 1)
+                                )
 
-                    if let name = story.cover, !name.isEmpty {
-                        Image(name)
-                            .renderingMode(.original)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 86, height: 108)
-                            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                            .clipped()
-                    } else {
-                        Image(systemName: "book.fill")
-                            .font(.system(size: 26, weight: .bold))
-                            .foregroundStyle(.white.opacity(0.75))
+                            // Use 'imageName' from your SavedStoryViewModel
+                            Image(story.imageName)
+                                .renderingMode(.original)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 86, height: 108)
+                                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                                .clipped()
+                            
+                            // The white/black progress bar from your screenshot
+                            ProgressBar(progress: story.Readingprogress)
+                                .padding(.bottom, 8)
+                        }
+
+                        Text(story.imageName) // Using imageName as the title for now
+                            .font(.system(size: 12, weight: .semibold, design: .rounded))
+                            .foregroundStyle(.white.opacity(0.9))
+                            .lineLimit(1)
+                            .frame(width: 86)
                     }
                 }
-
-                Text(story.title)
-                    .font(.system(size: 12, weight: .semibold, design: .rounded))
-                    .foregroundStyle(.white.opacity(0.9))
-                    .lineLimit(1)
-                    .frame(width: 86)
+                .buttonStyle(.plain)
             }
+        
+    }
+
+struct ProgressBar: View {
+    var progress: Int
+    
+    var body: some View {
+        ZStack(alignment: .leading) {
+            RoundedRectangle(cornerRadius: 4)
+                .fill(Color.white)
+                .frame(width: 70, height: 6)
+            
+            RoundedRectangle(cornerRadius: 4)
+                .fill(Color.black)
+                .frame(width: CGFloat(progress) / 100 * 70, height: 6)
         }
-        .buttonStyle(.plain)
     }
 }
 
