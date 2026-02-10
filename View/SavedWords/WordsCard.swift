@@ -2,8 +2,29 @@ import SwiftUI
 
 struct WordCardView: View {
     let item: WordBankItem
+    let isTranslating: Bool
     let onLeftAction: () -> Void
     let onRightAction: () -> Void
+
+    init(
+        item: WordBankItem,
+        isTranslating: Bool = false,
+        onLeftAction: @escaping () -> Void,
+        onRightAction: @escaping () -> Void
+    ) {
+        self.item = item
+        self.isTranslating = isTranslating
+        self.onLeftAction = onLeftAction
+        self.onRightAction = onRightAction
+    }
+
+    private var hasWordArabic: Bool {
+        !(item.wordArabic?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? true)
+    }
+
+    private var hasExampleArabic: Bool {
+        !(item.exampleArabic?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? true)
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -12,9 +33,27 @@ struct WordCardView: View {
                     .font(.system(size: 24, weight: .bold, design: .rounded))
                     .foregroundColor(Color.red)
 
+                if hasWordArabic, let wa = item.wordArabic {
+                    Text(wa)
+                        .font(.system(size: 22, weight: .bold, design: .rounded))
+                        .foregroundColor(Color.red)
+                        .multilineTextAlignment(.trailing)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .environment(\.layoutDirection, .rightToLeft)
+                }
+
                 Text(item.example)
                     .font(.system(size: 18, weight: .regular, design: .rounded))
                     .foregroundStyle(.black.opacity(0.85))
+
+                if hasExampleArabic, let exAr = item.exampleArabic {
+                    Text(exAr)
+                        .font(.system(size: 18, weight: .regular, design: .rounded))
+                        .foregroundStyle(.black.opacity(0.72))
+                        .multilineTextAlignment(.trailing)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .environment(\.layoutDirection, .rightToLeft)
+                }
             }
             .padding(.horizontal, 18)
             .padding(.vertical, 16)
@@ -28,19 +67,22 @@ struct WordCardView: View {
                 Button {
                     onLeftAction()
                 } label: {
-                    Image(systemName: "translate")
-                        .font(.system(size: 20, weight: .semibold))
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .foregroundStyle(.black.opacity(0.70))
-//                        .background(Color.black.opacity(0.04))
-                        .contentShape(Rectangle())
+                    Group {
+                        if isTranslating {
+                            ProgressView().scaleEffect(0.9)
+                        } else {
+                            Image(systemName: "translate")
+                                .font(.system(size: 20, weight: .semibold))
+                        }
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .foregroundStyle(.black.opacity(0.70))
+                    .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
-                
+
                 Divider()
                     .background(Color.black)
-//                    .background(Color.black.opacity(1))
-
 
                 Button {
                     onRightAction()
@@ -49,13 +91,9 @@ struct WordCardView: View {
                         .font(.system(size: 20, weight: .semibold))
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .foregroundStyle(.black.opacity(0.70))
-//                        .background(Color.black.opacity(0.04))
                         .contentShape(Rectangle())
-                        
                 }
                 .buttonStyle(.plain)
-            
-                
             }
             .frame(height: 54)
         }
@@ -73,10 +111,15 @@ struct WordCardView: View {
 
 #Preview {
     ZStack {
-        Color.black
-            .ignoresSafeArea()
+        Color.black.ignoresSafeArea()
         WordCardView(
-            item: .init(word: "Looks", example: "“He looks at the mirror”"),
+            item: .init(
+                word: "Looks",
+                example: "“He looks at the mirror.”",
+                wordArabic: "ينظر",
+                exampleArabic: "“إنه ينظر إلى المرآة.”"
+            ),
+            isTranslating: false,
             onLeftAction: {},
             onRightAction: {}
         )

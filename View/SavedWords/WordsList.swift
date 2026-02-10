@@ -9,7 +9,8 @@ struct WordsBankList: View {
                 ForEach(vm.items) { item in
                     WordCardView(
                         item: item,
-                        onLeftAction: { print("Left action:", item.word) },
+                        isTranslating: vm.translatingID == item.id,
+                        onLeftAction: { vm.translateCard(item) },
                         onRightAction: { print("Right action:", item.word) }
                     )
                     .listRowInsets(EdgeInsets(top: 9, leading: 20, bottom: 9, trailing: 20))
@@ -29,7 +30,6 @@ struct WordsBankList: View {
             .scrollContentBackground(.hidden)
             .padding(.top, 110)
             .padding(.bottom, 120)
-
         }
     }
 }

@@ -6,8 +6,14 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		BF389B452F3B9AE200166127 /* Secret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = BF389B442F3B9AD600166127 /* Secret.xcconfig */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		93573EEC2F30AFA5003ADB48 /* LevelUp_19.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LevelUp_19.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF389B442F3B9AD600166127 /* Secret.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secret.xcconfig; sourceTree = "<group>"; };
+		BF389B462F3B9B6600166127 /* LevelUp-19-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "LevelUp-19-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -26,6 +32,11 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		BF389B2E2F3B982600166127 /* Networking */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Networking;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +53,9 @@
 		93573EE32F30AFA4003ADB48 = {
 			isa = PBXGroup;
 			children = (
+				BF389B462F3B9B6600166127 /* LevelUp-19-Info.plist */,
+				BF389B442F3B9AD600166127 /* Secret.xcconfig */,
+				BF389B2E2F3B982600166127 /* Networking */,
 				BF25F4382F349504004BD158 /* ViewModel */,
 				BF25F4372F3494FE004BD158 /* Model */,
 				93573EEE2F30AFA5003ADB48 /* View */,
@@ -76,6 +90,7 @@
 				93573EEE2F30AFA5003ADB48 /* View */,
 				BF25F4372F3494FE004BD158 /* Model */,
 				BF25F4382F349504004BD158 /* ViewModel */,
+				BF389B2E2F3B982600166127 /* Networking */,
 			);
 			name = LevelUp_19;
 			packageProductDependencies = (
@@ -123,6 +138,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF389B452F3B9AE200166127 /* Secret.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,6 +157,7 @@
 /* Begin XCBuildConfiguration section */
 		93573EF52F30AFA5003ADB48 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BF389B442F3B9AD600166127 /* Secret.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -205,6 +222,7 @@
 		};
 		93573EF62F30AFA5003ADB48 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BF389B442F3B9AD600166127 /* Secret.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -262,6 +280,7 @@
 		};
 		93573EF82F30AFA5003ADB48 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BF389B442F3B9AD600166127 /* Secret.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -269,6 +288,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "LevelUp-19-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -293,6 +313,7 @@
 		};
 		93573EF92F30AFA5003ADB48 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BF389B442F3B9AD600166127 /* Secret.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -300,6 +321,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "LevelUp-19-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
