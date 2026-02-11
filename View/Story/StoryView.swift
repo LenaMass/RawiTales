@@ -139,11 +139,7 @@ struct StoryView: View {
                             .fill(Color.secondary.opacity(0.4))
                             .frame(height: 3)
 
-                        Text("AI")
-                            .font(.caption)
-                            .bold()
-                            .padding(8)
-                            .background(Circle().fill(Color.gray.opacity(0.2)))
+                        
                     }
                     .padding(.horizontal, 30)
 
@@ -274,7 +270,7 @@ struct StoryView: View {
         audioRecorder?.stop()
         audioRecorder = nil
         isRecording = false
-        transcribeAndEvaluate()
+      // transcribeAndEvaluate()
     }
 
     private func playRecording() {
@@ -285,35 +281,35 @@ struct StoryView: View {
         audioPlayer = try? AVAudioPlayer(contentsOf: url)
         audioPlayer?.play()
     }
-
-    private func transcribeAndEvaluate() {
-        guard !isTranslated else {
-            feedback = "Pronunciation feedback is available for English only."
-            return
-        }
-
-        let url = FileManager.default
-            .urls(for: .documentDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("userRecording.m4a")
-
-        SFSpeechRecognizer.requestAuthorization { status in
-            guard status == .authorized else {
-                feedback = "Speech recognition permission not granted."
-                return
-            }
-
-            let request = SFSpeechURLRecognitionRequest(url: url)
-
-            self.speechRecognizer?.recognitionTask(with: request) { result, _ in
-                guard let result = result, result.isFinal else { return }
-
-                DispatchQueue.main.async {
-                    self.transcription = result.bestTranscription.formattedString
-                    self.generateFeedback()
-                }
-            }
-        }
-    }
+//
+//    private func transcribeAndEvaluate() {
+////        guard !isTranslated else {
+////            feedback = "Pronunciation feedback is available for English only."
+////            return
+////        }
+//
+//        let url = FileManager.default
+//            .urls(for: .documentDirectory, in: .userDomainMask)[0]
+//            .appendingPathComponent("userRecording.m4a")
+//
+//        SFSpeechRecognizer.requestAuthorization { status in
+//            guard status == .authorized else {
+//                feedback = "Speech recognition permission not granted."
+//                return
+//            }
+//
+//            let request = SFSpeechURLRecognitionRequest(url: url)
+//
+//            self.speechRecognizer?.recognitionTask(with: request) { result, _ in
+//                guard let result = result, result.isFinal else { return }
+//
+//                DispatchQueue.main.async {
+//                    self.transcription = result.bestTranscription.formattedString
+//                    self.generateFeedback()
+//                }
+//            }
+//        }
+//    }
 
     private func generateFeedback() {
         guard let englishStory = story.englishStory,
