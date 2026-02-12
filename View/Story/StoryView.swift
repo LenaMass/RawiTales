@@ -3,7 +3,7 @@ import AVFoundation
 import Speech
 
 struct StoryView: View {
-    @State private var story: Story = stories[0]
+    @State private var story: Story = stories[5]
     @State private var showArabic: Bool = false
     private let speechSynthesizer = AVSpeechSynthesizer()
     @State private var isRecording = false

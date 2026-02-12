@@ -575,8 +575,8 @@ let stories: [Story] = [
 //1.
     Story(
         title: "You Can Never Please Everyone",
-        cover: "Juha's Son",
-        assets: ["storyCover4"],
+        cover: "Juha'sSon",
+        assets: ["Juha's Son"],
         //genre: .wisdom/comedy,
         englishStory: [
             "Juha had a son who disobeyed him whenever he asked him to do something. The boy would always reply, 'What will people say about us if we do that?'",
@@ -603,8 +603,8 @@ let stories: [Story] = [
     //2.
     Story(
         title: "Juha’s Nail",
-        cover: "nailCover",
-        assets: ["storyCover4"],
+        cover: "Juha'sNail",
+        assets: ["Juha’s Nail"],
        // genre: .comedy,
         englishStory: [
             "One day, Juha owned a house and decided to sell it, but he did not truly want to leave it. So he set a condition: one nail in the wall would remain his.",
@@ -627,7 +627,7 @@ let stories: [Story] = [
     Story(
         title: "The Mystery of the City of Brass",
         cover: "cityOfBrass",
-        assets: ["storyCover4"],
+        assets: ["cityOfBrass"],
        // genre: .mystery,
         englishStory: [
             "After a long journey across the desert, a group of travelers finally reached the legendary city said to be built from shining brass. Its walls still reflected the sun, untouched by time.",
@@ -730,8 +730,8 @@ let stories: [Story] = [
     //8.
     Story(
             title: "Sinbad the Sailor",
-            cover: "story Sinbad",
-            assets: ["storyCover4"],
+            cover: "sinbad",
+            assets: ["sinbad"],
            // genre: "wisdom/adventure",
             englishStory: [
                 "The Beginning: A Restless Spirit",
@@ -759,7 +759,7 @@ let stories: [Story] = [
 //9.
         Story(
             title: "Juha and the Lost Donkey",
-            cover: "storyJuha and Donkey",
+            cover: "lostDonkey",
             assets: ["storyCover4"],
           //  genre: "comedy",
             englishStory: [
@@ -798,8 +798,8 @@ let stories: [Story] = [
   //11
     Story(
         title: "The Fisherman and the Shining Pearl",
-        cover: "shiningPearl",
-        assets: ["storyCover4"],
+        cover: "storyCover2",
+        assets: ["storyCover2"],
         //genre: .wisdom,
         englishStory: [
             "Once upon a time, there was a kind and hardworking fisherman. Every morning before sunrise, he sailed his small wooden boat into the vast blue sea. He was not only searching for fish, but for a precious pearl that could give his wife and children a better life.",
@@ -821,7 +821,7 @@ let stories: [Story] = [
    //12
     Story(
         title: "The Honest Merchant",
-        cover: "honestMerchant",
+        cover: "storyCover4",
         assets: ["storyCover4"],
         //genre: .wisdom,
         englishStory: [
@@ -844,8 +844,8 @@ let stories: [Story] = [
     //13
     Story(
         title: "Juha and the Judge’s Trick",
-        cover: "juhaJudge",
-        assets: ["storyCover4"],
+        cover: "juhaGotSlaped",
+        assets: ["juhaGotSlaped"],
         //genre: .comedy,
         englishStory: [
             "One day, a man slapped Juha on the back of his head in the middle of the street, trying to mock him. Juha immediately grabbed the man and dragged him to the judge, refusing to accept his excuse that he had mistaken him for a friend.",
@@ -865,7 +865,7 @@ let stories: [Story] = [
     //14
     Story(
         title: "The Wise Man and the Same Joke",
-        cover: "wiseManJoke",
+        cover: "notFuny",
         assets: ["storyCover4"],
         //genre: .wisdom,
         englishStory: [
@@ -886,8 +886,8 @@ let stories: [Story] = [
     //15
     Story(
         title: "The Old Man in the Village",
-        cover: "oldManVillage",
-        assets: ["storyCover4"],
+        cover: "happyMan",
+        assets: ["happyMan"],
         //genre: .wisdom,
         englishStory: [
             "In a distant village lived an old man who was considered the unhappiest person anyone had ever known. He complained constantly and was always in a bad mood.",

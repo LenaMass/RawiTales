@@ -90,21 +90,21 @@ private struct StoryRowView: View {
                     .foregroundStyle(.white.opacity(0.9))
                 Spacer()
 
-                if showFilterButton {
-                    Button {} label: {
-                        Image(systemName: "line.3.horizontal")
-                            .font(.system(size: 18, weight: .semibold))
-                            .frame(width: 34, height: 34)
-                            .foregroundStyle(.white.opacity(0.9))
-                    }
-                    .buttonStyle(.plain)
-                    .background {
-                        Circle().fill(Color.clear).glassEffect(.clear)
-                    }
-                    .overlay {
-                        Circle().strokeBorder(.white.opacity(0.18), lineWidth: 1)
-                    }
-                }
+//                if showFilterButton {
+//                    Button {} label: {
+//                        Image(systemName: "line.3.horizontal")
+//                            .font(.system(size: 18, weight: .semibold))
+//                            .frame(width: 34, height: 34)
+//                            .foregroundStyle(.white.opacity(0.9))
+//                    }
+//                    .buttonStyle(.plain)
+//                    .background {
+//                        Circle().fill(Color.clear).glassEffect(.clear)
+//                    }
+//                    .overlay {
+//                        Circle().strokeBorder(.white.opacity(0.18), lineWidth: 1)
+//                    }
+//                }
             }
 
            /* ScrollView(.horizontal, showsIndicators: false) {
