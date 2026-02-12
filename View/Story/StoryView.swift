@@ -43,13 +43,7 @@ struct StoryView: View {
                 
                 // Top Header Overlay
                 HStack {
-                    Button(action: {}) {
-                        Image(systemName: "chevron.left")
-                            .padding()
-                            .background(Color(.systemBackground).opacity(0.85))
-                            .clipShape(Circle())
-                            .foregroundColor(.primary)
-                    }
+                  
                     
                     Spacer()
                     
@@ -128,23 +122,21 @@ struct StoryView: View {
                 
                 // Description Text
                 ScrollView {
-                    Text(
-                        showArabic
-                        ? (story.arabicStory?.indices.contains(story.currentPage) == true
-                            ? story.arabicStory![story.currentPage]
-                            : "لا يوجد محتوى")
-                        : (story.englishStory?.indices.contains(story.currentPage) == true
-                            ? story.englishStory![story.currentPage]
-                            : "No content available")
-                    )
-                    .font(.title3)
-                    .foregroundColor(.primary)
-                    .multilineTextAlignment(.center)
-                    .lineSpacing(8)
-                    .padding(.horizontal, 40)
-                    .padding(.vertical, 10)
+                    VStack {
+                        Text(
+                            story.pages.indices.contains(story.currentPage)
+                            ? story.pages[story.currentPage]
+                            : "End of story"
+                        )
+                        .font(.title3)
+                        .multilineTextAlignment(.center)
+                        .lineSpacing(8)
+                        .padding(.horizontal, 40)
+                        .padding(.vertical, 10)
+                    }
+                    .frame(minHeight: UIScreen.main.bounds.height * 0.3) // Give it enough space to catch taps
+                    .contentShape(Rectangle()) // Makes the whole area swipable
                 }
-               // .frame(maxHeight: .infinity)
                 .gesture(
                     DragGesture()
                         .onEnded { value in
@@ -284,22 +276,30 @@ struct StoryView: View {
     
     // Pagination and progress update helpers
     private func nextPage() {
-        guard let count = story.englishStory?.count,
-              story.currentPage + 1 < count else { return }
-        story.currentPage += 1
-        updateProgress()
+        // Check 'pages' count instead of 'englishStory'
+        if story.currentPage + 1 < story.pages.count {
+            story.currentPage += 1
+            updateProgress()
+        }
     }
 
     private func previousPage() {
-        guard story.currentPage > 0 else { return }
-        story.currentPage -= 1
-        updateProgress()
+        if story.currentPage > 0 {
+            story.currentPage -= 1
+            updateProgress()
+        }
     }
 
     private func updateProgress() {
-        guard let count = story.englishStory?.count, count > 1 else { return }
-        // Ensure you use the exact name: Readingprogress
-        story.Readingprogress = Int((Double(story.currentPage) / Double(count - 1)) * 100)
+        let totalPages = story.pages.count
+        guard totalPages > 1 else {
+            story.Readingprogress = 100
+            return
+        }
+        
+        // Calculate percentage based on current page vs total pages
+        let progress = (Double(story.currentPage) / Double(totalPages - 1)) * 100
+        story.Readingprogress = Int(progress)
     }
     
    /* private func speakCurrentPage() {

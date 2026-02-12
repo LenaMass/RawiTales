@@ -5,8 +5,16 @@ import Combine
 struct StoriesLibrary {
     static func syncLibrary(in context: ModelContext) {
         let masterList = [
-            Story(title: "Layla and Majnun", genre: "Romance", storycover: "storyCover1", isFavorite: true),
-            Story(title: "The Fisherman", genre: "Fantasy", storycover: "storyCover2", isFavorite: false)
+            Story(title: "Layla and Majnun", genre: "Romance", storycover: "storyCover1",pages: [
+                "Long ago in the Arabian desert, Qays fell in love with Layla...",
+                "Their love was so intense that Qays became known as Majnun...",
+                "Despite their devotion, their families kept them apart."
+            ], isFavorite: true),
+            Story(title: "The Fisherman", genre: "Fantasy", storycover: "storyCover2",pages: [
+                "The fisherman cast his net into the deep blue sea...",
+                "Suddenly, he felt a heavy pull and saw a shimmering light...",
+                "Inside the net lay a pearl larger than any he had ever seen."
+            ], isFavorite: false)
         ]
         
         for item in masterList {

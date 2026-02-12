@@ -24,6 +24,7 @@ final class Story: Identifiable {
     var title: String
     var genre: String
     var storycover: String?
+    var pages: [String]
     var arabicStory: [String]?
     var englishStory: [String]?
     var Readingprogress: Int
@@ -36,6 +37,7 @@ final class Story: Identifiable {
         title: String,
         genre: String = "General",
         storycover: String? = nil,
+        pages: [String] = [],
         arabicStory: [String]? = nil,
         englishStory: [String]? = nil,
         Readingprogress: Int = 0,
@@ -47,6 +49,7 @@ final class Story: Identifiable {
         self.title = title
         self.genre = genre
         self.storycover = storycover
+        self.pages = pages
         self.arabicStory = arabicStory
         self.englishStory = englishStory
         self.Readingprogress = Readingprogress
