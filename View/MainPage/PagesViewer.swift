@@ -42,8 +42,11 @@ struct PagesViewer: View {
                     .ignoresSafeArea()
             }
         }
+        
+        
         .safeAreaInset(edge: .top) {
-            if vm.selectedTab != .library {
+            // Only show the header when the user is specifically on the dictionary tab
+            if vm.selectedTab == .dictionary {
                 NavigationHeader(
                     title: title,
                     canGoBack: true,
@@ -51,6 +54,11 @@ struct PagesViewer: View {
                 )
             }
         }
+        
+        
+        
+        
+        
         .safeAreaInset(edge: .bottom) {
             DynamicSearch(selected: $vm.selectedTab, vm: vm.searchVM) { text in
                 vm.handleSearch(text)

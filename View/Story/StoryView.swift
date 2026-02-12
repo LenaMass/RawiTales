@@ -1,26 +1,25 @@
-//
-//  StoryView.swift
-//  LevelUp_19
-//
-//  Created by Reem Alghamdi on 20/08/1447 AH.
-//
 
 import SwiftUI
 import AVFoundation
 import Speech
 import Combine
-//import stories
+import SwiftData
+
 
 struct StoryView: View {
-    @State var story: Story
-    @State private var showArabic: Bool = false
-    private let speechSynthesizer = AVSpeechSynthesizer()
-    @State private var isRecording = false
-    @State private var audioRecorder: AVAudioRecorder?
-    @State private var audioPlayer: AVAudioPlayer?
-    @State private var transcription: String = ""
-    @State private var feedback: String = ""
-    private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))
+    @Bindable var story: Story
+    
+    
+        @State private var showArabic: Bool = false
+        @State private var isRecording = false
+        @State private var transcription: String = ""
+        @State private var feedback: String = ""
+        
+        // 3. Audio & Speech properties
+        private let speechSynthesizer = AVSpeechSynthesizer()
+        private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))
+        @State private var audioRecorder: AVAudioRecorder?
+        @State private var audioPlayer: AVAudioPlayer?
     
     private var recordingExists: Bool {
         let url = FileManager.default
@@ -30,10 +29,13 @@ struct StoryView: View {
     }
     
     var body: some View {
+        
+     
+        
         VStack(spacing: 0) {
             // MARK: - Top Image Section
             ZStack(alignment: .top) {
-                Image(story.cover ?? "placeholder")
+                Image(story.storycover ?? "placeholder")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(height: UIScreen.main.bounds.height * 0.45)
@@ -68,11 +70,13 @@ struct StoryView: View {
                         CircleButton(icon: "ear.and.waveform") {
                             if speechSynthesizer.isSpeaking {
                                 speechSynthesizer.stopSpeaking(at: .immediate)
-                            } else {
+                            } /*else {
                                 speakCurrentPage()
-                            }
+                            }*/
                         }
-                        CircleButton(icon: "star")
+                        CircleButton(icon: story.isFavorite ? "star.fill" : "star") {
+                                        story.isFavorite.toggle()
+                                    }
                     }
                 }
                 .padding(.top, 50)
@@ -140,7 +144,7 @@ struct StoryView: View {
                     .padding(.horizontal, 40)
                     .padding(.vertical, 10)
                 }
-                .frame(maxHeight: .infinity)
+               // .frame(maxHeight: .infinity)
                 .gesture(
                     DragGesture()
                         .onEnded { value in
@@ -293,13 +297,12 @@ struct StoryView: View {
     }
 
     private func updateProgress() {
-        let totalPages = max((story.englishStory?.count ?? 1) - 1, 1)
-        story.progress = Int(
-            (Double(story.currentPage) / Double(totalPages)) * 100
-        )
+        guard let count = story.englishStory?.count, count > 1 else { return }
+        // Ensure you use the exact name: Readingprogress
+        story.Readingprogress = Int((Double(story.currentPage) / Double(count - 1)) * 100)
     }
     
-    private func speakCurrentPage() {
+   /* private func speakCurrentPage() {
         let textToRead: String
 
         if showArabic {
@@ -328,14 +331,16 @@ struct StoryView: View {
         utterance.rate = 0.5
 
         speechSynthesizer.speak(utterance)
-    }
+    }*/
 }
 
  // Helper for the side buttons
 struct CircleButton: View {
     var icon: String
     var action: () -> Void = {}
-
+    var color: Color = .primary
+    
+    
     var body: some View {
         Button(action: action) {
             Image(systemName: icon)
@@ -348,10 +353,18 @@ struct CircleButton: View {
 }
 
 #Preview {
-    StoryView(story: Story(
-            title: "The Golden Gazelle",
-            progress: 0,
-            currentPage: 0,
-            summary: "A beautiful desert tale."
-        ))
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try! ModelContainer(for: Story.self, configurations: config)
+        
+        let sampleStory = Story(
+            title: "Back to the Moon",
+            storycover: "storyCover1", // Ensure this exists in Assets
+            englishStory: ["This is a page of the story about the moon.", "Second page text."],
+            summary: "A story about a man and a queen."
+        )
+        
+        container.mainContext.insert(sampleStory)
+        
+        return StoryView(story: sampleStory)
+            .modelContainer(container)
 }

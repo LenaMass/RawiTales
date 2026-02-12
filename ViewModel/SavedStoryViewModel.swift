@@ -7,14 +7,14 @@
  2- must add a function where it stories are added by the genre title and not all genre 
  
  */
-
+/*
 import Foundation
 import SwiftUI
 import Combine
 import SwiftData
 
 class SavedStoryViewModel: ObservableObject {
-    @Published var allStories: [SavedStoryData] = [
+    @Published var allStories: [Story] = [
         SavedStoryData(
             imageName: "LittlewomanStory",
             pages: ["Once upon a time...", "She lived in a small house.", "The end."],
@@ -38,7 +38,7 @@ class SavedStoryViewModel: ObservableObject {
     ]
     
     // Don't forget your update function here too!
-   /* func updateReadingProgress(for storyId: UUID, currentPageIndex: Int) {
+    func updateReadingProgress(for storyId: UUID, currentPageIndex: Int) {
         if let index = allStories.firstIndex(where: { $0.id == storyId }) {
             let totalPages = allStories[index].pages.count
             if totalPages > 0 {
@@ -46,5 +46,6 @@ class SavedStoryViewModel: ObservableObject {
                 allStories[index].Readingprogress = Int(calculated)
             }
         }
-    }*/
+    }
 }
+*/

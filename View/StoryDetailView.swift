@@ -4,7 +4,7 @@
 //
 //  Created by Nuha  on 08/02/2026.
 //
-
+/*
 import SwiftUI
 import Combine
 import SwiftData
@@ -56,3 +56,4 @@ struct StoryDetailView: View {
         .navigationTitle(story.imageName)
     }
 }
+*/

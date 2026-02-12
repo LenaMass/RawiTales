@@ -16,14 +16,14 @@ struct LevelUp_19App: App {
     
     var body: some Scene {
         WindowGroup {
-            //PagesViewer()
+            
             PagesViewer()
                 .background{
                     Image("NightDay_Background")
                     
                     
                 }
-                .modelContainer(for: SavedStoryData.self)
+                .modelContainer(for: Story.self)
         }
         
         
@@ -31,10 +31,6 @@ struct LevelUp_19App: App {
     }
     
     
-    func addInitialStories() {
-        let newStory = SavedStoryData(imageName: "CinderellaStory", pages: ["Page 1", "Page 2"])
-        modelContext.insert(newStory)
-    }
 }
 
 
