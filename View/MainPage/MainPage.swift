@@ -126,6 +126,36 @@ struct HomePageView: View {
                                     onStoryTap(story)
                                 }
                             }
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 8) {
+                Text(genre.name)
+                    .font(.system(size: 15, weight: .semibold, design: .rounded))
+                    .foregroundStyle(.white.opacity(0.9))
+                Spacer()
+
+//                if showFilterButton {
+//                    Button {} label: {
+//                        Image(systemName: "line.3.horizontal")
+//                            .font(.system(size: 18, weight: .semibold))
+//                            .frame(width: 34, height: 34)
+//                            .foregroundStyle(.white.opacity(0.9))
+//                    }
+//                    .buttonStyle(.plain)
+//                    .background {
+//                        Circle().fill(Color.clear).glassEffect(.clear)
+//                    }
+//                    .overlay {
+//                        Circle().strokeBorder(.white.opacity(0.18), lineWidth: 1)
+//                    }
+//                }
+            }
+
+           /* ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 33) {
+                    ForEach(genre.stories) { story in
+                        StoryCardButtonView(story: story) {
+                            onStoryTap(story)
                         }
                         .padding(.horizontal)
                     }

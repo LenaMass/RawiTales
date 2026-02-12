@@ -21,13 +21,63 @@ struct StoryView: View {
         @State private var audioRecorder: AVAudioRecorder?
         @State private var audioPlayer: AVAudioPlayer?
     
+import SwiftUI
+import AVFoundation
+import Speech
+
+struct StoryView: View {
+    @State private var story: Story = stories[5]
+    @State private var showArabic: Bool = false
+    private let speechSynthesizer = AVSpeechSynthesizer()
+    @State private var isRecording = false
+    @State private var audioRecorder: AVAudioRecorder?
+    @State private var audioPlayer: AVAudioPlayer?
+    @State private var transcription: String = ""
+    @State private var feedback: String = ""
+    private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))
+
+    @State private var isTranslated: Bool = false
+    @State private var isTranslating: Bool = false
+    @State private var translatedArabicPages: [Int: String] = [:]
+
+    @StateObject private var bubbleVM = WordBubbleViewModel()
+
+    private var deeplApiKey: String {
+        Bundle.main.object(forInfoDictionaryKey: "DEEPL_API_KEY") as? String ?? ""
+    }
+
+    private var deeplIsFreePlan: Bool {
+        let v = Bundle.main.object(forInfoDictionaryKey: "DEEPL_FREE_PLAN") as? String ?? "YES"
+        return (v as NSString).boolValue
+    }
+
+    private var translator: DeepLTranslator {
+        DeepLTranslator(apiKey: deeplApiKey, isFreePlan: deeplIsFreePlan)
+    }
+
     private var recordingExists: Bool {
         let url = FileManager.default
             .urls(for: .documentDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("userRecording.m4a")
         return FileManager.default.fileExists(atPath: url.path)
     }
-    
+
+    private var englishPageText: String {
+        guard let english = story.englishStory,
+              english.indices.contains(story.currentPage) else { return "No content available" }
+        return english[story.currentPage]
+    }
+
+    private var displayedPageText: String {
+        if isTranslated {
+            if let cached = translatedArabicPages[story.currentPage], !cached.isEmpty {
+                return cached
+            }
+            return isTranslating ? "Translating..." : "..."
+        }
+        return englishPageText
+    }
+
     var body: some View {
         
      
@@ -72,45 +122,49 @@ struct StoryView: View {
                                         story.isFavorite.toggle()
                                     }
                     }
+                    .padding(.top, 50)
+                    .padding(.horizontal, 20)
                 }
-                .padding(.top, 50)
-                .padding(.horizontal, 20)
-            }
-            
-            // MARK: - Bottom Content Section
-            VStack(spacing: 30) {
-                // Microphone Button
-                Button(action: {
-                    toggleRecording()
-                }) {
-                    ZStack {
-                        Circle()
-                            .fill(Color.yellow.opacity(0.3))
-                            .frame(width: 80, height: 80)
-                        Circle()
-                            .fill(Color.yellow)
-                            .frame(width: 60, height: 60)
-                            .shadow(radius: 5)
-                        Image(systemName: isRecording ? "stop.fill" : "mic.fill")
-                            .foregroundColor(.black)
-                            .font(.title)
-                    }
-                }
-                .padding(.top, -40) // Overlaps the image slightly
-                
-                // Playback Slider
-                HStack(spacing: 15) {
-                    Button {
-                        playRecording()
-                    } label: {
-                        Image(systemName: "play.circle.fill")
-                            .font(.system(size: 40))
-                            .foregroundColor(recordingExists ? .primary : .secondary)
-                    }
 
-                    Rectangle()
-                        .fill(Color.secondary.opacity(0.4))
-                        .frame(height: 3)
+                VStack(spacing: 30) {
+                    Button(action: {
+                        toggleRecording()
+                    }) {
+                        ZStack {
+                            Circle()
+                                .fill(Color.yellow.opacity(0.3))
+                                .frame(width: 80, height: 80)
+                            Circle()
+                                .fill(Color.yellow)
+                                .frame(width: 60, height: 60)
+                                .shadow(radius: 5)
+                            Image(systemName: isRecording ? "stop.fill" : "mic.fill")
+                                .foregroundColor(.black)
+                                .font(.title)
+                        }
+                    }
+                    .padding(.top, -40)
+
+                    HStack(spacing: 15) {
+                        Button {
+                            playRecording()
+                        } label: {
+                            Image(systemName: "play.circle.fill")
+                                .font(.system(size: 40))
+                                .foregroundColor(recordingExists ? .primary : .secondary)
+                        }
+
+                        Rectangle()
+                            .fill(Color.secondary.opacity(0.4))
+                            .frame(height: 3)
+
+                        
+                    }
+                    .padding(.horizontal, 30)
+
+                    ScrollView {
+                        VStack(spacing: 0) {
+                            Color.clear.frame(height: 0)
 
                     Text("AI")
                         .font(.caption)
@@ -146,36 +200,78 @@ struct StoryView: View {
                                 previousPage()
                             }
                         }
-                )
-                
-                if !feedback.isEmpty {
-                    Text(feedback)
-                        .font(.footnote)
-                        .foregroundColor(.secondary)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 30)
-                }
-                
-                // Pagination Dots
-                HStack(spacing: 8) {
-                    ForEach(0..<(story.englishStory?.count ?? 0), id: \.self) { index in
-                        Circle()
-                            .fill(index == story.currentPage ? Color.primary : Color.secondary.opacity(0.4))
-                            .frame(
-                                width: index == story.currentPage ? 8 : 6,
-                                height: index == story.currentPage ? 8 : 6
-                            )
-                            .animation(.easeInOut(duration: 0.2), value: story.currentPage)
                     }
+                    .frame(maxHeight: .infinity)
+                    .gesture(
+                        DragGesture()
+                            .onEnded { value in
+                                if value.translation.width < -50 {
+                                    nextPage()
+                                } else if value.translation.width > 50 {
+                                    previousPage()
+                                }
+                            }
+                    )
+
+                    if !feedback.isEmpty {
+                        Text(feedback)
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 30)
+                    }
+
+                    HStack(spacing: 8) {
+                        ForEach(0..<(story.englishStory?.count ?? 0), id: \.self) { index in
+                            Circle()
+                                .fill(index == story.currentPage ? Color.primary : Color.secondary.opacity(0.4))
+                                .frame(
+                                    width: index == story.currentPage ? 8 : 6,
+                                    height: index == story.currentPage ? 8 : 6
+                                )
+                                .animation(.easeInOut(duration: 0.2), value: story.currentPage)
+                        }
+                    }
+                    .padding(.bottom, 20)
                 }
-                .padding(.bottom, 20)
+                .frame(maxWidth: .infinity)
+                .background(Color(.systemBackground))
             }
-            .frame(maxWidth: .infinity)
-            .background(Color(.systemBackground))
+            .edgesIgnoringSafeArea(.top)
         }
-        .edgesIgnoringSafeArea(.top)
     }
-    
+
+    private func translateCurrentPageENtoAR() {
+        if isTranslated || isTranslating {
+            isTranslated = false
+            isTranslating = false
+            return
+        }
+
+        guard !deeplApiKey.isEmpty else { return }
+
+        let text = englishPageText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !text.isEmpty else { return }
+
+        if let cached = translatedArabicPages[story.currentPage], !cached.isEmpty {
+            isTranslated = true
+            return
+        }
+
+        isTranslating = true
+
+        Task {
+            defer { isTranslating = false }
+            do {
+                let ar = try await translator.translate(text, from: "EN", to: "AR")
+                translatedArabicPages[story.currentPage] = ar
+                isTranslated = true
+            } catch {
+                isTranslated = false
+            }
+        }
+    }
+
     private func toggleRecording() {
         isRecording ? stopRecording() : startRecording()
     }
@@ -205,7 +301,7 @@ struct StoryView: View {
         audioRecorder?.stop()
         audioRecorder = nil
         isRecording = false
-        transcribeAndEvaluate()
+      // transcribeAndEvaluate()
     }
 
     private func playRecording() {
@@ -216,35 +312,35 @@ struct StoryView: View {
         audioPlayer = try? AVAudioPlayer(contentsOf: url)
         audioPlayer?.play()
     }
-    
-    private func transcribeAndEvaluate() {
-        guard !showArabic else {
-            feedback = "Pronunciation feedback is available for English only."
-            return
-        }
-
-        let url = FileManager.default
-            .urls(for: .documentDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("userRecording.m4a")
-
-        SFSpeechRecognizer.requestAuthorization { status in
-            guard status == .authorized else {
-                feedback = "Speech recognition permission not granted."
-                return
-            }
-
-            let request = SFSpeechURLRecognitionRequest(url: url)
-
-            self.speechRecognizer?.recognitionTask(with: request) { result, error in
-                guard let result = result, result.isFinal else { return }
-
-                DispatchQueue.main.async {
-                    self.transcription = result.bestTranscription.formattedString
-                    self.generateFeedback()
-                }
-            }
-        }
-    }
+//
+//    private func transcribeAndEvaluate() {
+////        guard !isTranslated else {
+////            feedback = "Pronunciation feedback is available for English only."
+////            return
+////        }
+//
+//        let url = FileManager.default
+//            .urls(for: .documentDirectory, in: .userDomainMask)[0]
+//            .appendingPathComponent("userRecording.m4a")
+//
+//        SFSpeechRecognizer.requestAuthorization { status in
+//            guard status == .authorized else {
+//                feedback = "Speech recognition permission not granted."
+//                return
+//            }
+//
+//            let request = SFSpeechURLRecognitionRequest(url: url)
+//
+//            self.speechRecognizer?.recognitionTask(with: request) { result, _ in
+//                guard let result = result, result.isFinal else { return }
+//
+//                DispatchQueue.main.async {
+//                    self.transcription = result.bestTranscription.formattedString
+//                    self.generateFeedback()
+//                }
+//            }
+//        }
+//    }
 
     private func generateFeedback() {
         guard let englishStory = story.englishStory,
@@ -252,6 +348,7 @@ struct StoryView: View {
             feedback = "No text available for evaluation."
             return
         }
+
         let expected = englishStory[story.currentPage]
             .lowercased()
             .components(separatedBy: .whitespacesAndNewlines)
@@ -273,8 +370,7 @@ struct StoryView: View {
             """
         }
     }
-    
-    // Pagination and progress update helpers
+
     private func nextPage() {
         // Check 'pages' count instead of 'englishStory'
         if story.currentPage + 1 < story.pages.count {
@@ -304,15 +400,10 @@ struct StoryView: View {
     
    /* private func speakCurrentPage() {
         let textToRead: String
-
-        if showArabic {
-            guard let arabic = story.arabicStory,
-                  arabic.indices.contains(story.currentPage) else { return }
-            textToRead = arabic[story.currentPage]
+        if isTranslated, let cached = translatedArabicPages[story.currentPage], !cached.isEmpty {
+            textToRead = cached
         } else {
-            guard let english = story.englishStory,
-                  english.indices.contains(story.currentPage) else { return }
-            textToRead = english[story.currentPage]
+            textToRead = englishPageText
         }
 
         if speechSynthesizer.isSpeaking {
@@ -320,22 +411,17 @@ struct StoryView: View {
         }
 
         let utterance = AVSpeechUtterance(string: textToRead)
-        if showArabic {
+        if isTranslated {
             utterance.voice = AVSpeechSynthesisVoice(language: "ar-SA")
         } else {
-            // Use 'Allison (Enhanced)' from the Apple Voice Library if available
-            utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.Allison-premium") ??
-                             AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.Allison-compact") ??
-                             AVSpeechSynthesisVoice(language: "en-UK")
+            utterance.voice = AVSpeechSynthesisVoice(language: "en-UK")
         }
         utterance.rate = 0.5
-
         speechSynthesizer.speak(utterance)
     }*/
 }
 
- // Helper for the side buttons
-struct CircleButton: View {
+struct GlassCircleButton: View {
     var icon: String
     var action: () -> Void = {}
     var color: Color = .primary
@@ -345,13 +431,37 @@ struct CircleButton: View {
         Button(action: action) {
             Image(systemName: icon)
                 .padding(10)
-                .background(Color.primary.opacity(0.15))
-                .clipShape(Circle())
                 .foregroundColor(.primary)
         }
+        .buttonStyle(.plain)
+        .background(
+            Group {
+                if #available(iOS 26.0, *) {
+                    Circle().glassEffect(.clear)
+                } else {
+                    Circle().fill(Color(.systemBackground).opacity(0.85))
+                }
+            }
+        )
+        .clipShape(Circle())
     }
 }
 
+struct CircleButton: View {
+    var icon: String
+    var action: () -> Void = {}
+
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: icon)
+                .padding(12)
+                .foregroundColor(.primary)
+                .background(Color(.systemBackground).opacity(0.85))
+                .clipShape(Circle())
+        }
+        .buttonStyle(.plain)
+    }
+}
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try! ModelContainer(for: Story.self, configurations: config)
@@ -368,3 +478,4 @@ struct CircleButton: View {
         return StoryView(story: sampleStory)
             .modelContainer(container)
 }
+
