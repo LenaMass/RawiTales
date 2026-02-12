@@ -1,13 +1,15 @@
 import SwiftUI
 import Combine
 
+
+
 @MainActor
 final class HomePageViewModel: ObservableObject {
-    @Published var genres: [StoryGenre]
+    // We only need the names of the categories/genres
+    @Published var genreNames: [String] = ["Romance", "Mystery", "Fantasy"]
     let heroVM: HeroRingWidgetViewModel
     
-    init(genres: [StoryGenre] = [], heroVM: HeroRingWidgetViewModel? = nil) {
-        self.genres = genres.isEmpty ? Self.placeholderGenres : genres
+    init(heroVM: HeroRingWidgetViewModel? = nil) {
         self.heroVM = heroVM ?? .preset
     }
     

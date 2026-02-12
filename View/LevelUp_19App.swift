@@ -7,9 +7,13 @@
 
 import SwiftUI
 import Combine
+import SwiftData
+
 
 @main
 struct LevelUp_19App: App {
+    @Environment(\.modelContext) private var modelContext
+    
     var body: some Scene {
         WindowGroup {
             PagesViewer()
@@ -18,8 +22,14 @@ struct LevelUp_19App: App {
                     
                     
                 }
-            
+                .modelContainer(for: Story.self)
         }
         
+        
+        
     }
+    
+    
 }
+
+

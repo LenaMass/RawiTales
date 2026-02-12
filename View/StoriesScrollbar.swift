@@ -1,15 +1,18 @@
-//
-//  StoriesScrollbar.swift
-//  LevelUp_19
-//
-//  Created by Nuha  on 08/02/2026.
-//
 
 import SwiftUI
 import Combine
+import SwiftData
+
 struct StoriesScrollbar: View {
-    // CHANGE: Use ObservedObject so it shares data with the parent
-    @ObservedObject var viewModel: SavedStoryViewModel
+    // 1. CHANGE: Delete the ObservedObject and use @Query to get real saved data
+    @Query(sort: \Story.title) var allStories: [Story]
+    @Query(filter: #Predicate<Story> { $0.isFavorite == true }) var favoriteStories: [Story]
+    var savedStories: [Story] {
+            allStories.filter { $0.Readingprogress > 0 || $0.isFavorite }
+        
+
+        
+        }
     
     let columns = [
         GridItem(.flexible(), spacing: 30),
@@ -18,51 +21,81 @@ struct StoriesScrollbar: View {
     ]
     
     var body: some View {
-        // Remove the outer VStack, it's not needed and can block backgrounds
-        ScrollView {
-            LazyVGrid(columns: columns, spacing: 10) {
-                ForEach(viewModel.allStories) { story in
-                    NavigationLink(destination: StoryDetailView(viewModel: viewModel, story: story)) {
-                        Image(story.imageName)
-                            .resizable()
-                            .scaledToFill()
-                            .cornerRadius(18)
-                            .clipped()
-                            .background(
-                                VStack {
-                                    Spacer()
-                                    ZStack(alignment: .leading) {
-                                        Capsule()
-                                            .fill(Color.gray.opacity(0.3))
-                                            .frame(height: 8)
-                                        
-                                        // GeometryReader detects the width of the container
-                                        GeometryReader { geo in
+            ScrollView {
+                // Check if there are actually saved stories to show
+                if savedStories.isEmpty {
+                    ContentUnavailableView("No Saved Stories",
+                                           systemImage: "book.closed",
+                                           description: Text("Start reading a story to see it here."))
+                        .padding(.top, 100)
+                } else {
+                    LazyVGrid(columns: columns, spacing: 10) {
+                        ForEach(savedStories) { story in
+                            // Use your existing StoryView for the destination
+                            NavigationLink(destination: StoryView(story: story)) {
+                                VStack(spacing: 0) {
+                                    // Cover Image
+                                    Image(story.storycover ?? "placeholder")
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(height: 140)
+                                        .clipped()
+                                        .cornerRadius(18, corners: [.topLeft, .topRight])
+                                    
+                                    // Progress Section
+                                    VStack {
+                                        Spacer()
+                                        ZStack(alignment: .leading) {
                                             Capsule()
-                                                .fill(Color.black)
-                                                // Math: (Progress Percentage / 100) * Total Width
-                                                .frame(width: geo.size.width * (Double(story.Readingprogress) / 100.0), height: 8)
+                                                .fill(Color.gray.opacity(0.3))
+                                                .frame(height: 8)
+                                            
+                                            GeometryReader { geo in
+                                                Capsule()
+                                                    .fill(Color.black)
+                                                    // Dynamic width based on progress
+                                                    .frame(width: geo.size.width * (Double(story.Readingprogress) / 100.0), height: 8)
+                                            }
                                         }
+                                        .frame(height: 8)
+                                        .padding(.horizontal, 10)
+                                        .padding(.bottom, 12)
                                     }
-                                    .frame(height: 8) // Give the GeometryReader a specific height
-                                    .padding(.horizontal, 12)
-                                    .padding(.bottom, 15)
+                                    .frame(height: 40)
+                                    .background(Color.white)
+                                    .cornerRadius(18, corners: [.bottomLeft, .bottomRight])
                                 }
-                                .frame(height: 180)
-                                .background(Color.white)
-                                .cornerRadius(18)
-                                , alignment: .top
-                            )
+                                .shadow(radius: 2)
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                            .padding(.bottom, 20)
+                        }
                     }
-                    .buttonStyle(PlainButtonStyle())
-                    .padding(.bottom, 60)
+                    .padding()
                 }
             }
-            .padding()
-        }
+            .background(Color.clear)
         
-        .background(Color.clear)
-        // FIX: Moved modifier directly to the ScrollView
-        .scrollContentBackground(.hidden)
+        
+        
+        }
+    }
+
+#Preview {
+    StoriesScrollbar()
+}
+
+extension View {
+    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+        clipShape(RoundedCorner(radius: radius, corners: corners))
+    }
+}
+
+struct RoundedCorner: Shape {
+    var radius: CGFloat = .infinity
+    var corners: UIRectCorner = .allCorners
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        return Path(path.cgPath)
     }
 }

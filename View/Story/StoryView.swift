@@ -1,3 +1,26 @@
+
+import SwiftUI
+import AVFoundation
+import Speech
+import Combine
+import SwiftData
+
+
+struct StoryView: View {
+    @Bindable var story: Story
+    
+    
+        @State private var showArabic: Bool = false
+        @State private var isRecording = false
+        @State private var transcription: String = ""
+        @State private var feedback: String = ""
+        
+        // 3. Audio & Speech properties
+        private let speechSynthesizer = AVSpeechSynthesizer()
+        private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))
+        @State private var audioRecorder: AVAudioRecorder?
+        @State private var audioPlayer: AVAudioPlayer?
+    
 import SwiftUI
 import AVFoundation
 import Speech
@@ -56,52 +79,48 @@ struct StoryView: View {
     }
 
     var body: some View {
-        GeometryReader { geo in
-            VStack(spacing: 0) {
-                ZStack(alignment: .top) {
-                    Image(story.cover ?? "placeholder")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: geo.size.height * 0.45)
-                        .clipped()
-
-                    HStack {
-                        Button(action: {}) {
-                            Image(systemName: "chevron.left")
-                                .padding()
-                                .background(Color(.systemBackground).opacity(0.85))
-                                .clipShape(Circle())
-                                .foregroundColor(.primary)
+        
+     
+        
+        VStack(spacing: 0) {
+            // MARK: - Top Image Section
+            ZStack(alignment: .top) {
+                Image(story.storycover ?? "placeholder")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: UIScreen.main.bounds.height * 0.45)
+                    .clipped()
+                
+                // Top Header Overlay
+                HStack {
+                  
+                    
+                    Spacer()
+                    
+                    Text(story.title)
+                        .font(.headline)
+                        .padding(.horizontal, 40)
+                        .padding(.vertical, 10)
+                        .background(Color(.systemBackground))
+                        .cornerRadius(20)
+                    
+                    Spacer()
+                    
+                    // Side Buttons
+                    VStack(spacing: 12) {
+                        CircleButton(icon: "character.book.closed.fill") {
+                            showArabic.toggle()
                         }
-
-                        Spacer()
-
-                        Text(story.title)
-                            .font(.headline)
-                            .padding(.horizontal, 40)
-                            .padding(.vertical, 10)
-                            .background(Color(.systemBackground))
-                            .cornerRadius(20)
-
-                        Spacer()
-
-                        VStack(spacing: 12) {
-                            GlassCircleButton(
-                                icon: (isTranslated || isTranslating) ? "character.bubble.fill" : "character.bubble"
-                            ) {
-                                translateCurrentPageENtoAR()
-                            }
-
-                            CircleButton(icon: "ear.and.waveform") {
-                                if speechSynthesizer.isSpeaking {
-                                    speechSynthesizer.stopSpeaking(at: .immediate)
-                                } else {
-                                    speakCurrentPage()
-                                }
-                            }
-
-                            CircleButton(icon: "star")
+                        CircleButton(icon: "ear.and.waveform") {
+                            if speechSynthesizer.isSpeaking {
+                                speechSynthesizer.stopSpeaking(at: .immediate)
+                            } /*else {
+                                speakCurrentPage()
+                            }*/
                         }
+                        CircleButton(icon: story.isFavorite ? "star.fill" : "star") {
+                                        story.isFavorite.toggle()
+                                    }
                     }
                     .padding(.top, 50)
                     .padding(.horizontal, 20)
@@ -147,26 +166,38 @@ struct StoryView: View {
                         VStack(spacing: 0) {
                             Color.clear.frame(height: 0)
 
-                            if isTranslated {
-                                Text(displayedPageText)
-                                    .font(.title3)
-                                    .foregroundColor(.primary)
-                                    .multilineTextAlignment(.center)
-                                    .lineSpacing(8)
-                                    .padding(.horizontal, 40)
-                                    .padding(.vertical, 10)
-                            } else {
-                                TappableStoryTextView(
-                                    text: displayedPageText,
-                                    vm: bubbleVM
-                                ) { english, arabic in
-                                    saveWordToBank(english: english, arabic: arabic)
-                                }
-                                .padding(.horizontal, 40)
-                                .padding(.vertical, 10)
-                                .frame(maxWidth: .infinity, alignment: .center)
-
-                                Color.clear.frame(height: 30)
+                    Text("AI")
+                        .font(.caption)
+                        .bold()
+                        .padding(8)
+                        .background(Circle().fill(Color.gray.opacity(0.2)))
+                }
+                .padding(.horizontal, 30)
+                
+                // Description Text
+                ScrollView {
+                    VStack {
+                        Text(
+                            story.pages.indices.contains(story.currentPage)
+                            ? story.pages[story.currentPage]
+                            : "End of story"
+                        )
+                        .font(.title3)
+                        .multilineTextAlignment(.center)
+                        .lineSpacing(8)
+                        .padding(.horizontal, 40)
+                        .padding(.vertical, 10)
+                    }
+                    .frame(minHeight: UIScreen.main.bounds.height * 0.3) // Give it enough space to catch taps
+                    .contentShape(Rectangle()) // Makes the whole area swipable
+                }
+                .gesture(
+                    DragGesture()
+                        .onEnded { value in
+                            if value.translation.width < -50 {
+                                nextPage()
+                            } else if value.translation.width > 50 {
+                                previousPage()
                             }
                         }
                     }
@@ -341,36 +372,33 @@ struct StoryView: View {
     }
 
     private func nextPage() {
-        guard let count = story.englishStory?.count,
-              story.currentPage + 1 < count else { return }
-        story.currentPage += 1
-        updateProgress()
-        isTranslated = false
-        isTranslating = false
+        // Check 'pages' count instead of 'englishStory'
+        if story.currentPage + 1 < story.pages.count {
+            story.currentPage += 1
+            updateProgress()
+        }
     }
 
     private func previousPage() {
-        guard story.currentPage > 0 else { return }
-        story.currentPage -= 1
-        updateProgress()
-        isTranslated = false
-        isTranslating = false
+        if story.currentPage > 0 {
+            story.currentPage -= 1
+            updateProgress()
+        }
     }
 
     private func updateProgress() {
-        let totalPages = max((story.englishStory?.count ?? 1) - 1, 1)
-        story.progress = Int((Double(story.currentPage) / Double(totalPages)) * 100)
+        let totalPages = story.pages.count
+        guard totalPages > 1 else {
+            story.Readingprogress = 100
+            return
+        }
+        
+        // Calculate percentage based on current page vs total pages
+        let progress = (Double(story.currentPage) / Double(totalPages - 1)) * 100
+        story.Readingprogress = Int(progress)
     }
     
-    private func saveWordToBank(english: String, arabic: String?) {
-        WordsBankStore.shared.add(
-            word: english,
-            example: "“\(englishPageText)”",
-            wordArabic: arabic
-        )
-    }
-
-    private func speakCurrentPage() {
+   /* private func speakCurrentPage() {
         let textToRead: String
         if isTranslated, let cached = translatedArabicPages[story.currentPage], !cached.isEmpty {
             textToRead = cached
@@ -390,13 +418,15 @@ struct StoryView: View {
         }
         utterance.rate = 0.5
         speechSynthesizer.speak(utterance)
-    }
+    }*/
 }
 
 struct GlassCircleButton: View {
     var icon: String
     var action: () -> Void = {}
-
+    var color: Color = .primary
+    
+    
     var body: some View {
         Button(action: action) {
             Image(systemName: icon)
@@ -433,6 +463,19 @@ struct CircleButton: View {
     }
 }
 #Preview {
-    StoryView()
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try! ModelContainer(for: Story.self, configurations: config)
+        
+        let sampleStory = Story(
+            title: "Back to the Moon",
+            storycover: "storyCover1", // Ensure this exists in Assets
+            englishStory: ["This is a page of the story about the moon.", "Second page text."],
+            summary: "A story about a man and a queen."
+        )
+        
+        container.mainContext.insert(sampleStory)
+        
+        return StoryView(story: sampleStory)
+            .modelContainer(container)
 }
 
