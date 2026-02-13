@@ -28,6 +28,7 @@ struct StoryView: View {
     
     @StateObject private var bubbleVM = WordBubbleViewModel()
     
+  
     private var deeplApiKey: String {
         Bundle.main.object(forInfoDictionaryKey: "DEEPL_API_KEY") as? String ?? ""
     }
@@ -154,13 +155,16 @@ struct StoryView: View {
                     
                     // 2. Text Content (Back to ScrollView for reliability)
                     ScrollView {
-                        Text(displayedPageText)
-                            .font(.title3)
-                            .multilineTextAlignment(.center)
-                            .lineSpacing(8)
-                            .padding(30)
-                            .frame(maxWidth: .infinity)
-                            .id(story.currentPage) // Matches your model property
+                        TappableStoryTextView(
+                            text: displayedPageText,
+                            vm: bubbleVM,
+                            onSave: { word, translation in
+                                handleSaveWord(word: word, translation: translation)
+                            }
+                        )
+                        .font(.title3)
+                        .padding(30)
+                        .id(story.currentPage)
                     }
                     
                     // 3. Pagination Dots
@@ -305,6 +309,25 @@ struct StoryView: View {
             }
         }
     }
+    
+    @Environment(\.modelContext) private var modelContext
+    
+    private func handleSaveWord(word: String, translation: String?) {
+        let newItem = WordBankItem(
+            word: word,
+            example: englishPageText, // The context from the story
+            wordArabic: translation
+        )
+        
+        modelContext.insert(newItem)
+        
+        // Success feedback
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
+        
+        bubbleVM.clear() // Close the bubble
+    }
+    
     private func generateFeedback() {
         guard let englishStory = story.englishStory,
               englishStory.indices.contains(story.currentPage) else {

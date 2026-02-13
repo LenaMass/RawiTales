@@ -1,5 +1,8 @@
+/*
 import Foundation
 import Combine
+import SwiftData
+import SwiftUI
 
 final class WordsBankStore: ObservableObject {
     static let shared = WordsBankStore()
@@ -60,25 +63,8 @@ final class WordsBankStore: ObservableObject {
         save()
     }
 
-    private func load() {
-        guard let data = UserDefaults.standard.data(forKey: storageKey) else {
-            items = []
-            return
-        }
-        do {
-            items = try JSONDecoder().decode([WordBankItem].self, from: data)
-        } catch {
-            items = []
-        }
-    }
-
-    private func save() {
-        do {
-            let data = try JSONEncoder().encode(items)
-            UserDefaults.standard.set(data, forKey: storageKey)
-        } catch {
-        }
-    }
+    
 }
 
 
+*/

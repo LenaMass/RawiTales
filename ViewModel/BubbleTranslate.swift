@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import SwiftData
 
 @MainActor
 final class WordBubbleViewModel: ObservableObject {
