@@ -109,9 +109,16 @@ struct StoryView: View {
                         Spacer() // Pushes everything in this HStack to the right
                         VStack(spacing: 15) {
                             CircleButton(
-                                icon: isTranslating ? "ellipsis.bubble.fill" : (isClicked ? "character.book.closed.fill" : "character.bubble.fill")
+                                icon: isTranslating ? "ellipsis.bubble.fill" : (isTranslated ? "character.book.closed.fill" : "character.bubble.fill")
                             ) {
-                                translateCurrentPageENtoAR()
+                                if isTranslated && !isTranslating {
+                                    // Manual toggle to turn Arabic OFF
+                                    isTranslated = false
+                                    isClicked = false
+                                } else {
+                                    // Turn Arabic ON or translate current page
+                                    translateCurrentPageENtoAR()
+                                }
                             }
                             .foregroundColor(isClicked ? .blue : .primary)
                             
@@ -186,24 +193,19 @@ struct StoryView: View {
     }
     
     private func translateCurrentPageENtoAR() {
-        guard !isTranslating else { return }
-        
-        // Toggle back to English if already translated
-        if isTranslated {
-            isTranslated = false
-            isClicked = false
-            return
-        }
-        
-        // Check cache
+        // 1. Check if we already have it in cache
         if let cached = translatedArabicPages[story.currentPage], !cached.isEmpty {
             isTranslated = true
             isClicked = true
             return
         }
         
+        // 2. Prepare the text for translation
         let text = englishPageText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !text.isEmpty, text != "Page not found" else { return }
+        
+        // 3. Avoid overlapping network calls
+        guard !isTranslating else { return }
         
         isTranslating = true
         Task {
@@ -212,12 +214,14 @@ struct StoryView: View {
                 let ar = try await translator.translate(text, from: "EN", to: "AR")
                 await MainActor.run {
                     translatedArabicPages[story.currentPage] = ar
+                    // Ensure we stay in translated mode
                     isTranslated = true
                     isClicked = true
                 }
             } catch {
                 print("Translation Error: \(error)")
-                await MainActor.run { isClicked = false }
+                // If it fails during a swipe, maybe revert to English so the user isn't stuck
+                // await MainActor.run { isTranslated = false }
             }
         }
     }
@@ -390,18 +394,22 @@ struct StoryView: View {
     
     private func updatePage(to newIndex: Int) {
         withAnimation(.spring()) {
-            // Use .currentPage as defined in your @Model
             story.currentPage = newIndex
             
+            // Calculate Progress
             let total = story.pages.count
             if total > 0 {
-                // Your progress logic
                 let calculated = Double(newIndex + 1) / Double(total) * 100.0
                 story.Readingprogress = Int(calculated)
             }
             
-            isTranslated = false
-            isClicked = false
+            // REMOVED: isTranslated = false
+            // We keep isTranslated as true if the user was already looking at Arabic
+        }
+        
+        // If we are in translation mode, trigger the translation for the new page
+        if isTranslated {
+            translateCurrentPageENtoAR()
         }
     }
     
