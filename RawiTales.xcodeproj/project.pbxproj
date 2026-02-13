@@ -114,7 +114,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 93573EE72F30AFA4003ADB48 /* Build configuration list for PBXProject "LevelUp_19" */;
+			buildConfigurationList = 93573EE72F30AFA4003ADB48 /* Build configuration list for PBXProject "RawiTales" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -286,6 +286,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = AQ9225SLZ8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "LevelUp-19-Info.plist";
@@ -321,6 +322,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = AQ9225SLZ8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "LevelUp-19-Info.plist";
@@ -351,7 +353,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		93573EE72F30AFA4003ADB48 /* Build configuration list for PBXProject "LevelUp_19" */ = {
+		93573EE72F30AFA4003ADB48 /* Build configuration list for PBXProject "RawiTales" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				93573EF52F30AFA5003ADB48 /* Debug */,
