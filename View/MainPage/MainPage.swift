@@ -116,7 +116,7 @@ private struct StoryRowView: View {
             Text(title)
                 .font(.title2)
                 .bold()
-                .padding(.leading)
+                .foregroundStyle(Color.white)
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 20) {
