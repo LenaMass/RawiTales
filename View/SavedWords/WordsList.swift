@@ -1,25 +1,33 @@
 import SwiftUI
+import SwiftData
 
 struct WordsBankList: View {
-    @StateObject private var vm = WordsBankListViewModel()
+    @Environment(\.modelContext) private var modelContext
+        // This replaces the 'items' array in your ViewModel
+        @Query(sort: \WordBankItem.createdAt, order: .reverse) var items: [WordBankItem]
+    
+        @StateObject private var vm = WordsBankListViewModel.shared
 
     var body: some View {
         ZStack {
             List {
-                ForEach(vm.items) { item in
+                ForEach(items) { item in
                     WordCardView(
                         item: item,
                         isTranslating: vm.translatingID == item.id,
                         onLeftAction: { vm.translateCard(item) },
-                        onRightAction: { print("Right action:", item.word) }
+                        onRightAction: {
+                            vm.speak(item) // Now passes the item to handle the toggle logic
+                        }
                     )
+                    
                     .listRowInsets(EdgeInsets(top: 9, leading: 20, bottom: 9, trailing: 20))
                     .listRowSeparator(.hidden)
                     .listRowBackground(Color.clear)
                     .contentShape(Rectangle())
                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                         Button(role: .destructive) {
-                            vm.delete(item)
+                            modelContext.delete(item)
                         } label: {
                             Label("", systemImage: "trash")
                         }
@@ -28,8 +36,9 @@ struct WordsBankList: View {
             }
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
-            .padding(.top, 110)
-            .padding(.bottom, 120)
+            .padding(.top, 120)
+           // .padding(.bottom, 1)
+            .ignoresSafeArea()
         }
     }
 }

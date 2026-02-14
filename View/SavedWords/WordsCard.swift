@@ -30,29 +30,22 @@ struct WordCardView: View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 10) {
                 Text(item.word)
-                    .font(.system(size: 24, weight: .bold, design: .rounded))
-                    .foregroundColor(Color.red)
-
-                if hasWordArabic, let wa = item.wordArabic {
-                    Text(wa)
-                        .font(.system(size: 22, weight: .bold, design: .rounded))
-                        .foregroundColor(Color.red)
-                        .multilineTextAlignment(.trailing)
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                        .environment(\.layoutDirection, .rightToLeft)
+                    .font(.title2).bold()
+                    .foregroundColor(.red) // Matches your "something" screenshot
+                
+                if let arWord = item.wordArabic {
+                    Text(arWord)
+                        .font(.title3)
+                        .foregroundColor(.orange)
                 }
-
+                
                 Text(item.example)
-                    .font(.system(size: 18, weight: .regular, design: .rounded))
-                    .foregroundStyle(.black.opacity(0.85))
-
-                if hasExampleArabic, let exAr = item.exampleArabic {
-                    Text(exAr)
-                        .font(.system(size: 18, weight: .regular, design: .rounded))
-                        .foregroundStyle(.black.opacity(0.72))
-                        .multilineTextAlignment(.trailing)
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                        .environment(\.layoutDirection, .rightToLeft)
+                    .font(.body)
+                
+                if let arExample = item.exampleArabic {
+                    Text(arExample)
+                        .font(.body)
+                        .foregroundColor(.secondary)
                 }
             }
             .padding(.horizontal, 18)

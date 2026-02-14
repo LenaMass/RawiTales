@@ -1,5 +1,5 @@
-
 /*
+
 import Combine
 import SwiftData
 
@@ -11,9 +11,8 @@ let stories: [Story] = [
 //1.
     Story(
         title: "You Can Never Please Everyone",
-        cover: "Juha'sSon",
-        assets: ["Juha's Son"],
-        //genre: .wisdom/comedy,
+        genre: "Romance",
+        storycover: "Juha'sSon",
         englishStory: [
             "Juha had a son who disobeyed him whenever he asked him to do something. The boy would always reply, 'What will people say about us if we do that?'",
             
@@ -27,7 +26,7 @@ let stories: [Story] = [
             
             "The town gathered at the strange sight. A policeman cleared the crowd and led them away. On the way, Juha said to his son, 'This is the result of listening to every opinion and trying to please everyone.'"
         ],
-        progress: 0,
+        Readingprogress: 0,
         currentPage:0,
         
         summary: """
@@ -39,8 +38,8 @@ let stories: [Story] = [
     //2.
     Story(
         title: "Juha’s Nail",
-        cover: "Juha'sNail",
-        assets: ["Juha’s Nail"],
+        genre: "Romance",
+        storycover: "Juha'sNail",
        // genre: .comedy,
         englishStory: [
             "One day, Juha owned a house and decided to sell it, but he did not truly want to leave it. So he set a condition: one nail in the wall would remain his.",
@@ -53,7 +52,7 @@ let stories: [Story] = [
             
             "Finally, he abandoned the house completely. Since then, the expression 'Juha’s Nail' has been used to describe weak or false excuses used to gain something unfairly."
         ],
-        progress: 0,
+        Readingprogress: 0,
         currentPage:0,
         summary: """
         Juha sells his house but keeps ownership of a single nail in the wall. He repeatedly uses it as an excuse to return until the new owner gives up. The story became a proverb describing people who use weak justifications to achieve unfair goals.
@@ -62,8 +61,8 @@ let stories: [Story] = [
     //3.
     Story(
         title: "The Mystery of the City of Brass",
-        cover: "cityOfBrass",
-        assets: ["cityOfBrass"],
+        genre: "Romance",
+        storycover: "cityOfBrass",
        // genre: .mystery,
         englishStory: [
             "After a long journey across the desert, a group of travelers finally reached the legendary city said to be built from shining brass. Its walls still reflected the sun, untouched by time.",
@@ -76,16 +75,15 @@ let stories: [Story] = [
             
             "They left quietly, understanding that its greatest treasure was not gold, but the lesson it left behind: when power turns into arrogance, it becomes the beginning of the end."
         ],
-        progress: 0,
+        Readingprogress: 0,
         currentPage:0,
         summary: "Deep in the desert stands an abandoned city whose people disappeared without explanation, leaving behind silent streets and a warning that time never erased."
     ),
     //4.
     Story(
         title: "The Fisherman and the Jinn",
-        cover: "fishermanJinn",
-        assets: ["storyCover4"],
-        //genre: .mystery,
+        genre: "mystery",
+        storycover: "fishermanJinn",
         englishStory: [
             "An old fisherman struggled daily to catch enough food, until one morning his net pulled up a heavy sealed jar. Hoping for treasure, he opened it.",
             
@@ -97,16 +95,15 @@ let stories: [Story] = [
             
             "The jinn begged for release, promising kindness instead of revenge. After hesitation, the fisherman freed him, having learned that wisdom can save a life when strength cannot."
         ],
-        progress: 0,
+        Readingprogress: 0,
         currentPage:0,
         summary: "A poor fisherman opens an ancient jar and faces a danger that cannot be defeated by strength — only by wisdom."
     ),
     //5.
     Story(
         title: "The Mystery of the Wise Judge",
-        cover: "wiseJudge",
-        assets: ["storyCover4"],
-        //genre: .mystery,
+        genre: "mystery",
+        storycover: "wiseJudge",
         englishStory: [
             "Two men came before a judge, each claiming ownership of a bag of money. There were no witnesses and no clear proof.",
             
@@ -118,16 +115,15 @@ let stories: [Story] = [
             
             "In that moment, the truth became clear. The real owner remembered naturally, while the liar struggled to maintain a story he did not truly know."
         ],
-        progress: 0,
+        Readingprogress: 0,
         currentPage:0,
         summary: "A case without witnesses or evidence is solved through careful observation and a single revealing moment."
     ),
     //6.
     Story(
         title: "The Secret of the Missing Merchant",
-        cover: "missingMerchant",
-        assets: ["storyCover4"],
-       // genre: .mystery,
+        genre: "mystery",
+        storycover: "missingMerchant",
         englishStory: [
             "A well-known merchant vanished during a trading journey, and when the caravan returned without him, no one could explain what had happened.",
             
@@ -139,14 +135,15 @@ let stories: [Story] = [
             
             "Eventually, people understood that the merchant had planned his disappearance. The mystery was never about where he went, but why no one had seen his struggle before he left."
         ],
-        progress: 0,
+        Readingprogress: 0,
         currentPage:0,
         summary: "A merchant’s sudden disappearance raises suspicion, until the truth reveals that the mystery was shaped by choice rather than accident."
     ),
     //7.
     Story(
         title: "The Abandoned House",
-        cover: "abandonedHouse",
+        genre: "Romance",
+        storycover: "abandonedHouse",
         //genre: .mystery,
         englishStory: [
             "At the edge of the village stood an abandoned house surrounded by stories of whispers and strange noises at night.",
@@ -159,16 +156,15 @@ let stories: [Story] = [
             
             "When morning came, he left with a new understanding: fear often grows where answers are missing, and mystery is sometimes born from misunderstanding rather than magic."
         ],
-        progress: 0,
+        Readingprogress: 0,
         currentPage:0,
         summary: "A house feared by everyone for its strange sounds hides a truth that challenges the power of fear itself."
     ),
     //8.
     Story(
             title: "Sinbad the Sailor",
-            cover: "sinbad",
-            assets: ["sinbad"],
-           // genre: "wisdom/adventure",
+            genre: "wisdom/adventure",
+            storycover: "sinbad",
             englishStory: [
                 "The Beginning: A Restless Spirit",
                 "Sinbad was a young man in Baghdad who inherited a fortune from his father but quickly spent it all on a lavish lifestyle.",
@@ -188,16 +184,15 @@ let stories: [Story] = [
                 "Each time, he returned wealthier and wiser, gaining treasures from distant lands and kings.",
                 "Eventually, Sinbad realized that peace and faith were more valuable than gold, so he settled down in Baghdad and shared his stories and wealth with others."
             ],
-            progress: 0,
+            Readingprogress: 0,
             currentPage:0,
             summary: "Sinbad the Sailor is a timeless story from the legendary collection One Thousand and One Nights. It tells the story of adventure, courage, and perseverance through dangerous seas and unknown lands. Through his journeys, Sinbad learns that wisdom, faith, and experience are more valuable than wealth."
         ),
 //9.
         Story(
             title: "Juha and the Lost Donkey",
-            cover: "lostDonkey",
-            assets: ["storyCover4"],
-          //  genre: "comedy",
+            genre: "comedy",
+            storycover: "lostDonkey",
             englishStory: [
                 "Juha and the Lost Donkey",
                 "It is said that Juha was walking in the market looking very sad, and people asked him:",
@@ -208,16 +203,15 @@ let stories: [Story] = [
                 "People laughed at his strange logic, but Juha said:",
                 "Sometimes we should look at the half-full side of the cup; the problem could have been worse."
             ],
-            progress: 0,
+            Readingprogress: 0,
             currentPage:0,
             summary: "It is said that Juha was walking through the market looking very sad, and people asked him, What's wrong, Juha? He replied that his donkey was lost. When they asked why he was smiling, Juha said he thanked God he was not riding it, otherwise he would have been lost as well. People laughed, but Juha reminded them that sometimes we should look at the positive side because things could have been worse."
         ),
 //10
         Story(
             title: "The Merchant and the Parrot",
-            cover: "storyMerchant and Parrot",
-            assets: ["storyCover4"],
-           // genre: "comedy",
+            genre: "comedy",
+            storycover: "storyMerchant and Parrot",
             englishStory: [
                 "The Merchant and the Parrot",
                 "A merchant had a beautiful parrot that could talk. Every day, the parrot greeted customers and made them smile. The merchant loved his parrot very much.",
@@ -227,16 +221,15 @@ let stories: [Story] = [
                 "When he returned home, he told his parrot what had happened. As soon as the parrot heard the story, it fell down in the cage and stopped moving. The merchant thought the parrot had died, so he opened the cage door.",
                 "Suddenly, the parrot flew out and sat on a tree. It said, \"The wild parrot was teaching me the secret of freedom.\""
             ],
-            progress: 0,
+            Readingprogress: 0,
             currentPage:0,
             summary: "A delightful story about a merchant and his clever parrot, told in a simple and humorous way. The story shows how wisdom can come from unexpected places and teaches a gentle lesson about freedom and understanding."
         ),
   //11
     Story(
         title: "The Fisherman and the Shining Pearl",
-        cover: "storyCover2",
-        assets: ["storyCover2"],
-        //genre: .wisdom,
+        genre: "wisdom",
+        storycover: "storyCover2",
         englishStory: [
             "Once upon a time, there was a kind and hardworking fisherman. Every morning before sunrise, he sailed his small wooden boat into the vast blue sea. He was not only searching for fish, but for a precious pearl that could give his wife and children a better life.",
             
@@ -250,16 +243,15 @@ let stories: [Story] = [
             
             "His achievement was not the result of luck alone, but of patience and relentless effort. From that day forward, he and his family lived happily, always remembering that hope is the greatest treasure of all."
         ],
-        progress: 0,
+        Readingprogress: 0,
         currentPage:0,
         summary: "An inspiring tale about patience, perseverance, and hope. A determined fisherman faces repeated failure in his search for pearls, yet refuses to give up. His unwavering effort eventually leads to a life-changing discovery, proving that hard work and belief can lead to success."
     ),
    //12
     Story(
         title: "The Honest Merchant",
-        cover: "storyCover4",
-        assets: ["storyCover4"],
-        //genre: .wisdom,
+        genre: "wisdom",
+        storycover: "storyCover4",
         englishStory: [
             "In a bustling city lived a merchant named Zaid, known for his honesty and integrity. While others chased profit at any cost, Zaid believed that a small, honest gain was better than a fortune earned through deception.",
             
@@ -273,16 +265,15 @@ let stories: [Story] = [
             
             "When Zaid returned the chest, the old man wept with gratitude and asked why he would give away such wealth. Zaid simply smiled and said, 'I may be a merchant of goods, but I am also a merchant of truth. I cannot sell my conscience for any price.'"
         ],
-        progress: 0,
+        Readingprogress: 0,
         currentPage:0,
         summary: "Zaid, a merchant known for his integrity, discovers a hidden treasure beneath his warehouse. Faced with a choice between sudden wealth and an honest conscience, he proves that integrity is the greatest investment of all."
     ),
     //13
     Story(
         title: "Juha and the Judge’s Trick",
-        cover: "juhaGotSlaped",
-        assets: ["juhaGotSlaped"],
-        //genre: .comedy,
+        genre: "comedy",
+        storycover: "juhaGotSlaped",
         englishStory: [
             "One day, a man slapped Juha on the back of his head in the middle of the street, trying to mock him. Juha immediately grabbed the man and dragged him to the judge, refusing to accept his excuse that he had mistaken him for a friend.",
             
@@ -294,16 +285,15 @@ let stories: [Story] = [
             
             "Suddenly, Juha stepped closer to the judge as if to whisper something in his ear. Without warning, he gave the judge a strong slap and walked away, saying, 'When the man returns with the money, you may keep it on my behalf.'"
         ],
-        progress: 0,
+        Readingprogress: 0,
         currentPage:0,
         summary: "After being mocked and slapped in public, Juha seeks justice in court. When the judge attempts to protect his acquaintance with a clever trick, Juha responds with a clever move of his own — proving that wit can outmatch favoritism."
     ),
     //14
     Story(
         title: "The Wise Man and the Same Joke",
-        cover: "notFuny",
-        assets: ["storyCover4"],
-        //genre: .wisdom,
+        genre: "comedy",
+        storycover: "notFuny",
         englishStory: [
             "There once was a wise man whom people traveled from far and wide to consult. Yet every time they visited him, they complained about the same problems and repeated the same struggles.",
             
@@ -315,16 +305,15 @@ let stories: [Story] = [
             
             "The wise man smiled and said, 'You cannot laugh at the same joke more than once. So why do you continue to cry and complain about the same problems again and again?'"
         ],
-        progress: 0,
+        Readingprogress: 0,
         currentPage:0,
         summary: "A wise man teaches a powerful lesson by repeating the same joke three times. Through a simple example, he reminds people that dwelling on the same problems repeatedly will not change them — only action will."
     ),
     //15
     Story(
         title: "The Old Man in the Village",
-        cover: "happyMan",
-        assets: ["happyMan"],
-        //genre: .wisdom,
+        genre: "wisdom",
+        storycover: "happyMan",
         englishStory: [
             "In a distant village lived an old man who was considered the unhappiest person anyone had ever known. He complained constantly and was always in a bad mood.",
             
@@ -336,7 +325,7 @@ let stories: [Story] = [
             
             "The villagers gathered and asked him what had changed. The old man replied, 'Nothing important. For eighty years, I chased happiness and never found it. Then I decided to stop chasing it and simply live my life. That is why I am happy now.'"
         ],
-        progress: 0,
+        Readingprogress: 0,
         currentPage:0,
         summary: "A lifelong pessimist surprises his village when he suddenly becomes happy at the age of eighty. His unexpected transformation reveals a powerful truth about the difference between chasing happiness and choosing to live peacefully."
     )
@@ -347,3 +336,5 @@ let stories: [Story] = [
     // comedy = 5
     // wisdom = 5
     //mystery = 5
+
+*/

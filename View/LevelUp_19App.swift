@@ -22,7 +22,7 @@ struct LevelUp_19App: App {
                     
                     
                 }
-                .modelContainer(for: Story.self)
+                .modelContainer(for: [Story.self, WordBankItem.self])
         }
         
         

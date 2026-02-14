@@ -1,14 +1,16 @@
+
+import SwiftData
 import Foundation
+import SwiftData
 
-struct WordBankItem: Identifiable, Codable, Hashable {
-    let id: UUID
-    let word: String
-    let example: String
-
+@Model
+ final class WordBankItem  {
+    @Attribute(.unique) var id: UUID
+    var word: String
+    var example: String
     var wordArabic: String?
     var exampleArabic: String?
-
-    let createdAt: Date
+    var createdAt: Date
 
     init(
         id: UUID = UUID(),
@@ -26,5 +28,4 @@ struct WordBankItem: Identifiable, Codable, Hashable {
         self.createdAt = createdAt
     }
 }
-
 

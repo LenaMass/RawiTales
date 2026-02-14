@@ -1,17 +1,3 @@
-//import Foundation
-//
-//struct Story: Identifiable, Hashable {
-//    let id: UUID
-//    let title: String
-//    let assetName: String?
-//
-//    init(id: UUID = UUID(), title: String, assetName: String? = nil) {
-//        self.id = id
-//        self.title = title
-//        self.assetName = assetName
-//    }
-//}
-
 
 
 import Combine
@@ -59,18 +45,6 @@ final class Story: Identifiable {
     }
 }
 
-/*
-@Model
-final class StoryGenre {
-    @Attribute(.unique) var name: String // This prevents duplicate categories
-        @Relationship(deleteRule: .nullify, inverse: \Story.genreGroup)
-        var stories: [Story] = []
-
-        init(name: String) {
-            self.name = name
-    }
-}
-*/
 
 
 

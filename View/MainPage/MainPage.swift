@@ -105,28 +105,34 @@ struct HomePageView: View {
     // MARK: - New StoryRow Struct
     
     
-    private struct StoryRowView: View {
-            let title: String
-            let stories: [Story] // This accepts the filtered array
-            var showFilterButton: Bool = true
-            var onStoryTap: (Story) -> Void
-        
-        var body: some View {
-                VStack(alignment: .leading, spacing: 12) {
-                    Text(title)
-                        .font(.title2)
-                        .bold()
-                        .padding(.leading)
-                    
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 20) {
-                            ForEach(stories) { story in
-                                // Use your existing card view here
-                                StoryCardButtonView(story: story) {
-                                    onStoryTap(story)
-                                }
-                            }
+private struct StoryRowView: View {
+    let title: String
+    let stories: [Story] // This accepts the filtered array
+    var showFilterButton: Bool = true
+    var onStoryTap: (Story) -> Void
+    
     var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(title)
+                .font(.title2)
+                .bold()
+                .foregroundStyle(Color.white)
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 20) {
+                    ForEach(stories) { story in
+                        // Use your existing card view here
+                        StoryCardButtonView(story: story) {
+                            onStoryTap(story)
+                        }
+                    }
+                    
+                }
+            }
+        }
+    }
+}
+    /*var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 8) {
                 Text(genre.name)
@@ -151,7 +157,7 @@ struct HomePageView: View {
 //                }
             }
 
-           /* ScrollView(.horizontal, showsIndicators: false) {
+           /ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 33) {
                     ForEach(genre.stories) { story in
                         StoryCardButtonView(story: story) {
@@ -163,7 +169,7 @@ struct HomePageView: View {
             }
         
     }
-    
+    */
     
     // MARK: - New StoryCardButtonView Struct
     
