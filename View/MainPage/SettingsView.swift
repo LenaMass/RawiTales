@@ -1,3 +1,5 @@
+
+/*
 import SwiftUI
 import Combine
 
@@ -10,7 +12,7 @@ final class AppSettings: ObservableObject {
         case light
     }
 
-    @Published var appearance: AppearanceMode = .dark
+    @Published var appearance: AppearanceMode = .light
 
     // Range: -3 ... +3
     @Published var textLevel: Int = 0
@@ -358,3 +360,4 @@ private extension SettingsView {
         .environmentObject(AppSettings())
         .background(.black)
 }
+*/

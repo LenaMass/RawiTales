@@ -165,6 +165,10 @@ struct StoryView: View {
                         .font(.title3)
                         .padding(30)
                         .id(story.currentPage)
+                        
+                        // --- ADD THESE TWO LINES HERE ---
+                        .multilineTextAlignment(isTranslated ? .trailing : .leading)
+                        .environment(\.layoutDirection, isTranslated ? .rightToLeft : .leftToRight)
                     }
                     
                     // 3. Pagination Dots
@@ -426,7 +430,7 @@ struct StoryView: View {
                 story.Readingprogress = Int(calculated)
             }
             
-            // REMOVED: isTranslated = false
+            
             // We keep isTranslated as true if the user was already looking at Arabic
         }
         
