@@ -34,17 +34,19 @@ struct NavigationHeader: View {
                 }
 
                 Text(title)
-                    .font(.system(size: 22, weight: .bold, design: .rounded))
+                    .font(.system(size: 25, weight: .bold, design: .rounded))
                     .foregroundStyle(.white)
-                    .padding(.horizontal,60)
+                    .padding(.horizontal,55)
 
                 Spacer()
             }
             .padding(.horizontal, 16)
             .padding(.top, 10)
 
-            Divider()
-                .opacity(0.35)
+            Rectangle()
+                .fill(Color.white)
+                .frame(height: 1)
+            
         }
     }
 }

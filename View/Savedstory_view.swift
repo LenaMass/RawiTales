@@ -22,13 +22,14 @@ struct Savedstory_view: View {
                 VStack {
                     HStack {
                         Text("Saved Stories")
-                            .font(.title2)
+                            .font(.system(size: 25, weight: .bold, design: .rounded))
                             .foregroundStyle(Color.white)
-                            .bold()
+//                            .bold()
                     }
                     
-              Divider()
-                .background(Color.white)
+                    Rectangle()
+                        .fill(Color.white)
+                        .frame(height: 1)
                     StoriesScrollbar()
                 }
             }

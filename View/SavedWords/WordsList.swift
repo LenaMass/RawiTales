@@ -3,7 +3,6 @@ import SwiftData
 
 struct WordsBankList: View {
     @Environment(\.modelContext) private var modelContext
-        // This replaces the 'items' array in your ViewModel
         @Query(sort: \WordBankItem.createdAt, order: .reverse) var items: [WordBankItem]
     
         @StateObject private var vm = WordsBankListViewModel.shared
@@ -36,8 +35,8 @@ struct WordsBankList: View {
             }
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
-            .padding(.top, 120)
-           // .padding(.bottom, 1)
+            .padding(.top, 130)
+//            .padding(.bottom, 120)
             .ignoresSafeArea()
         }
     }
