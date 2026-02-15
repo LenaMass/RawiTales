@@ -36,6 +36,7 @@ struct NavigationHeader: View {
                 Text(title)
                     .font(.system(size: 22, weight: .bold, design: .rounded))
                     .foregroundStyle(.white)
+                    .padding(.horizontal,60)
 
                 Spacer()
             }
