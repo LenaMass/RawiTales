@@ -9,6 +9,11 @@ struct WordsBankList: View {
 
     var body: some View {
         ZStack {
+            
+            Image("NightDay_Background")
+            .resizable()
+            .ignoresSafeArea()
+            
             List {
                 ForEach(items) { item in
                     WordCardView(
@@ -35,9 +40,10 @@ struct WordsBankList: View {
             }
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
-            .padding(.top, 130)
-//            .padding(.bottom, 120)
+            .padding(.top, 120)
             .ignoresSafeArea()
+            .padding(.bottom, 1)
+            
         }
     }
 }

@@ -1,11 +1,15 @@
 import SwiftUI
+import Combine
+import SwiftData
 
 struct WordCardView: View {
     let item: WordBankItem
     let isTranslating: Bool
     let onLeftAction: () -> Void
     let onRightAction: () -> Void
-
+    
+    @State private var isClicked: Bool = false
+    
     init(
         item: WordBankItem,
         isTranslating: Bool = false,
@@ -33,7 +37,7 @@ struct WordCardView: View {
                     .font(.title2).bold()
                     .foregroundColor(.red) // Matches your "something" screenshot
                 
-                if let arWord = item.wordArabic {
+                if isClicked, let arWord = item.wordArabic {
                     Text(arWord)
                         .font(.title3)
                         .foregroundColor(.orange)
@@ -42,10 +46,10 @@ struct WordCardView: View {
                 Text(item.example)
                     .font(.body)
                 
-                if let arExample = item.exampleArabic {
+                if isClicked, let arExample = item.exampleArabic {
                     Text(arExample)
                         .font(.body)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.secondary) // This is your light grey text
                 }
             }
             .padding(.horizontal, 18)
@@ -58,7 +62,20 @@ struct WordCardView: View {
 
             HStack(spacing: 0) {
                 Button {
-                    onLeftAction()
+                    // Check if we are missing ANY of the translations (Word OR Example)
+                    let isMissingData = (item.wordArabic?.isEmpty ?? true) || (item.exampleArabic?.isEmpty ?? true)
+                    
+                    if isMissingData {
+                        // If anything is missing, fetch both
+                        onLeftAction()
+                        // Force the text to show once data arrives
+                        withAnimation { isClicked = true }
+                    } else {
+                        // If we already have both, just toggle the show/hide
+                        withAnimation {
+                            isClicked.toggle()
+                        }
+                    }
                 } label: {
                     Group {
                         if isTranslating {
@@ -66,10 +83,10 @@ struct WordCardView: View {
                         } else {
                             Image(systemName: "translate")
                                 .font(.system(size: 20, weight: .semibold))
+                                .foregroundColor(isClicked ? .orange : .black.opacity(0.70))
                         }
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .foregroundStyle(.black.opacity(0.70))
                     .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
@@ -100,7 +117,7 @@ struct WordCardView: View {
         )
         .shadow(color: .black.opacity(0.20), radius: 14, x: 0, y: 10)
     }
-}
+   }
 
 #Preview {
     ZStack {
@@ -120,4 +137,81 @@ struct WordCardView: View {
     }
 }
 
+/*
+ var body: some View {
+     VStack(spacing: 0) {
+         VStack(alignment: .leading, spacing: 10) {
+             Text(item.word)
+                 .font(.title2).bold()
+                 .foregroundColor(.red) // Matches your "something" screenshot
+             
+             if let arWord = item.wordArabic {
+                 Text(arWord)
+                     .font(.title3)
+                     .foregroundColor(.orange)
+             }
+             
+             Text(item.example)
+                 .font(.body)
+             
+             if let arExample = item.exampleArabic {
+                 Text(arExample)
+                     .font(.body)
+                     .foregroundColor(.secondary)
+             }
+         }
+         .padding(.horizontal, 18)
+         .padding(.vertical, 16)
+         .frame(maxWidth: .infinity, alignment: .leading)
 
+         Divider()
+             .background(Color.black)
+             .opacity(5)
+
+         HStack(spacing: 0) {
+             Button {
+                 onLeftAction()
+             } label: {
+                 Group {
+                     if isTranslating {
+                         ProgressView().scaleEffect(0.9)
+                     } else {
+                         Image(systemName: "translate")
+                             .font(.system(size: 20, weight: .semibold))
+                     }
+                 }
+                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+                 .foregroundStyle(.black.opacity(0.70))
+                 .contentShape(Rectangle())
+             }
+             .buttonStyle(.plain)
+
+             Divider()
+                 .background(Color.black)
+
+             Button {
+                 onRightAction()
+             } label: {
+                 Image(systemName: "ear.and.waveform")
+                     .font(.system(size: 20, weight: .semibold))
+                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                     .foregroundStyle(.black.opacity(0.70))
+                     .contentShape(Rectangle())
+             }
+             .buttonStyle(.plain)
+         }
+         .frame(height: 54)
+     }
+     .background(
+         RoundedRectangle(cornerRadius: 22)
+             .fill(Color.white)
+     )
+     .overlay(
+         RoundedRectangle(cornerRadius: 22)
+             .strokeBorder(Color.white.opacity(0.25), lineWidth: 1)
+     )
+     .shadow(color: .black.opacity(0.20), radius: 14, x: 0, y: 10)
+ }
+}
+
+*/
