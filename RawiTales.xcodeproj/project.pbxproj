@@ -290,6 +290,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "LevelUp-19-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = RawiTales;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "please allow microphon ";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Allow voice recording";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -326,6 +327,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "LevelUp-19-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = RawiTales;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "please allow microphon ";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Allow voice recording";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
