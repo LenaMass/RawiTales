@@ -1,4 +1,3 @@
-
 import SwiftUI
 import Combine
 import Foundation
@@ -19,13 +18,15 @@ struct Savedstory_view: View {
                 .resizable()
                 .ignoresSafeArea()
             
-                VStack {
+                VStack(spacing: 12) {
                     HStack {
                         Text("Saved Stories")
                             .font(.system(size: 25, weight: .bold, design: .rounded))
                             .foregroundStyle(Color.white)
 //                            .bold()
                     }
+                    .padding(.horizontal, 16)
+                    .padding(.top, 10)
                     
                     Rectangle()
                         .fill(Color.white)
