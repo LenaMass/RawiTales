@@ -1,9 +1,3 @@
-//
-//  ContentView.swift
-//  LevelUp_19
-//
-//  Created by Nuha  on 02/02/2026.
-//
 
 import SwiftUI
 

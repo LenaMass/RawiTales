@@ -1,9 +1,4 @@
-//
-//  StoryDetailView.swift
-//  LevelUp_19
-//
-//  Created by Nuha  on 08/02/2026.
-//
+
 /*
 import SwiftUI
 import Combine
