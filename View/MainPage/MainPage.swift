@@ -17,7 +17,7 @@ struct HomePageView: View {
     var body: some View {
         
         
-        NavigationStack { // 1. Wrap everything in a Stack
+        NavigationStack { // 1. Wrapped everything in a Stack
             
             ZStack {
                 
@@ -71,13 +71,18 @@ struct HomePageView: View {
         let heroVM: HeroRingWidgetViewModel
         
         // for settings
-        @State private var showSettings = false
-        @EnvironmentObject var settings: AppSettings
+      //  @State private var showSettings = false
+        //@EnvironmentObject var settings: AppSettings
 
         var body: some View {
-            HStack(alignment: .top) {
-                Button {
-                    showSettings = true
+            HStack() {
+                
+                
+             // this commneted section for the next challenge
+            // adding the settings
+                
+            /*    Button {
+                    //showSettings = true
                 } label: {
                     Image(systemName: "gearshape.fill")
                         .font(.system(size: 18, weight: .semibold))
@@ -90,26 +95,27 @@ struct HomePageView: View {
                 }
                 .overlay {
                     Circle().strokeBorder(.white.opacity(0.18), lineWidth: 1)
-                }
+                }*/
                 
-                Spacer()
+              
                 
                 HeroRingWidget(vm: heroVM)
                     .padding(.top, 4)
                 
-                Spacer()
+             
                 
                 Color.clear
-                    .frame(width: 34, height: 34)
+                    .frame(width: 1, height: 1)
             }
             .padding(.horizontal, 16)
             .padding(.top, 24)
             .padding(.bottom, 10)
             
-            .sheet(isPresented: $showSettings) {
+            // sheet button for settings 
+           /* .sheet(isPresented: $showSettings) {
                         SettingsView()
                             .environmentObject(settings) // IMPORTANT: Pass settings to the sheet
-                    }
+                    }*/
         }
     }
     
@@ -144,44 +150,6 @@ private struct StoryRowView: View {
         }
     }
 }
-    /*var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack(spacing: 8) {
-                Text(genre.name)
-                    .font(.system(size: 15, weight: .semibold, design: .rounded))
-                    .foregroundStyle(.white.opacity(0.9))
-                Spacer()
-
-                if showFilterButton {
-                    Button {} label: {
-                        Image(systemName: "line.3.horizontal")
-                            .font(.system(size: 18, weight: .semibold))
-                            .frame(width: 34, height: 34)
-                            .foregroundStyle(.white.opacity(0.9))
-                    }
-                    .buttonStyle(.plain)
-                    .background {
-                        Circle().fill(Color.clear).glassEffect(.clear)
-                    }
-                    .overlay {
-                        Circle().strokeBorder(.white.opacity(0.18), lineWidth: 1)
-                    }
-                }
-            }
-
-           /ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 33) {
-                    ForEach(genre.stories) { story in
-                        StoryCardButtonView(story: story) {
-                            onStoryTap(story)
-                        }
-                        .padding(.horizontal)
-                    }
-                }
-            }
-        
-    }
-    */
     
     // MARK: - New StoryCardButtonView Struct
     
@@ -192,10 +160,7 @@ private struct StoryRowView: View {
         
         
         var body: some View {
-            
-            // adjusted new code
-            
-            
+
             VStack(spacing: 8) {
                 ZStack(alignment: .bottom) {
                     RoundedRectangle(cornerRadius: 16, style: .continuous)

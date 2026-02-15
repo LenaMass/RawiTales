@@ -11,7 +11,7 @@ import Combine
 
 struct PagesViewer: View {
     @StateObject private var vm = PagesViewerViewModel()
-
+    
     private var title: String {
         switch vm.selectedTab {
         case .library: return ""
@@ -19,10 +19,10 @@ struct PagesViewer: View {
         case .dictionary: return "Saved Words"
         }
     }
-
+    
     var body: some View {
         ZStack {
-
+            
             Group {
                 switch vm.selectedTab {
                 case .library:
@@ -34,7 +34,7 @@ struct PagesViewer: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-
+            
             if vm.searchVM.isSearching {
                 Color.clear
                     .contentShape(Rectangle())
@@ -58,13 +58,12 @@ struct PagesViewer: View {
         
         
         
-        
         .safeAreaInset(edge: .bottom) {
-            DynamicSearch(selected: $vm.selectedTab, vm: vm.searchVM) { text in
-                vm.handleSearch(text)
-            }
-            .padding(.bottom, 8)
+            // We removed the search closure since the search bar is gone
+            DynamicSearch(selected: $vm.selectedTab, vm: vm.searchVM)
+                .padding(.bottom, 8)
         }
+        // You can also remove .ignoresSafeArea(.keyboard) if you no longer have any text inputs
         .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }

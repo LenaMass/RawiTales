@@ -28,6 +28,7 @@ struct StoriesScrollbar: View {
                                            systemImage: "book.closed",
                                            description: Text("Start reading a story to see it here."))
                         .padding(.top, 100)
+                        .foregroundStyle(Color.white)
                 } else {
                     LazyVGrid(columns: columns, spacing: 10) {
                         ForEach(savedStories) { story in
