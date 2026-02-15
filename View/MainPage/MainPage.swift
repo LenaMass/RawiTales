@@ -12,7 +12,8 @@ struct HomePageView: View {
     
     // Track the selected story to trigger navigation
     @State private var selectedStory: Story?
-
+    
+   
     var body: some View {
         
         
@@ -69,9 +70,15 @@ struct HomePageView: View {
     private struct TopHeroWidget: View {
         let heroVM: HeroRingWidgetViewModel
         
+        // for settings
+        @State private var showSettings = false
+        @EnvironmentObject var settings: AppSettings
+
         var body: some View {
             HStack(alignment: .top) {
-                Button {} label: {
+                Button {
+                    showSettings = true
+                } label: {
                     Image(systemName: "gearshape.fill")
                         .font(.system(size: 18, weight: .semibold))
                         .frame(width: 34, height: 34)
@@ -98,6 +105,11 @@ struct HomePageView: View {
             .padding(.horizontal, 16)
             .padding(.top, 24)
             .padding(.bottom, 10)
+            
+            .sheet(isPresented: $showSettings) {
+                        SettingsView()
+                            .environmentObject(settings) // IMPORTANT: Pass settings to the sheet
+                    }
         }
     }
     
@@ -140,21 +152,21 @@ private struct StoryRowView: View {
                     .foregroundStyle(.white.opacity(0.9))
                 Spacer()
 
-//                if showFilterButton {
-//                    Button {} label: {
-//                        Image(systemName: "line.3.horizontal")
-//                            .font(.system(size: 18, weight: .semibold))
-//                            .frame(width: 34, height: 34)
-//                            .foregroundStyle(.white.opacity(0.9))
-//                    }
-//                    .buttonStyle(.plain)
-//                    .background {
-//                        Circle().fill(Color.clear).glassEffect(.clear)
-//                    }
-//                    .overlay {
-//                        Circle().strokeBorder(.white.opacity(0.18), lineWidth: 1)
-//                    }
-//                }
+                if showFilterButton {
+                    Button {} label: {
+                        Image(systemName: "line.3.horizontal")
+                            .font(.system(size: 18, weight: .semibold))
+                            .frame(width: 34, height: 34)
+                            .foregroundStyle(.white.opacity(0.9))
+                    }
+                    .buttonStyle(.plain)
+                    .background {
+                        Circle().fill(Color.clear).glassEffect(.clear)
+                    }
+                    .overlay {
+                        Circle().strokeBorder(.white.opacity(0.18), lineWidth: 1)
+                    }
+                }
             }
 
            /ScrollView(.horizontal, showsIndicators: false) {

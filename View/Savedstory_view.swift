@@ -1,9 +1,3 @@
-//
-//  Savedstory_view.swift
-//  LevelUp_19
-//
-//  Created by Nuha  on 03/02/2026.
-//
 
 import SwiftUI
 import Combine
