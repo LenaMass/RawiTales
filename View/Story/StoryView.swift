@@ -1,12 +1,9 @@
-
 import SwiftUI
 import AVFoundation
 import Speech
 import Combine
 import SwiftData
 
-
- 
 
 struct StoryView: View {
     
@@ -105,12 +102,11 @@ struct StoryView: View {
                             .ignoresSafeArea()
                     }
                     
-                    // --- LAYER 2: THE BUTTONS (Pinned to the Right) ---
                     HStack {
                         Spacer() // Pushes everything in this HStack to the right
                         VStack(spacing: 15) {
                             CircleButton(
-                                icon: isTranslating ? "ellipsis.bubble.fill" : (isTranslated ? "character.book.closed.fill" : "character.bubble.fill")
+                                icon: isTranslating ? "ellipsis.bubble.fill" : (isTranslated ? "character.bubble" : "character.bubble.fill")
                             ) {
                                 if isTranslated && !isTranslating {
                                     // Manual toggle to turn Arabic OFF
@@ -198,6 +194,8 @@ struct StoryView: View {
             }
         
         .edgesIgnoringSafeArea(.bottom)
+        .toolbar(.hidden, for: .tabBar)
+
     }
     
     private func translateCurrentPageENtoAR() {

@@ -1,62 +1,47 @@
 import SwiftUI
 import SwiftData
 
-
-
-// MARK: - New HomePage Struct
 struct HomePageView: View {
 
     @StateObject private var viewModel = HomePageViewModel()
     @Environment(\.modelContext) private var modelContext
     @Query var allStories: [Story]
     
-    // Track the selected story to trigger navigation
-    @State private var selectedStory: Story?
+    var onStoryTap: (Story) -> Void = { _ in }
     
-   
     var body: some View {
-        
-        
-        NavigationStack { // 1. Wrapped everything in a Stack
+        ZStack {
             
-            ZStack {
-                
-                Image("NightDay_Background")
+            Image("NightDay_Background")
                 .resizable()
                 .ignoresSafeArea()
-                
-                ScrollView(showsIndicators: false) {
-                    VStack(spacing: 16) {
-                        TopHeroWidget(heroVM: viewModel.heroVM)
-                            .padding(.top, 6)
+            
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 16) {
+                    TopHeroWidget(heroVM: viewModel.heroVM)
+                        .padding(.top, 6)
 
-                        ForEach(Array(viewModel.genreNames.enumerated()), id: \.element) { index, genreName in
-                            let storiesInGenre = allStories.filter { $0.genre == genreName }
-                            
-                            if !storiesInGenre.isEmpty {
-                                StoryRowView(
-                                    title: genreName,
-                                    stories: storiesInGenre,
-                                    showFilterButton: index == 0,
-                                    onStoryTap: { story in
-                                        // 2. Set the selected story when tapped
-                                        selectedStory = story
-                                    }
-                                )
-                                .padding(.horizontal, 16)
-                            }
-                        }
+                    ForEach(Array(viewModel.genreNames.enumerated()), id: \.element) { index, genreName in
+                        let storiesInGenre = allStories.filter { $0.genre == genreName }
                         
-                        Spacer().frame(height: 120)
+                        if !storiesInGenre.isEmpty {
+                            StoryRowView(
+                                title: genreName,
+                                stories: storiesInGenre,
+                                showFilterButton: index == 0,
+                                onStoryTap: { story in
+                                    onStoryTap(story)
+                                }
+                            )
+                            .padding(.horizontal, 16)
+                        }
                     }
-                    .task {
-                        StoriesLibrary.syncLibrary(in: modelContext)
-                    }
+                    
+                    Spacer().frame(height: 120)
                 }
-            }
-            // 3. Define WHERE to go when a story is selected
-            .navigationDestination(item: $selectedStory) { story in
-                StoryView(story: story)
+                .task {
+                    StoriesLibrary.syncLibrary(in: modelContext)
+                }
             }
         }
     }
@@ -67,65 +52,28 @@ struct HomePageView: View {
     
     
     
-    private struct TopHeroWidget: View {
-        let heroVM: HeroRingWidgetViewModel
-        
-        // for settings
-      //  @State private var showSettings = false
-        //@EnvironmentObject var settings: AppSettings
-
-        var body: some View {
-            HStack() {
-                
-                
-             // this commneted section for the next challenge
-            // adding the settings
-                
-            /*    Button {
-                    //showSettings = true
-                } label: {
-                    Image(systemName: "gearshape.fill")
-                        .font(.system(size: 18, weight: .semibold))
-                        .frame(width: 34, height: 34)
-                        .foregroundStyle(.white.opacity(0.9))
-                }
-                .buttonStyle(.plain)
-                .background {
-                    Circle().fill(Color.clear).glassEffect(.clear)
-                }
-                .overlay {
-                    Circle().strokeBorder(.white.opacity(0.18), lineWidth: 1)
-                }*/
-                
-              
-                
-                HeroRingWidget(vm: heroVM)
-                    .padding(.top, 4)
-                
-             
-                
-                Color.clear
-                    .frame(width: 1, height: 1)
-            }
-            .padding(.horizontal, 16)
-            .padding(.top, 24)
-            .padding(.bottom, 10)
+private struct TopHeroWidget: View {
+    let heroVM: HeroRingWidgetViewModel
+    
+    var body: some View {
+        HStack() {
+            HeroRingWidget(vm: heroVM)
+                .padding(.top, 4)
             
-            // sheet button for settings 
-           /* .sheet(isPresented: $showSettings) {
-                        SettingsView()
-                            .environmentObject(settings) // IMPORTANT: Pass settings to the sheet
-                    }*/
+            Color.clear
+                .frame(width: 1, height: 1)
         }
+        .padding(.horizontal, 16)
+        .padding(.top, 24)
+        .padding(.bottom, 10)
     }
+}
     
-    
-    // MARK: - New StoryRow Struct
-    
+        
     
 private struct StoryRowView: View {
     let title: String
-    let stories: [Story] // This accepts the filtered array
+    let stories: [Story]
     var showFilterButton: Bool = true
     var onStoryTap: (Story) -> Void
     
@@ -139,87 +87,73 @@ private struct StoryRowView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 20) {
                     ForEach(stories) { story in
-                        // Use your existing card view here
                         StoryCardButtonView(story: story) {
                             onStoryTap(story)
                         }
                     }
-                    
                 }
             }
         }
     }
 }
-    
-    // MARK: - New StoryCardButtonView Struct
-    
-    private struct StoryCardButtonView: View {
-        let story: Story
-        let onTap: () -> Void
-        
-        
-        
-        var body: some View {
 
-            VStack(spacing: 8) {
-                ZStack(alignment: .bottom) {
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .fill(Color.white.opacity(0.08))
-                        .frame(width: 86, height: 108)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .strokeBorder(.white.opacity(0.12), lineWidth: 1)
-                        )
-                    
-                    // Use 'imageName' from your SavedStoryViewModel
-                    Image(story.storycover ?? "placeholder")
-                        .renderingMode(.original)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 86, height: 108)
-                        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                        .clipped()
-                    
-                    // The white/black progress bar from your screenshot
-                    ProgressBar(progress: story.Readingprogress)
-                        .padding(.bottom, 8)
-                }
+private struct StoryCardButtonView: View {
+    let story: Story
+    let onTap: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            ZStack(alignment: .bottom) {
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .fill(Color.white.opacity(0.08))
+                    .frame(width: 86, height: 108)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .strokeBorder(.white.opacity(0.12), lineWidth: 1)
+                    )
                 
-                Text(story.title) // Using imageName as the title for now
-                    .font(.system(size: 12, weight: .semibold, design: .rounded))
-                    .foregroundStyle(.white.opacity(0.9))
-                    .lineLimit(1)
-                    .frame(width: 86)
+                Image(story.storycover ?? "placeholder")
+                    .renderingMode(.original)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 86, height: 108)
+                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    .clipped()
+                
+                ProgressBar(progress: story.Readingprogress)
+                    .padding(.bottom, 8)
             }
-            .onTapGesture {
-                onTap()
-            }
-            // .buttonStyle(.plain)
+            
+            Text(story.title)
+                .font(.system(size: 12, weight: .semibold, design: .rounded))
+                .foregroundStyle(.white.opacity(0.9))
+                .lineLimit(1)
+                .frame(width: 86)
         }
-        
-    }
-    
-    
-    
-    struct ProgressBar: View {
-        var progress: Int
-        
-        var body: some View {
-            ZStack(alignment: .leading) {
-                RoundedRectangle(cornerRadius: 4)
-                    .fill(Color.white)
-                    .frame(width: 70, height: 6)
-                
-                RoundedRectangle(cornerRadius: 4)
-                    .fill(Color.black)
-                    .frame(width: CGFloat(progress) / 100 * 70, height: 6)
-            }
+        .onTapGesture {
+            onTap()
         }
     }
-
+}
+    
+    
+    
+struct ProgressBar: View {
+    var progress: Int
+    
+    var body: some View {
+        ZStack(alignment: .leading) {
+            RoundedRectangle(cornerRadius: 4)
+                .fill(Color.white)
+                .frame(width: 70, height: 6)
+            
+            RoundedRectangle(cornerRadius: 4)
+                .fill(Color.black)
+                .frame(width: CGFloat(progress) / 100 * 70, height: 6)
+        }
+    }
+}
 
 #Preview {
     HomePageView()
-        
 }
-

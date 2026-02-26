@@ -11,6 +11,7 @@ import Combine
 
 struct PagesViewer: View {
     @StateObject private var vm = PagesViewerViewModel()
+    @State private var selectedStory: Story?
     
     private var title: String {
         switch vm.selectedTab {
@@ -21,55 +22,61 @@ struct PagesViewer: View {
     }
     
     var body: some View {
-        ZStack {
-            
-            Group {
-                switch vm.selectedTab {
-                case .library:
-                    HomePageView()
-                case .reading:
-                    Savedstory_view()
-                case .dictionary:
-                    WordsBankList()
+        NavigationStack {
+            ZStack {
+                
+                Group {
+                    switch vm.selectedTab {
+                    case .library:
+                        HomePageView { story in
+                            if vm.path.last != .storyView {
+                                vm.push(.storyView)
+                            }
+                            selectedStory = story
+                        }
+                    case .reading:
+                        Savedstory_view()
+                    case .dictionary:
+                        WordsBankList()
+                    }
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                
+                if vm.searchVM.isSearching {
+                    Color.clear
+                        .contentShape(Rectangle())
+                        .onTapGesture { vm.searchVM.end() }
+                        .ignoresSafeArea()
                 }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            
-            if vm.searchVM.isSearching {
-                Color.clear
-                    .contentShape(Rectangle())
-                    .onTapGesture { vm.searchVM.end() }
-                    .ignoresSafeArea()
+            .navigationDestination(item: $selectedStory) { story in
+                StoryView(story: story)
+                    .onDisappear {
+                        if vm.path.last == .storyView {
+                            vm.goBack()
+                        }
+                    }
             }
-        }
-        
-        
-        .safeAreaInset(edge: .top) {
-            // Only show the header when the user is specifically on the dictionary tab
-            if vm.selectedTab == .dictionary {
-                NavigationHeader(
-                    title: title,
-                    canGoBack: true,
-                    onBack: { vm.selectedTab = .library }
-                )
+            .safeAreaInset(edge: .top) {
+                if vm.selectedTab == .dictionary {
+                    NavigationHeader(
+                        title: title,
+                        canGoBack: true,
+                        onBack: { vm.selectedTab = .library }
+                    )
+                }
             }
+            .safeAreaInset(edge: .bottom) {
+                if !vm.shouldHideBottomBar {
+                    DynamicSearch(selected: $vm.selectedTab, vm: vm.searchVM)
+                        .padding(.bottom, 8)
+                }
+            }
+            .ignoresSafeArea(.keyboard, edges: .bottom)
         }
-        
-        
-        
-        
-        .safeAreaInset(edge: .bottom) {
-            // We removed the search closure since the search bar is gone
-            DynamicSearch(selected: $vm.selectedTab, vm: vm.searchVM)
-                .padding(.bottom, 8)
-        }
-        // You can also remove .ignoresSafeArea(.keyboard) if you no longer have any text inputs
-        .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }
 
 #Preview {
     PagesViewer()
 }
-
-

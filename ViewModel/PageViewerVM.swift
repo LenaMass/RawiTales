@@ -10,11 +10,25 @@ final class PagesViewerViewModel: ObservableObject {
     
     var canGoBack: Bool { !path.isEmpty }
     
+    var shouldHideBottomBar: Bool {
+        if let last = path.last {
+            switch last {
+            case .storyView:
+                return true
+            default:
+                return false
+            }
+        }
+        return false
+    }
+    
     var currentTitle: String {
         if let last = path.last {
             switch last {
             case .wordsBank:
                 return "Words Bank"
+            case .storyView:
+                return ""
             }
         }
         switch selectedTab {
@@ -44,4 +58,3 @@ final class PagesViewerViewModel: ObservableObject {
         }
     }
 }
-
