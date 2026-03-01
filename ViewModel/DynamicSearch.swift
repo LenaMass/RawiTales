@@ -15,6 +15,15 @@ final class DynamicSearchViewModel: ObservableObject {
         onSubmit(query)
         end()
     }
+
+    func title(for tab: Tab) -> String {
+        switch tab {
+        case .library:
+            return "Tales"
+        case .reading:
+            return "Progress"
+        case .dictionary:
+            return "Words"
+        }
+    }
 }
-
-

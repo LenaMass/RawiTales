@@ -24,7 +24,7 @@ struct StoriesScrollbar: View {
             ScrollView {
                 // Check if there are actually saved stories to show
                 if savedStories.isEmpty {
-                    ContentUnavailableView("No Saved Stories",
+                    ContentUnavailableView("No Stories In Progress",
                                            systemImage: "book.closed",
                                            description: Text("Start reading a story to see it here."))
                         .padding(.top, 100)

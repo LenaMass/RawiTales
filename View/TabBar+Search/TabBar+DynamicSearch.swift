@@ -1,42 +1,47 @@
 import SwiftUI
+
 struct DynamicSearch: View {
     @Binding var selected: Tab
     @ObservedObject var vm: DynamicSearchViewModel
-    // Note: onSubmit and focused are no longer strictly needed if search is removed
     
     var body: some View {
         HStack(spacing: 10) {
-            // We removed the 'if vm.isSearching' Group and the search button.
-            // Now we just display the tabs capsule.
             tabsCapsule
         }
     }
-
-    // the tabs
+    
     private var tabsCapsule: some View {
-        HStack(spacing: 40) {
+        HStack(spacing: 20) {
             ForEach(Tab.allCases, id: \.self) { tab in
                 Button {
                     selected = tab
                 } label: {
-                    ZStack {
-                        if selected == tab {
-                            RoundedRectangle(cornerRadius: 20)
-                                .glassEffect()
-                                .frame(width: 50, height: 50)
+                    VStack(spacing: 4) {
+                        ZStack {
+                            if selected == tab {
+                                RoundedRectangle(cornerRadius: 20)
+                                    .frame(width: 42, height: 42)
+                            }
+                            
+                            Image(systemName: selected == tab ? tab.filledIcon : tab.icon)
+                                .font(.system(size: 22, weight: .semibold))
+                                .foregroundStyle(selected == tab ? .white : .iconsC)
+                                .frame(width: 42, height: 42)
                         }
-
-                        Image(systemName: selected == tab ? tab.filledIcon : tab.icon)
-                            .font(.system(size: 32, weight: .semibold))
-                            .foregroundStyle(selected == tab ? .white : .iconsC)
-                            .frame(width: 50, height: 50)
+                        
+                        Text(vm.title(for: tab))
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundColor(.white)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.8)
                     }
+                    .frame(width: 90)
                 }
                 .buttonStyle(.plain)
             }
         }
-        .padding(.horizontal, 30)
-        .padding(.vertical, 10)
+        .padding(.horizontal, 24)
+        .padding(.vertical, 4)
         .glassEffect(.clear)
     }
 }

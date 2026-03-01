@@ -32,7 +32,7 @@ struct TranslationBubbleView: View {
                 }
 
                 Button(action: onSave) {
-                    Image(systemName: "book")
+                    Image(systemName: "character.book.closed")
                         .font(.system(size: 16, weight: .semibold))
                         .frame(width: 28, height: 28)
                         .background(Color.blue.opacity(0.9))

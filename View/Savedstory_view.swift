@@ -20,7 +20,7 @@ struct Savedstory_view: View {
             
                 VStack(spacing: 12) {
                     HStack {
-                        Text("Saved Stories")
+                        Text("Stories Progress")
                             .font(.system(size: 25, weight: .bold, design: .rounded))
                             .foregroundStyle(Color.white)
 //                            .bold()

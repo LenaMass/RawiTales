@@ -69,7 +69,7 @@ struct PagesViewer: View {
             .safeAreaInset(edge: .bottom) {
                 if !vm.shouldHideBottomBar {
                     DynamicSearch(selected: $vm.selectedTab, vm: vm.searchVM)
-                        .padding(.bottom, 8)
+                        .padding(.bottom, -15)
                 }
             }
             .ignoresSafeArea(.keyboard, edges: .bottom)

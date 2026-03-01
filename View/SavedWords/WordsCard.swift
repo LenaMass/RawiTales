@@ -83,7 +83,7 @@ struct WordCardView: View {
                         } else {
                             Image(systemName: "translate")
                                 .font(.system(size: 20, weight: .semibold))
-                                .foregroundColor(isClicked ? .orange : .black.opacity(0.70))
+                                .foregroundColor(isClicked ? .blue : .black.opacity(0.70))
                         }
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)

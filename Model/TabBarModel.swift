@@ -1,5 +1,6 @@
 import Foundation
-enum Tab: CaseIterable {
+
+enum Tab: CaseIterable, Hashable {
     case library, reading, dictionary
 
     var icon: String {
@@ -18,5 +19,3 @@ enum Tab: CaseIterable {
         }
     }
 }
-
-
