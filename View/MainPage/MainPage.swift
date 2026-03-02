@@ -126,9 +126,12 @@ private struct StoryCardButtonView: View {
             
             Text(story.title)
                 .font(.system(size: 12, weight: .semibold, design: .rounded))
+                .multilineTextAlignment(.center)
                 .foregroundStyle(.white.opacity(0.9))
-                .lineLimit(1)
+                .fixedSize(horizontal: false, vertical: true)
+                .lineLimit(3)
                 .frame(width: 86)
+                .frame(height: 54, alignment: .top)
         }
         .onTapGesture {
             onTap()
