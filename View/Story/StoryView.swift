@@ -190,18 +190,33 @@ struct StoryView: View {
                     .padding(.top, 20)
                     
                     ScrollView {
-                        TappableStoryTextView(
-                            text: displayedPageText,
-                            vm: bubbleVM,
-                            onSave: { word, translation in
-                                handleSaveWord(word: word, translation: translation)
+                        VStack(spacing: 14) {
+
+                            // ✅ العنوان يظهر فقط في الصفحة الأولى
+                            if story.currentPage == 0 {
+                                Text(story.title)
+                                    .font(.title2)
+                                    .bold()
+                                    .multilineTextAlignment(.center)
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.top, 6)
+                                    .padding(.horizontal, 20)
                             }
-                        )
-                        .id("\(story.currentPage)-\(displayedPageText)")
-                        .font(.title3)
-                        .padding(30)
-                        .multilineTextAlignment(isTranslated ? .trailing : .leading)
-                        .environment(\.layoutDirection, isTranslated ? .rightToLeft : .leftToRight)
+
+                            TappableStoryTextView(
+                                text: displayedPageText,
+                                vm: bubbleVM,
+                                onSave: { word, translation in
+                                    handleSaveWord(word: word, translation: translation)
+                                }
+                            )
+                            .id("\(story.currentPage)-\(displayedPageText)")
+                            .font(.title3)
+                            .padding(.horizontal, 30)
+                            .padding(.bottom, 30)
+                            .multilineTextAlignment(isTranslated ? .trailing : .leading)
+                            .environment(\.layoutDirection, isTranslated ? .rightToLeft : .leftToRight)
+                        }
                     }
                     
                     HStack(spacing: 8) {
