@@ -162,7 +162,7 @@ struct StoryView: View {
                             CircleButton(
                                 icon: story.isFavorite ? "star.fill" : "star",
                                 isActive: story.isFavorite,
-                                activeForeground: .orange ,
+                                activeForeground: .orange,
                                 inactiveForeground: .primary,
                                 activeBackground: Color(.systemBackground).opacity(0.9),
                                 inactiveBackground: Color(.systemBackground).opacity(0.9)
@@ -240,7 +240,6 @@ struct StoryView: View {
         
         let text = englishPageText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !text.isEmpty, text != "Page not found" else { return }
-        
         guard !isTranslating else { return }
         
         isTranslating = true
@@ -343,7 +342,26 @@ struct StoryView: View {
     @Environment(\.modelContext) private var modelContext
     
     private func handleSaveWord(word: String, translation: String?) {
-        guard !bubbleVM.isSaved(word: word) else { return }
+        let normalizedWord = word.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        
+        let descriptor = FetchDescriptor<WordBankItem>()
+        let existingItems = (try? modelContext.fetch(descriptor)) ?? []
+        
+        if existingItems.contains(where: {
+            $0.word.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == normalizedWord
+        }) {
+            bubbleVM.markSaved(word: word)
+            
+            Task {
+                try? await Task.sleep(nanoseconds: 1_500_000_000)
+                await MainActor.run {
+                    withAnimation(.easeOut(duration: 0.25)) {
+                        bubbleVM.clear()
+                    }
+                }
+            }
+            return
+        }
 
         let newItem = WordBankItem(
             word: word,

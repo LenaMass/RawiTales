@@ -39,8 +39,7 @@ struct WordsBankList: View {
             }
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
-            .padding(.top, 130)
-            .ignoresSafeArea()
+            .padding(.top, 1)
             .padding(.bottom, 1)
         }
     }
