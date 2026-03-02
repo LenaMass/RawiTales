@@ -64,6 +64,7 @@ struct StoryView: View {
     
     @StateObject private var bubbleVM = WordBubbleViewModel()
     
+    
     private var deeplApiKey: String {
         Bundle.main.object(forInfoDictionaryKey: "DEEPL_API_KEY") as? String ?? ""
     }
@@ -85,25 +86,33 @@ struct StoryView: View {
     }
     
     private var englishPageText: String {
+        // End page don't include text
+        if story.currentPage == story.pages.count {
+            return ""
+        }
         if story.pages.indices.contains(story.currentPage) {
             return story.pages[story.currentPage]
         }
-        return "Page not found"
+        return ""
     }
     
     private var displayedPageText: String {
+        //  Translation & listning is disabeld in the End page
+        if story.currentPage == story.pages.count { return "" }
+
         if isTranslating {
             return "Translating... Please wait."
         }
-        
+
         if isTranslated {
             if let cached = translatedArabicPages[story.currentPage] {
                 return cached
             }
         }
-        
+
         return englishPageText
     }
+        
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -192,36 +201,50 @@ struct StoryView: View {
                     ScrollView {
                         VStack(spacing: 14) {
 
-                            // ✅ العنوان يظهر فقط في الصفحة الأولى
-                            if story.currentPage == 0 {
-                                Text(story.title)
-                                    .font(.title2)
+                            // Adding The End page
+                            if story.currentPage == story.pages.count {
+                                Spacer(minLength: 110)
+
+                                Text("The End")
+                                    .font(.largeTitle)
                                     .bold()
                                     .multilineTextAlignment(.center)
                                     .frame(maxWidth: .infinity)
-                                    .padding(.top, 6)
-                                    .padding(.horizontal, 20)
-                            }
 
-                            TappableStoryTextView(
-                                text: displayedPageText,
-                                vm: bubbleVM,
-                                onSave: { word, translation in
-                                    handleSaveWord(word: word, translation: translation)
+                                Spacer(minLength: 110)
+
+                            } else {
+
+                              // The title only shows in the first page of the story
+                                if story.currentPage == 0 {
+                                    Text(story.title)
+                                        .font(.title2)
+                                        .bold()
+                                        .multilineTextAlignment(.center)
+                                        .frame(maxWidth: .infinity)
+                                        .padding(.top, 6)
+                                        .padding(.horizontal, 20)
                                 }
-                            )
-                            .id("\(story.currentPage)-\(displayedPageText)")
-                            .font(.title3)
-                            .padding(.horizontal, 30)
-                            .padding(.bottom, 30)
-                            .multilineTextAlignment(isTranslated ? .trailing : .leading)
-                            .environment(\.layoutDirection, isTranslated ? .rightToLeft : .leftToRight)
+
+                                TappableStoryTextView(
+                                    text: displayedPageText,
+                                    vm: bubbleVM,
+                                    onSave: { word, translation in
+                                        handleSaveWord(word: word, translation: translation)
+                                    }
+                                )
+                                .id("\(story.currentPage)-\(displayedPageText)")
+                                .font(.title3)
+                                .padding(.horizontal, 30)
+                                .padding(.bottom, 30)
+                                .multilineTextAlignment(isTranslated ? .trailing : .leading)
+                                .environment(\.layoutDirection, isTranslated ? .rightToLeft : .leftToRight)
+                            }
                         }
                     }
                     
                     HStack(spacing: 8) {
-                        Text("\(story.currentPage + 1) / \(story.pages.count)")
-                                .font(.system(.subheadline, design: .rounded).bold())
+                        Text("\(story.currentPage + 1) / \(story.pages.count + 1)")                                .font(.system(.subheadline, design: .rounded).bold())
                                 .foregroundColor(.secondary)
                                 .padding(.horizontal, 16)
                                 .padding(.vertical, 8)
@@ -440,7 +463,7 @@ struct StoryView: View {
                 
                 if abs(horizontal) > abs(vertical) {
                     if horizontal < -50 {
-                        if story.currentPage + 1 < story.pages.count {
+                        if story.currentPage + 1 < story.pages.count + 1 {
                             updatePage(to: story.currentPage + 1)
                         }
                     } else if horizontal > 50 {
