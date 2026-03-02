@@ -220,13 +220,15 @@ struct StoryView: View {
                     }
                     
                     HStack(spacing: 8) {
-                        ForEach(0..<story.pages.count, id: \.self) { index in
-                            Circle()
-                                .fill(index == story.currentPage ? Color.primary : Color.secondary.opacity(0.3))
-                                .frame(width: 7, height: 7)
-                                .scaleEffect(index == story.currentPage ? 1.4 : 1.0)
-                                .animation(.spring(response: 0.3, dampingFraction: 0.6), value: story.currentPage)
-                        }
+                        Text("\(story.currentPage + 1) / \(story.pages.count)")
+                                .font(.system(.subheadline, design: .rounded).bold())
+                                .foregroundColor(.secondary)
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 8)
+                                .background(
+                                    Capsule()
+                                        .fill(Color.secondary.opacity(0.1))
+                                )
                     }
                     .padding(.bottom, 40)
                 }
@@ -238,6 +240,7 @@ struct StoryView: View {
                 .contentShape(Rectangle())
                 .highPriorityGesture(dragGesture)
                 .edgesIgnoringSafeArea(.bottom)
+                .animation(.spring(response: 0.3, dampingFraction: 0.7), value: story.currentPage)
             }
         }
         .edgesIgnoringSafeArea(.bottom)

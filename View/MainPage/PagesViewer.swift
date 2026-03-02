@@ -61,7 +61,7 @@ struct PagesViewer: View {
                 if vm.selectedTab == .dictionary {
                     NavigationHeader(
                         title: title,
-                        canGoBack: true,
+                        canGoBack: false,
                         onBack: { vm.selectedTab = .library }
                     )
                 }
