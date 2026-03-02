@@ -8,6 +8,7 @@ final class WordBubbleViewModel: ObservableObject {
     @Published var selection: WordSelection? = nil
     @Published var translatedArabic: String? = nil
     @Published var isLoading: Bool = false
+    @Published private(set) var savedWords: Set<String> = []
 
     private var cache: [String: String] = [:]
 
@@ -22,6 +23,11 @@ final class WordBubbleViewModel: ObservableObject {
 
     private var translator: DeepLTranslator {
         DeepLTranslator(apiKey: deeplApiKey, isFreePlan: deeplIsFreePlan)
+    }
+
+    var isSelectedWordSaved: Bool {
+        guard let word = selection?.word else { return false }
+        return savedWords.contains(normalized(word))
     }
 
     func setText(_ text: String) {
@@ -71,6 +77,16 @@ final class WordBubbleViewModel: ObservableObject {
             }
         }
     }
+
+    func markSaved(word: String) {
+        savedWords.insert(normalized(word))
+    }
+
+    func isSaved(word: String) -> Bool {
+        savedWords.contains(normalized(word))
+    }
+
+    private func normalized(_ word: String) -> String {
+        word.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+    }
 }
-
-

@@ -13,7 +13,6 @@ struct TappableStoryTextView: View {
     @ObservedObject var vm: WordBubbleViewModel
     let onSave: (String, String?) -> Void
 
-    @State private var anchors: [Int: Anchor<CGRect>] = [:]
     @State private var bubbleSize: CGSize = .zero
 
     var body: some View {
@@ -33,24 +32,22 @@ struct TappableStoryTextView: View {
                     }
                 }
             }
-            .onPreferenceChange(TokenAnchorKey.self) { anchors = $0 }
-
-            if let sel = vm.selection,
-               let a = anchors[sel.tokenID] {
-                GeometryReader { proxy in
+        }
+        .overlayPreferenceValue(TokenAnchorKey.self) { anchors in
+            GeometryReader { proxy in
+                if let sel = vm.selection,
+                   let a = anchors[sel.tokenID] {
                     let rect = proxy[a]
 
                     let safeInset: CGFloat = 8
                     let margin: CGFloat = 2
                     let tailLift: CGFloat = 4
 
-
                     let bw = max(bubbleSize.width, 1)
                     let bh = max(bubbleSize.height, 1)
 
                     let aboveY = rect.minY - margin - (bh / 2) + tailLift
                     let belowY = rect.maxY + margin + (bh / 2) - tailLift
-
 
                     let canShowAbove = aboveY - (bh / 2) >= safeInset
                     let canShowBelow = belowY + (bh / 2) <= proxy.size.height - safeInset
@@ -75,7 +72,8 @@ struct TappableStoryTextView: View {
                     TranslationBubbleView(
                         english: sel.word,
                         arabic: vm.translatedArabic,
-                        isLoading: vm.isLoading
+                        isLoading: vm.isLoading,
+                        isSaved: vm.isSelectedWordSaved
                     ) {
                         onSave(sel.word, vm.translatedArabic)
                     }
@@ -87,17 +85,17 @@ struct TappableStoryTextView: View {
                     .onPreferenceChange(BubbleSizeKey.self) { bubbleSize = $0 }
                     .position(x: x, y: y)
                 }
-
             }
         }
         .contentShape(Rectangle())
         .onTapGesture { vm.clear() }
-        .onAppear { vm.setText(text) }
-
+        .onAppear {
+            vm.setText(text)
+        }
         .onChange(of: text) { newValue in
+            bubbleSize = .zero
             vm.setText(newValue)
         }
+        .id(text)
     }
 }
-
-

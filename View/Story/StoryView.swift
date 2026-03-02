@@ -4,12 +4,51 @@ import Speech
 import Combine
 import SwiftData
 
+@MainActor
+final class StorySpeechController: NSObject, ObservableObject, AVSpeechSynthesizerDelegate {
+    @Published var isSpeaking: Bool = false
+
+    private let synthesizer = AVSpeechSynthesizer()
+
+    override init() {
+        super.init()
+        synthesizer.delegate = self
+    }
+
+    func speak(_ text: String, language: String) {
+        if synthesizer.isSpeaking {
+            synthesizer.stopSpeaking(at: .immediate)
+            return
+        }
+
+        let utterance = AVSpeechUtterance(string: text)
+        utterance.voice = AVSpeechSynthesisVoice(language: language)
+        utterance.rate = 0.5
+        synthesizer.speak(utterance)
+    }
+
+    func stop() {
+        synthesizer.stopSpeaking(at: .immediate)
+    }
+
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didStart utterance: AVSpeechUtterance) {
+        isSpeaking = true
+    }
+
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+        isSpeaking = false
+    }
+
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
+        isSpeaking = false
+    }
+}
 
 struct StoryView: View {
     
     @Bindable var story: Story
     @State private var showArabic: Bool = false
-    private let speechSynthesizer = AVSpeechSynthesizer()
+    @StateObject private var speechController = StorySpeechController()
     @State private var isRecording = false
     @State private var audioRecorder: AVAudioRecorder?
     @State private var audioPlayer: AVAudioPlayer?
@@ -25,7 +64,6 @@ struct StoryView: View {
     
     @StateObject private var bubbleVM = WordBubbleViewModel()
     
-  
     private var deeplApiKey: String {
         Bundle.main.object(forInfoDictionaryKey: "DEEPL_API_KEY") as? String ?? ""
     }
@@ -47,7 +85,6 @@ struct StoryView: View {
     }
     
     private var englishPageText: String {
-        // Check 'pages' instead of 'englishStory'
         if story.pages.indices.contains(story.currentPage) {
             return story.pages[story.currentPage]
         }
@@ -68,76 +105,79 @@ struct StoryView: View {
         return englishPageText
     }
     
-    
-    
-    
-    
     var body: some View {
         ZStack(alignment: .top) {
-            // 1. IMAGE AREA (Adjusted height to push white background down)
             Image(story.storycover ?? "placeholder")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .frame(height: UIScreen.main.bounds.height * 0.55) // Increased from 0.45 to 0.55
+                .frame(height: UIScreen.main.bounds.height * 0.55)
                 .clipped()
                 .ignoresSafeArea(edges: .top)
                 .allowsHitTesting(false)
             
-            
-            // 2. UI LAYER
             VStack(spacing: 0) {
-                // Independent Header Layer
                 ZStack(alignment: .top) {
-                    
-                    // --- LAYER 1: THE TITLE (Purely Centered) ---
                     VStack {
-                        
                         Text(story.title)
                             .font(.headline)
                             .padding(.horizontal, 25)
                             .padding(.vertical, 10)
                             .background(Capsule().fill(Color(.systemBackground)))
-                        // Adjust this padding to sit perfectly under the iPhone capsule
                             .padding(.top, 60)
                             .ignoresSafeArea()
                     }
                     
                     HStack {
-                        Spacer() // Pushes everything in this HStack to the right
+                        Spacer()
                         VStack(spacing: 15) {
                             CircleButton(
-                                icon: isTranslating ? "ellipsis.bubble.fill" : (isTranslated ? "character.bubble" : "character.bubble.fill")
+                                icon: isTranslating ? "ellipsis.bubble.fill" : (isTranslated ? "character.bubble" : "character.bubble.fill"),
+                                isActive: isClicked,
+                                activeForeground: .blue,
+                                inactiveForeground: .primary,
+                                activeBackground: Color(.systemBackground).opacity(0.9),
+                                inactiveBackground: Color(.systemBackground).opacity(0.9)
                             ) {
                                 if isTranslated && !isTranslating {
-                                    // Manual toggle to turn Arabic OFF
                                     isTranslated = false
                                     isClicked = false
+                                    bubbleVM.clear()
+                                    bubbleVM.setText(displayedPageText)
                                 } else {
-                                    // Turn Arabic ON or translate current page
                                     translateCurrentPageENtoAR()
                                 }
                             }
-                            .foregroundColor(isClicked ? .blue : .primary)
                             
-                            CircleButton(icon: "ear.and.waveform") {
+                            CircleButton(
+                                icon: "ear.and.waveform",
+                                isActive: speechController.isSpeaking,
+                                activeForeground: .blue,
+                                inactiveForeground: .primary,
+                                activeBackground: Color(.systemBackground).opacity(0.9),
+                                inactiveBackground: Color(.systemBackground).opacity(0.9)
+                            ) {
                                 speakCurrentPage()
                             }
                             
-                            CircleButton(icon: story.isFavorite ? "star.fill" : "star") {
+                            CircleButton(
+                                icon: story.isFavorite ? "star.fill" : "star",
+                                isActive: story.isFavorite,
+                                activeForeground: .orange ,
+                                inactiveForeground: .primary,
+                                activeBackground: Color(.systemBackground).opacity(0.9),
+                                inactiveBackground: Color(.systemBackground).opacity(0.9)
+                            ) {
                                 story.isFavorite.toggle()
                             }
                         }
-                        .padding(.top, 50) // Adjust this so buttons don't overlap the title background
+                        .padding(.top, 50)
                     }
                     .padding(.horizontal, 20)
                 }
                 
                 Spacer()
                 
-                //MARK: - the bottom view
-                // BOTTOM CARD
                 VStack(spacing: 20) {
-                    // 1. Controls (Mic & Playback)
                     HStack(spacing: 20) {
                         recordButton
                         
@@ -149,7 +189,6 @@ struct StoryView: View {
                     }
                     .padding(.top, 20)
                     
-                    // 2. Text Content (Back to ScrollView for reliability)
                     ScrollView {
                         TappableStoryTextView(
                             text: displayedPageText,
@@ -158,59 +197,50 @@ struct StoryView: View {
                                 handleSaveWord(word: word, translation: translation)
                             }
                         )
+                        .id("\(story.currentPage)-\(displayedPageText)")
                         .font(.title3)
                         .padding(30)
-                        .id(story.currentPage)
-                        
-                        // --- ADD THESE TWO LINES HERE ---
                         .multilineTextAlignment(isTranslated ? .trailing : .leading)
                         .environment(\.layoutDirection, isTranslated ? .rightToLeft : .leftToRight)
                     }
                     
-                    // 3. Pagination Dots
                     HStack(spacing: 8) {
                         ForEach(0..<story.pages.count, id: \.self) { index in
                             Circle()
                                 .fill(index == story.currentPage ? Color.primary : Color.secondary.opacity(0.3))
                                 .frame(width: 7, height: 7)
-                                .scaleEffect(index == story.currentPage ? 1.4 : 1.0) // Makes the active dot slightly larger
+                                .scaleEffect(index == story.currentPage ? 1.4 : 1.0)
                                 .animation(.spring(response: 0.3, dampingFraction: 0.6), value: story.currentPage)
                         }
                     }
-                    
                     .padding(.bottom, 40)
-                    }
-                    // Card Styling
-                    .frame(maxWidth: .infinity)
-                    .frame(height: UIScreen.main.bounds.height * 0.50)
-                    .background(Color(.systemBackground))
-                    .cornerRadius(30)
-                    .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: -5)
-                    .contentShape(Rectangle())
-                    .highPriorityGesture(dragGesture) // Extracted below
-                    .edgesIgnoringSafeArea(.bottom)
                 }
-                
+                .frame(maxWidth: .infinity)
+                .frame(height: UIScreen.main.bounds.height * 0.50)
+                .background(Color(.systemBackground))
+                .cornerRadius(30)
+                .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: -5)
+                .contentShape(Rectangle())
+                .highPriorityGesture(dragGesture)
+                .edgesIgnoringSafeArea(.bottom)
             }
-        
+        }
         .edgesIgnoringSafeArea(.bottom)
         .toolbar(.hidden, for: .tabBar)
-
     }
     
     private func translateCurrentPageENtoAR() {
-        // 1. Check if we already have it in cache
         if let cached = translatedArabicPages[story.currentPage], !cached.isEmpty {
             isTranslated = true
             isClicked = true
+            bubbleVM.clear()
+            bubbleVM.setText(displayedPageText)
             return
         }
         
-        // 2. Prepare the text for translation
         let text = englishPageText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !text.isEmpty, text != "Page not found" else { return }
         
-        // 3. Avoid overlapping network calls
         guard !isTranslating else { return }
         
         isTranslating = true
@@ -220,14 +250,13 @@ struct StoryView: View {
                 let ar = try await translator.translate(text, from: "EN", to: "AR")
                 await MainActor.run {
                     translatedArabicPages[story.currentPage] = ar
-                    // Ensure we stay in translated mode
                     isTranslated = true
                     isClicked = true
+                    bubbleVM.clear()
+                    bubbleVM.setText(displayedPageText)
                 }
             } catch {
                 print("Translation Error: \(error)")
-                // If it fails during a swipe, maybe revert to English so the user isn't stuck
-                // await MainActor.run { isTranslated = false }
             }
         }
     }
@@ -284,7 +313,6 @@ struct StoryView: View {
     }
     
     private func transcribeAndEvaluate() {
-        // 1. Ensure we only evaluate English (Speech recognition is set to en-US)
         guard !isTranslated else {
             feedback = "Pronunciation feedback is available for English only."
             return
@@ -315,19 +343,28 @@ struct StoryView: View {
     @Environment(\.modelContext) private var modelContext
     
     private func handleSaveWord(word: String, translation: String?) {
+        guard !bubbleVM.isSaved(word: word) else { return }
+
         let newItem = WordBankItem(
             word: word,
-            example: englishPageText, // The context from the story
+            example: englishPageText,
             wordArabic: translation
         )
-        
+
         modelContext.insert(newItem)
-        
-        // Success feedback
+        bubbleVM.markSaved(word: word)
+
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)
         
-        bubbleVM.clear() // Close the bubble
+        Task {
+            try? await Task.sleep(nanoseconds: 1_500_000_000)
+            await MainActor.run {
+                withAnimation(.easeOut(duration: 0.25)) {
+                    bubbleVM.clear()
+                }
+            }
+        }
     }
     
     private func generateFeedback() {
@@ -359,7 +396,6 @@ struct StoryView: View {
         }
     }
     
-    
     private var dragGesture: some Gesture {
         DragGesture(minimumDistance: 20)
             .onEnded { value in
@@ -368,12 +404,10 @@ struct StoryView: View {
                 
                 if abs(horizontal) > abs(vertical) {
                     if horizontal < -50 {
-                        // NEXT PAGE: use story.currentPage
                         if story.currentPage + 1 < story.pages.count {
                             updatePage(to: story.currentPage + 1)
                         }
                     } else if horizontal > 50 {
-                        // PREVIOUS PAGE: use story.currentPage
                         if story.currentPage > 0 {
                             updatePage(to: story.currentPage - 1)
                         }
@@ -386,14 +420,14 @@ struct StoryView: View {
         if let count = story.englishStory?.count, story.currentPage + 1 < count {
             withAnimation(.easeInOut) {
                 story.currentPage += 1
-                isTranslated = false // Reset translation when turning page
+                isTranslated = false
             }
         }
     }
     
     private func previousPage() {
         if story.currentPage > 0 {
-            resetTranslationState() // Reset UI when moving
+            resetTranslationState()
             story.currentPage -= 1
             updateProgress()
         }
@@ -402,13 +436,10 @@ struct StoryView: View {
     private func resetTranslationState() {
         isTranslated = false
         isClicked = false
-        if speechSynthesizer.isSpeaking {
-            speechSynthesizer.stopSpeaking(at: .immediate)
-        }
+        speechController.stop()
     }
     
     private func updateProgress() {
-        // Use englishStory count here
         guard let totalPages = story.englishStory?.count, totalPages > 1 else {
             story.Readingprogress = 100
             return
@@ -421,37 +452,27 @@ struct StoryView: View {
         withAnimation(.spring()) {
             story.currentPage = newIndex
             
-            // Calculate Progress
             let total = story.pages.count
             if total > 0 {
                 let calculated = Double(newIndex + 1) / Double(total) * 100.0
                 story.Readingprogress = Int(calculated)
             }
-            
-            
-            // We keep isTranslated as true if the user was already looking at Arabic
         }
         
-        // If we are in translation mode, trigger the translation for the new page
+        bubbleVM.clear()
+        bubbleVM.setText(displayedPageText)
+        speechController.stop()
+        
         if isTranslated {
             translateCurrentPageENtoAR()
         }
     }
     
     private func speakCurrentPage() {
-        // Stop if already speaking
-        if speechSynthesizer.isSpeaking {
-            speechSynthesizer.stopSpeaking(at: .immediate)
-            return
-        }
-        
-        let textToRead = displayedPageText
-        let utterance = AVSpeechUtterance(string: textToRead)
-        
-        // Set language based on current view
-        utterance.voice = AVSpeechSynthesisVoice(language: isTranslated ? "ar-SA" : "en-UK")
-        utterance.rate = 0.5
-        speechSynthesizer.speak(utterance)
+        speechController.speak(
+            displayedPageText,
+            language: isTranslated ? "ar-SA" : "en-UK"
+        )
     }
     
     struct GlassCircleButton: View {
@@ -465,46 +486,50 @@ struct StoryView: View {
                     .foregroundColor(.primary)
             }
             .buttonStyle(.plain)
-            .background(.ultraThinMaterial) // This provides a glass effect on all modern iOS versions
+            .background(.ultraThinMaterial)
             .clipShape(Circle())
         }
     }
     
-    
-    
-    
-    
     struct CircleButton: View {
         var icon: String
+        var isActive: Bool = false
+        var activeForeground: Color = .blue
+        var inactiveForeground: Color = .primary
+        var activeBackground: Color = Color(.systemBackground).opacity(0.9)
+        var inactiveBackground: Color = Color(.systemBackground).opacity(0.9)
         var action: () -> Void
         
         var body: some View {
             Button(action: action) {
                 Image(systemName: icon)
                     .font(.system(size: 18, weight: .bold))
-                    .frame(width: 48, height: 48) // Standard Apple touch size
-                    .background(Circle().fill(Color(.systemBackground).opacity(0.9)))
+                    .foregroundColor(isActive ? activeForeground : inactiveForeground)
+                    .frame(width: 48, height: 48)
+                    .background(
+                        Circle().fill(isActive ? activeBackground : inactiveBackground)
+                    )
                     .shadow(color: .black.opacity(0.1), radius: 3)
             }
             .buttonStyle(.plain)
-            .contentShape(Circle()) // Ensures the tap area is the whole circle
+            .contentShape(Circle())
         }
     }
 }
-    #Preview {
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let container = try! ModelContainer(for: Story.self, configurations: config)
-        
-        let sampleStory = Story(
-            title: "Back to the Moon",
-            storycover: "storyCover1", // Ensure this exists in Assets
-            englishStory: ["This is a page of the story about the moon.", "Second page text."],
-            summary: "A story about a man and a queen."
-        )
-        
-        container.mainContext.insert(sampleStory)
-        
-        return StoryView(story: sampleStory)
-            .modelContainer(container)
-    }
 
+#Preview {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Story.self, configurations: config)
+    
+    let sampleStory = Story(
+        title: "Back to the Moon",
+        storycover: "storyCover1",
+        englishStory: ["This is a page of the story about the moon.", "Second page text."],
+        summary: "A story about a man and a queen."
+    )
+    
+    container.mainContext.insert(sampleStory)
+    
+    return StoryView(story: sampleStory)
+        .modelContainer(container)
+}

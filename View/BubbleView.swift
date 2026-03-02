@@ -9,6 +9,7 @@ struct TranslationBubbleView: View {
     let english: String
     let arabic: String?
     let isLoading: Bool
+    let isSaved: Bool
     let onSave: () -> Void
 
     var arrowEdge: BubbleArrowEdge = .bottom
@@ -31,15 +32,20 @@ struct TranslationBubbleView: View {
                         .foregroundColor(.secondary)
                 }
 
-                Button(action: onSave) {
-                    Image(systemName: "character.book.closed")
+                Button(action: {
+                    if !isSaved {
+                        onSave()
+                    }
+                }) {
+                    Image(systemName: isSaved ? "checkmark" : "character.book.closed")
                         .font(.system(size: 16, weight: .semibold))
                         .frame(width: 28, height: 28)
-                        .background(Color.blue.opacity(0.9))
+                        .background(isSaved ? Color.blue.opacity(0.9) : Color.gray.opacity(0.9))
                         .foregroundColor(.white)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
                 .buttonStyle(.plain)
+                .disabled(isSaved)
             }
             .padding(.horizontal, 14)
             .padding(.vertical, 10)
@@ -71,4 +77,3 @@ struct TranslationBubbleView: View {
         .frame(height: 10)
     }
 }
-
