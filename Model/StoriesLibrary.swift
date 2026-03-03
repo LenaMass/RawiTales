@@ -2,7 +2,6 @@ import Foundation
 import SwiftData
 import Combine
 
-
 struct StoriesLibrary {
     static func syncLibrary(in context: ModelContext) {
         let masterList = [

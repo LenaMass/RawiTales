@@ -9,6 +9,11 @@ struct HomePageView: View {
     
     var onStoryTap: (Story) -> Void = { _ in }
     
+    // Filter favorite stories
+    private var favoriteStories: [Story] {
+        allStories.filter { $0.isFavorite }
+    }
+    
     var body: some View {
         ZStack {
             
@@ -17,10 +22,37 @@ struct HomePageView: View {
                 .ignoresSafeArea()
             
             ScrollView(showsIndicators: false) {
-                VStack(spacing: 16) {
+                VStack(spacing: 0) { // No spacing – we'll use divider padding and explicit spacers
                     TopHeroWidget(heroVM: viewModel.heroVM)
                         .padding(.top, 6)
+                    
+                    // Push the list down a little
+                    Spacer().frame(height: 8)
+                    
+                    // Liked Stories section (only if favorites exist)
+                    if !favoriteStories.isEmpty {
+                        // Divider above Liked Stories
+                        Divider()
+                            .background(Color.white)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                        
+                        StoryRowView(
+                            title: "Liked Stories",
+                            stories: favoriteStories,
+                            showFilterButton: false,
+                            onStoryTap: onStoryTap
+                        )
+                        .padding(.horizontal, 16)
+                        
+                        // Divider below Liked Stories
+                        Divider()
+                            .background(Color.white)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                    }
 
+                    // Genre rows
                     ForEach(Array(viewModel.genreNames.enumerated()), id: \.element) { index, genreName in
                         let storiesInGenre = allStories.filter { $0.genre == genreName }
                         
@@ -34,6 +66,14 @@ struct HomePageView: View {
                                 }
                             )
                             .padding(.horizontal, 16)
+                            
+                            // Add white divider after each genre row except the last one
+                            if index < viewModel.genreNames.count - 1 {
+                                Divider()
+                                    .background(Color.white)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 4)
+                            }
                         }
                     }
                     
@@ -46,12 +86,7 @@ struct HomePageView: View {
         }
     }
 }
-    
-    
-    
-    
-    
-    
+
 private struct TopHeroWidget: View {
     let heroVM: HeroRingWidgetViewModel
     
@@ -69,8 +104,6 @@ private struct TopHeroWidget: View {
     }
 }
     
-        
-    
 private struct StoryRowView: View {
     let title: String
     let stories: [Story]
@@ -78,7 +111,7 @@ private struct StoryRowView: View {
     var onStoryTap: (Story) -> Void
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 8) { // Tighter internal spacing
             Text(title)
                 .font(.title2)
                 .bold()
@@ -138,8 +171,6 @@ private struct StoryCardButtonView: View {
         }
     }
 }
-    
-    
     
 struct ProgressBar: View {
     var progress: Int

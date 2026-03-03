@@ -107,77 +107,69 @@ struct StoryView: View {
     
     var body: some View {
         ZStack(alignment: .top) {
+            // Background image – fills the frame completely
             Image(story.storycover ?? "placeholder")
                 .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(height: UIScreen.main.bounds.height * 0.55)
-                .clipped()
+                .aspectRatio(contentMode: .fill)   // fills the entire frame, cropping excess
+                .frame(height: UIScreen.main.bounds.height * 0.5)
+                .clipped()                          // ensures no overflow
                 .ignoresSafeArea(edges: .top)
                 .allowsHitTesting(false)
             
             VStack(spacing: 0) {
-                ZStack(alignment: .top) {
-                    VStack {
-                        Text(story.title)
-                            .font(.headline)
-                            .padding(.horizontal, 25)
-                            .padding(.vertical, 10)
-                            .background(Capsule().fill(Color(.systemBackground)))
-                            .padding(.top, 60)
-                            .ignoresSafeArea()
-                    }
-                    
-                    HStack {
-                        Spacer()
-                        VStack(spacing: 15) {
-                            CircleButton(
-                                icon: isTranslating ? "ellipsis.bubble.fill" : (isTranslated ? "character.bubble" : "character.bubble.fill"),
-                                isActive: isClicked,
-                                activeForeground: .blue,
-                                inactiveForeground: .primary,
-                                activeBackground: Color(.systemBackground).opacity(0.9),
-                                inactiveBackground: Color(.systemBackground).opacity(0.9)
-                            ) {
-                                if isTranslated && !isTranslating {
-                                    isTranslated = false
-                                    isClicked = false
-                                    bubbleVM.clear()
-                                    bubbleVM.setText(displayedPageText)
-                                } else {
-                                    translateCurrentPageENtoAR()
-                                }
-                            }
-                            
-                            CircleButton(
-                                icon: "ear.and.waveform",
-                                isActive: speechController.isSpeaking,
-                                activeForeground: .blue,
-                                inactiveForeground: .primary,
-                                activeBackground: Color(.systemBackground).opacity(0.9),
-                                inactiveBackground: Color(.systemBackground).opacity(0.9)
-                            ) {
-                                speakCurrentPage()
-                            }
-                            
-                            CircleButton(
-                                icon: story.isFavorite ? "star.fill" : "star",
-                                isActive: story.isFavorite,
-                                activeForeground: .orange,
-                                inactiveForeground: .primary,
-                                activeBackground: Color(.systemBackground).opacity(0.9),
-                                inactiveBackground: Color(.systemBackground).opacity(0.9)
-                            ) {
-                                story.isFavorite.toggle()
+                // Buttons – unchanged
+                HStack {
+                    Spacer()
+                    VStack(spacing: 15) {
+                        CircleButton(
+                            icon: isTranslating ? "ellipsis.bubble.fill" : (isTranslated ? "character.bubble" : "character.bubble.fill"),
+                            isActive: isClicked,
+                            activeForeground: .blue,
+                            inactiveForeground: .primary,
+                            activeBackground: Color(.systemBackground).opacity(0.9),
+                            inactiveBackground: Color(.systemBackground).opacity(0.9)
+                        ) {
+                            if isTranslated && !isTranslating {
+                                isTranslated = false
+                                isClicked = false
+                                bubbleVM.clear()
+                                bubbleVM.setText(displayedPageText)
+                            } else {
+                                translateCurrentPageENtoAR()
                             }
                         }
-                        .padding(.top, 50)
+                        
+                        CircleButton(
+                            icon: "ear.and.waveform",
+                            isActive: speechController.isSpeaking,
+                            activeForeground: .blue,
+                            inactiveForeground: .primary,
+                            activeBackground: Color(.systemBackground).opacity(0.9),
+                            inactiveBackground: Color(.systemBackground).opacity(0.9)
+                        ) {
+                            speakCurrentPage()
+                        }
+                        
+                        CircleButton(
+                            icon: story.isFavorite ? "star.fill" : "star",
+                            isActive: story.isFavorite,
+                            activeForeground: .orange,
+                            inactiveForeground: .primary,
+                            activeBackground: Color(.systemBackground).opacity(0.9),
+                            inactiveBackground: Color(.systemBackground).opacity(0.9)
+                        ) {
+                            story.isFavorite.toggle()
+                        }
                     }
-                    .padding(.horizontal, 20)
+                    .padding(.top, 50)
                 }
+                .padding(.horizontal, 20)
+                .zIndex(1)
                 
                 Spacer()
                 
-                VStack(spacing: 20) {
+                // Main content card – slightly overlapped for seamless shadow
+                VStack(spacing: 7) { // Reduced spacing to bring dots closer to text
                     HStack(spacing: 20) {
                         recordButton
                         
@@ -190,45 +182,60 @@ struct StoryView: View {
                     .padding(.top, 20)
                     
                     ScrollView {
-                        TappableStoryTextView(
-                            text: displayedPageText,
-                            vm: bubbleVM,
-                            onSave: { word, translation in
-                                handleSaveWord(word: word, translation: translation)
-                            }
-                        )
-                        .id("\(story.currentPage)-\(displayedPageText)")
-                        .font(.title3)
-                        .padding(30)
-                        .multilineTextAlignment(isTranslated ? .trailing : .leading)
-                        .environment(\.layoutDirection, isTranslated ? .rightToLeft : .leftToRight)
+                        VStack(alignment: .leading, spacing: 16) {
+                            // Title – centered, with extra bottom padding
+                            Text(story.title)
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal, 30)
+                                .padding(.top, 10)
+                                .padding(.bottom, 9) // 9pt space between title and story text
+                            
+                            TappableStoryTextView(
+                                text: displayedPageText,
+                                vm: bubbleVM,
+                                onSave: { word, translation in
+                                    handleSaveWord(word: word, translation: translation)
+                                }
+                            )
+                            .id("\(story.currentPage)-\(displayedPageText)")
+                            .font(.title3)
+                            .padding(.horizontal, 30)
+                            .padding(.bottom, 30)
+                            .multilineTextAlignment(isTranslated ? .trailing : .leading)
+                            .environment(\.layoutDirection, isTranslated ? .rightToLeft : .leftToRight)
+                        }
                     }
                     
+                    // Page indicator dots – pushed higher by increasing bottom padding
                     HStack(spacing: 8) {
                         ForEach(0..<story.pages.count, id: \.self) { index in
                             Circle()
                                 .fill(index == story.currentPage ? Color.primary : Color.secondary.opacity(0.3))
-                                .frame(width: 7, height: 7)
+                                .frame(width: 8, height: 8)
                                 .scaleEffect(index == story.currentPage ? 1.4 : 1.0)
                                 .animation(.spring(response: 0.3, dampingFraction: 0.6), value: story.currentPage)
                         }
                     }
-                    .padding(.bottom, 40)
+                    .padding(.bottom, 40) // Increased from 20 to 40 to move dots upward
                 }
                 .frame(maxWidth: .infinity)
-                .frame(height: UIScreen.main.bounds.height * 0.50)
+                .frame(height: UIScreen.main.bounds.height * 0.70)
                 .background(Color(.systemBackground))
                 .cornerRadius(30)
                 .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: -5)
                 .contentShape(Rectangle())
                 .highPriorityGesture(dragGesture)
-                .edgesIgnoringSafeArea(.bottom)
+                .padding(.top, -10) // Overlap for shadow
             }
         }
         .edgesIgnoringSafeArea(.bottom)
         .toolbar(.hidden, for: .tabBar)
     }
     
+    // MARK: - Helper Methods (unchanged)
     private func translateCurrentPageENtoAR() {
         if let cached = translatedArabicPages[story.currentPage], !cached.isEmpty {
             isTranslated = true
