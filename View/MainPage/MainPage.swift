@@ -9,6 +9,8 @@ struct HomePageView: View {
     
     var onStoryTap: (Story) -> Void = { _ in }
     
+    
+    
     var body: some View {
         ZStack {
             
@@ -22,8 +24,18 @@ struct HomePageView: View {
                         .padding(.top, 6)
 
                     ForEach(Array(viewModel.genreNames.enumerated()), id: \.element) { index, genreName in
-                        let storiesInGenre = allStories.filter { $0.genre == genreName }
+                        // 1. Calculate the filtered list for this specific row
+                        let storiesInGenre = allStories.filter { story in
+                            if genreName == "Favorite" {
+                                // Logic for the 'Favorite' tab based on the star button
+                                return story.isFavorite
+                            } else {
+                                // Logic for standard genres (Romance, Mystery, etc.)
+                                return story.genre == genreName
+                            }
+                        }
                         
+                        // 2. Only show the Row if there are stories to display
                         if !storiesInGenre.isEmpty {
                             StoryRowView(
                                 title: genreName,
@@ -34,6 +46,7 @@ struct HomePageView: View {
                                 }
                             )
                             .padding(.horizontal, 16)
+                            .padding(.bottom, 8)
                         }
                     }
                     

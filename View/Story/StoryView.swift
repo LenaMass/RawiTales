@@ -176,7 +176,14 @@ struct StoryView: View {
                                 activeBackground: Color(.systemBackground).opacity(0.9),
                                 inactiveBackground: Color(.systemBackground).opacity(0.9)
                             ) {
+                                // 1. Toggle the boolean property
                                 story.isFavorite.toggle()
+                                
+                                // 2. Save the state to SwiftData
+                                try? modelContext.save()
+                                
+                                // 3. Haptic feedback
+                                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                             }
                         }
                         .padding(.top, 50)
@@ -527,13 +534,52 @@ struct StoryView: View {
         }
     }
     
-    private func speakCurrentPage() {
-        speechController.speak(
-            displayedPageText,
-            language: isTranslated ? "ar-SA" : "en-UK"
-        )
+    class SpeechController: NSObject, ObservableObject {
+        let speechSynthesizer = AVSpeechSynthesizer()
+
+        func speak(_ text: String, language: String) {
+            // Stop any current speech before starting new one
+            if speechSynthesizer.isSpeaking {
+                speechSynthesizer.stopSpeaking(at: .immediate)
+            }
+
+            // 1. Create the Utterance from your text
+            let utterance = AVSpeechUtterance(string: text)
+            
+            // 2. Set the language (Arabic or English)
+            utterance.voice = AVSpeechSynthesisVoice(language: language)
+            
+            // 3. Optional: Adjust speed or pitch
+            utterance.rate = 0.5 // Normal speed
+            utterance.pitchMultiplier = 1.0
+            
+            // 4. Tell the Synthesizer to speak
+            speechSynthesizer.speak(utterance)
+        }
     }
     
+    func configureAudioSession() {
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            // .playback tells iOS this is media (like Music or a Movie)
+            // .defaultToSpeaker ensures it uses the bottom speakers, not the phone receiver
+            try audioSession.setCategory(.playback, mode: .default, options: [.defaultToSpeaker])
+            try audioSession.setActive(true)
+        } catch {
+            print("Failed to set audio session category: \(error)")
+        }
+    }
+    
+    private func speakCurrentPage() {
+        // Ensure the audio comes out of the bottom speakers
+        configureAudioSession()
+        
+        // Call the function we just updated above
+        speechController.speak(
+            displayedPageText,
+            language: isTranslated ? "ar-SA" : "en-GB" // Changed to GB for standard UK English
+        )
+    }
     struct GlassCircleButton: View {
         var icon: String
         var action: () -> Void = {}

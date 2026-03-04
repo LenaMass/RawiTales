@@ -20,9 +20,7 @@ struct LevelUp_19App: App {
                     Image("NightDay_Background")
                 }
             
-             /*   .environmentObject(settings) // Inject it here
-                .preferredColorScheme(settings.appearance == .dark ? .dark : .light)*/
-            
+                .preferredColorScheme(.light) // its this one that keeps the colored widgets 
                 .modelContainer(for: [Story.self, WordBankItem.self])
         }
         
