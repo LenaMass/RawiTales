@@ -64,6 +64,7 @@ struct StoryView: View {
     
     @StateObject private var bubbleVM = WordBubbleViewModel()
     
+    
     private var deeplApiKey: String {
         Bundle.main.object(forInfoDictionaryKey: "DEEPL_API_KEY") as? String ?? ""
     }
@@ -85,25 +86,33 @@ struct StoryView: View {
     }
     
     private var englishPageText: String {
+        // End page don't include text
+        if story.currentPage == story.pages.count {
+            return ""
+        }
         if story.pages.indices.contains(story.currentPage) {
             return story.pages[story.currentPage]
         }
-        return "Page not found"
+        return ""
     }
     
     private var displayedPageText: String {
+        //  Translation & listning is disabeld in the End page
+        if story.currentPage == story.pages.count { return "" }
+
         if isTranslating {
             return "Translating... Please wait."
         }
-        
+
         if isTranslated {
             if let cached = translatedArabicPages[story.currentPage] {
                 return cached
             }
         }
-        
+
         return englishPageText
     }
+        
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -429,7 +438,7 @@ struct StoryView: View {
                 
                 if abs(horizontal) > abs(vertical) {
                     if horizontal < -50 {
-                        if story.currentPage + 1 < story.pages.count {
+                        if story.currentPage + 1 < story.pages.count + 1 {
                             updatePage(to: story.currentPage + 1)
                         }
                     } else if horizontal > 50 {
@@ -493,13 +502,52 @@ struct StoryView: View {
         }
     }
     
-    private func speakCurrentPage() {
-        speechController.speak(
-            displayedPageText,
-            language: isTranslated ? "ar-SA" : "en-UK"
-        )
+    class SpeechController: NSObject, ObservableObject {
+        let speechSynthesizer = AVSpeechSynthesizer()
+
+        func speak(_ text: String, language: String) {
+            // Stop any current speech before starting new one
+            if speechSynthesizer.isSpeaking {
+                speechSynthesizer.stopSpeaking(at: .immediate)
+            }
+
+            // 1. Create the Utterance from your text
+            let utterance = AVSpeechUtterance(string: text)
+            
+            // 2. Set the language (Arabic or English)
+            utterance.voice = AVSpeechSynthesisVoice(language: language)
+            
+            // 3. Optional: Adjust speed or pitch
+            utterance.rate = 0.5 // Normal speed
+            utterance.pitchMultiplier = 1.0
+            
+            // 4. Tell the Synthesizer to speak
+            speechSynthesizer.speak(utterance)
+        }
     }
     
+    func configureAudioSession() {
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            // .playback tells iOS this is media (like Music or a Movie)
+            // .defaultToSpeaker ensures it uses the bottom speakers, not the phone receiver
+            try audioSession.setCategory(.playback, mode: .default, options: [.defaultToSpeaker])
+            try audioSession.setActive(true)
+        } catch {
+            print("Failed to set audio session category: \(error)")
+        }
+    }
+    
+    private func speakCurrentPage() {
+        // Ensure the audio comes out of the bottom speakers
+        configureAudioSession()
+        
+        // Call the function we just updated above
+        speechController.speak(
+            displayedPageText,
+            language: isTranslated ? "ar-SA" : "en-GB" // Changed to GB for standard UK English
+        )
+    }
     struct GlassCircleButton: View {
         var icon: String
         var action: () -> Void = {}

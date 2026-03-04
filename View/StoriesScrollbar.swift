@@ -8,11 +8,10 @@ struct StoriesScrollbar: View {
     @Query(sort: \Story.title) var allStories: [Story]
     @Query(filter: #Predicate<Story> { $0.isFavorite == true }) var favoriteStories: [Story]
     var savedStories: [Story] {
-            allStories.filter { $0.Readingprogress > 0 || $0.isFavorite }
-        
-
-        
-        }
+        // This removes the "|| $0.isFavorite" part.
+        // Now, stories only appear here if the user has actually started reading them.
+        allStories.filter { $0.Readingprogress > 0 }
+    }
     
     let columns = [
         GridItem(.flexible(), spacing: 30),
@@ -24,9 +23,12 @@ struct StoriesScrollbar: View {
             ScrollView {
                 // Check if there are actually saved stories to show
                 if savedStories.isEmpty {
-                    ContentUnavailableView("No Stories In Progress",
-                                           systemImage: "book.closed",
-                                           description: Text("Start reading a story to see it here."))
+                    ContentUnavailableView(
+                        "No Reading Progress",
+                        systemImage: "book.closed",
+                        description: Text("Stories you've started reading will appear here.")
+                    )
+                    
                         .padding(.top, 100)
                         .foregroundStyle(Color.white)
                 } else {
