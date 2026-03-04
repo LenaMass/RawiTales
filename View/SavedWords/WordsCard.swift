@@ -9,6 +9,8 @@ struct WordCardView: View {
     let onLeftAction: () -> Void
     let onRightAction: () -> Void
     
+    
+    
     @State private var isClicked: Bool = false
     
     init(
@@ -121,6 +123,8 @@ struct WordCardView: View {
         .shadow(color: .black.opacity(0.20), radius: 14, x: 0, y: 10)
     }
 }
+
+
 
 #Preview {
     ZStack {
