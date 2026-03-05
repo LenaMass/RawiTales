@@ -44,6 +44,18 @@ final class StorySpeechController: NSObject, ObservableObject, AVSpeechSynthesiz
     }
 }
 
+final class AudioPlayerDelegateWrapper: NSObject, AVAudioPlayerDelegate {
+    let onFinish: () -> Void
+
+    init(onFinish: @escaping () -> Void) {
+        self.onFinish = onFinish
+    }
+
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        onFinish()
+    }
+}
+
 struct StoryView: View {
     
     @Bindable var story: Story
@@ -52,6 +64,7 @@ struct StoryView: View {
     @State private var isRecording = false
     @State private var audioRecorder: AVAudioRecorder?
     @State private var audioPlayer: AVAudioPlayer?
+    
     @State private var transcription: String = ""
     @State private var feedback: String = ""
     private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))
@@ -61,6 +74,15 @@ struct StoryView: View {
     @State private var isTranslated: Bool = false
     @State private var isTranslating: Bool = false
     @State private var translatedArabicPages: [Int: String] = [:]
+    // True if ther play button is on.
+    @State private var isPlayingRecording = false
+    //store soundwave levels to display
+    @State private var waveLevels: [CGFloat] = Array(repeating: 0.1, count: 20)
+    //store the time length of the soundwave.
+    @State private var waveTimer: Timer?
+    @State private var playbackProgress: Double = 0.0
+    // audiowave wrapper
+    @State private var audioDelegate: AudioPlayerDelegateWrapper?
     
     @StateObject private var bubbleVM = WordBubbleViewModel()
     
@@ -111,6 +133,35 @@ struct StoryView: View {
         }
 
         return englishPageText
+    }
+    
+    //function to store the wave
+    private func startWaveMonitoring() {
+        waveTimer?.invalidate()
+
+        guard let player = audioPlayer else { return }
+
+        waveTimer = Timer.scheduledTimer(withTimeInterval: 0.03, repeats: true) { _ in
+            player.updateMeters()
+
+            let power = player.averagePower(forChannel: 0)
+            let level = max(0.05, CGFloat((power + 60) / 60))
+
+            waveLevels.removeFirst()
+            waveLevels.append(level)
+
+            if player.duration > 0 {
+                playbackProgress = player.currentTime / player.duration
+            } else {
+                playbackProgress = 0
+            }
+        }
+    }
+    //function to end the wave when the player stops.
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        isPlayingRecording = false
+        waveTimer?.invalidate()
+        waveLevels = Array(repeating: 0.1, count: 20)
     }
         
     
@@ -181,15 +232,38 @@ struct StoryView: View {
                 VStack(spacing: 7) { // Reduced spacing to bring dots closer to text
                     HStack(spacing: 20) {
                         recordButton
-                        
+                            .frame(width: 56, height: 56, alignment: .center)
+                            .contentShape(Circle())
+
+                        // Waveform centered vertically with fixed height
+                        VStack {
+                            GeometryReader { geo in
+                                let totalWidth = geo.size.width
+                                let _ = totalWidth // keep for reference; we center the bars instead of masking by progress
+
+                                HStack(spacing: 2) {
+                                    ForEach(waveLevels.indices, id: \.self) { i in
+                                        Capsule()
+                                            .frame(width: 4, height: max(6, 40 * waveLevels[i]))
+                                            .foregroundColor(.primary)
+                                            .frame(maxHeight: .infinity, alignment: .center)
+                                    }
+                                }
+                                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                            }
+                            .frame(height: 50)
+                        }
+                        .frame(maxWidth: .infinity)
+
+                        // Play/Pause button with fixed size to match record button
                         Button(action: playRecording) {
-                            Image(systemName: "play.circle.fill")
+                            Image(systemName: isPlayingRecording ? "pause.circle.fill" : "play.circle.fill")
                                 .font(.system(size: 44))
                                 .foregroundColor(recordingExists ? .primary : .secondary)
+                                .frame(width: 56, height: 56, alignment: .center)
                         }
                     }
-                    .padding(.top, 20)
-                    
+                    .padding(.top, 36)
                     ScrollView {
                         VStack(alignment: .leading, spacing: 16) {
                             // Title – centered, with extra bottom padding
@@ -230,6 +304,7 @@ struct StoryView: View {
                     }
                     .padding(.bottom, 40) // Increased from 20 to 40 to move dots upward
                 }
+                .padding(36)
                 .frame(maxWidth: .infinity)
                 .frame(height: UIScreen.main.bounds.height * 0.70)
                 .background(Color(.systemBackground))
@@ -312,9 +387,29 @@ struct StoryView: View {
         let url = FileManager.default
             .urls(for: .documentDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("userRecording.m4a")
+        if isPlayingRecording {
+                audioPlayer?.stop()
+                audioPlayer = nil
+                isPlayingRecording = false
+                waveTimer?.invalidate()
+                waveLevels = Array(repeating: 0.1, count: 20)
+                playbackProgress = 0
+                return
+            }
         
+        audioDelegate = AudioPlayerDelegateWrapper {
+                isPlayingRecording = false
+                waveTimer?.invalidate()
+                waveLevels = Array(repeating: 0.1, count: 20)
+                playbackProgress = 0
+            }
         audioPlayer = try? AVAudioPlayer(contentsOf: url)
+        audioPlayer?.isMeteringEnabled = true //enable metering (measuring) decible levels
+        audioPlayer?.delegate = audioDelegate
         audioPlayer?.play()
+        isPlayingRecording = true
+        
+        startWaveMonitoring()
     }
     
     private var recordButton: some View {
