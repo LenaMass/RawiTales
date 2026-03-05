@@ -6,7 +6,7 @@ import Combine
 @MainActor
 final class HomePageViewModel: ObservableObject {
     // We only need the names of the categories/genres
-    @Published var genreNames: [String] = ["Favorite","Romance", "Mystery", "Fantasy","Wisdom","Comedy"]
+    @Published var genreNames: [String] = ["Favorite","Romance", "Mystery", "Adventure","Fantasy","Wisdom","Comedy"]
     let heroVM: HeroRingWidgetViewModel
     
     init(heroVM: HeroRingWidgetViewModel? = nil) {

@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "4ADC598E-83ED-4F08-8EF5-D328B83A0875.png",
+      "filename" : "lostDonkey.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "4ADC598E-83ED-4F08-8EF5-D328B83A0875 1.png",
+      "filename" : "lostDonkey@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "4ADC598E-83ED-4F08-8EF5-D328B83A0875 2.png",
+      "filename" : "lostDonkey@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

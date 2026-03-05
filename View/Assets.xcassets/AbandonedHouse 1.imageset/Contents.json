@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Gemini_Generated_Image_8ck9x98ck9x98ck9.png",
+      "filename" : "Image.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Gemini_Generated_Image_8ck9x98ck9x98ck9 1.png",
+      "filename" : "Image@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Gemini_Generated_Image_8ck9x98ck9x98ck9 2.png",
+      "filename" : "Image@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

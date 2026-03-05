@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "468CE6B0-C119-45ED-8AA3-ED0E66298F32.png",
+      "filename" : "Parrot.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "468CE6B0-C119-45ED-8AA3-ED0E66298F32 1.png",
+      "filename" : "Parrot 1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "468CE6B0-C119-45ED-8AA3-ED0E66298F32 2.png",
+      "filename" : "Parrot 2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

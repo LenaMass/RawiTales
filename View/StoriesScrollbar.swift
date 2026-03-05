@@ -61,6 +61,7 @@ struct StoriesScrollbar: View {
                                             }
                                         }
                                         .frame(height: 8)
+                                        .clipShape(Capsule())
                                         .padding(.horizontal, 10)
                                         .padding(.bottom, 12)
                                     }
