@@ -187,15 +187,24 @@ struct ProgressBar: View {
     
     var body: some View {
         ZStack(alignment: .leading) {
-            RoundedRectangle(cornerRadius: 4)
-                .fill(Color.white)
-                .frame(width: 70, height: 6)
-            
-            RoundedRectangle(cornerRadius: 4)
-                .fill(Color.black)
-                .frame(width: CGFloat(progress) / 100 * 70, height: 6)
-        }
+                    // 1. The Background Track
+                    Capsule()
+                        .fill(Color.white)
+                        .frame(width: 70, height: 6)
+                    
+                    // 2. The Progress Bar
+                    Capsule()
+                        .fill(Color.black)
+                        // We clamp the progress between 0 and 100 to prevent the bar from
+                        // extending past the white track if the data is wrong
+                        .frame(width: CGFloat(min(max(progress, 0), 100)) / 100 * 70, height: 6)
+                }
+                // Applying the clipShape here ensures that even if the math is a tiny bit off,
+                // the black bar will never "leak" outside the white background.
+                .clipShape(Capsule())
+       
     }
+       
 }
 
 #Preview {

@@ -7,7 +7,7 @@ struct StoriesLibrary {
         let masterList = [
             // 1. You Can Never Please Everyone
             Story(title: "You Can Never Please Everyone",
-                  genre: "Romance",
+                  genre: "Comedy",
                   storycover: "Juha'sSon",
                   pages: [
                     "Juha had a son who disobeyed him whenever he asked him to do something. The boy would always reply, 'What will people say about us if we do that?'",
@@ -20,7 +20,7 @@ struct StoriesLibrary {
 
             // 2. Juha’s Nail
             Story(title: "Juha’s Nail",
-                  genre: "Romance",
+                  genre: "Comedy",
                   storycover: "Juha'sNail",
                   pages: [
                     "One day, Juha owned a house and decided to sell it, but he did not truly want to leave it. So he set a condition: one nail in the wall would remain his.",
@@ -32,7 +32,7 @@ struct StoriesLibrary {
 
             // 3. The Mystery of the City of Brass
             Story(title: "The Mystery of the City of Brass",
-                  genre: "Romance",
+                  genre: "Mystery",
                   storycover: "cityOfBrass",
                   pages: [
                     "After a long journey across the desert, a group of travelers finally reached the legendary city said to be built from shining brass. Its walls still reflected the sun, untouched by time.",
@@ -80,7 +80,7 @@ struct StoriesLibrary {
 
             // 7. The Wise Man and the Same Joke
             Story(title: "The Wise Man and the Same Joke",
-                  genre: "Comedy",
+                  genre: "Wisdom",
                   storycover: "notFuny",
                   pages: [
                     "A wise man gathered people who always complained about the same problems. He told a funny joke and everyone laughed.",
@@ -88,8 +88,135 @@ struct StoriesLibrary {
                     "Then he repeated the joke a third time. No one laughed.",
                     "He said: 'You cannot laugh at the same joke twice. So why do you cry about the same problems again and again?'"
                   ], isFavorite: false),
+            
+            // 8. The Mystery of the wise Judge
+            Story(title: "The Mystery of the wise Judge",
+                  genre: "Mystery",
+                  storycover: "wiseJudge",
+                  pages: [
+                    "Two men came before a judge, each claiming ownership of a bag of money. There were no witnesses and no clear proof.",
+                               
+                    "The judge listened quietly, paying attention not only to their words but to their behavior. Instead of deciding immediately, he asked them to return the next day.",
+                               
+                    "When they did, he placed the bag between them and asked each man to describe its contents in detail.",
+                               
+                    "One spoke confidently, while the other hesitated. The judge then asked a simple question that unsettled one of them completely.",
+                               
+                    "In that moment, the truth became clear. The real owner remembered naturally, while the liar struggled to maintain a story he did not truly know."
 
-            // 8. The Old Man in the Village
+                  ], isFavorite: false),
+            
+            // 9. The secret of the Missing Mansion
+            Story(title: "The secret of the Missing Merchant",
+                  genre: "Mystery",
+                  storycover: "missingMerchant",
+                  pages: [
+                    "A well-known merchant vanished during a trading journey, and when the caravan returned without him, no one could explain what had happened.",
+                               
+                    "Rumors spread quickly. Some believed he had been robbed, others thought he had fled. Each traveler told a slightly different story.",
+                               
+                    "As time passed, small details surfaced — a sudden change of route, unusual silence, and a message he had left behind unnoticed.",
+                               
+                    "The message revealed no danger, only quiet words suggesting a desire to start over.",
+                               
+                    "Eventually, people understood that the merchant had planned his disappearance. The mystery was never about where he went, but why no one had seen his struggle before he left."
+
+
+                  ], isFavorite: false),
+            
+            
+            // 10. The Abandoned House
+            Story(title: "The Abandoned House",
+                  genre: "Mystery",
+                  storycover: "AbandonedHouse 1",
+                  pages: [
+                    "At the edge of the village stood an abandoned house surrounded by stories of whispers and strange noises at night.",
+                               
+                    "One curious young man decided to spend a night inside to prove the stories wrong. As darkness fell, he began hearing footsteps and soft knocking sounds.",
+                               
+                    "Fear grew, but instead of running, he investigated. The sounds seemed to repeat at certain times.",
+                               
+                    "Searching carefully, he discovered broken openings in the walls where the wind passed through, creating the eerie noises.",
+                               
+                    "When morning came, he left with a new understanding: fear often grows where answers are missing, and mystery is sometimes born from misunderstanding rather than magic."
+
+                  ], isFavorite: false),
+            
+            
+            // 11. The Honest Merchant
+            Story(title: "The Honest Merchant",
+                  genre: "Wisdom",
+                  storycover: "HonestMerchant",
+                  pages: [
+                    
+                             "He was a brave diver. Taking a deep breath, he would plunge into the cool, clear water and swim past colorful coral reefs and curious schools of fish. For hours, he searched the ocean floor, opening shell after shell, hoping one might hide a treasure.",
+                             
+                             "Many days brought disappointment. Dozens of shells were empty, and he often sat in his boat feeling tired and discouraged. But he never allowed himself to quit. Thinking of his family’s smiles, he would whisper, 'Maybe the next shell will be the one.'",
+                             
+                             "One sunny afternoon, just as he was about to return home, he noticed a large, unusual oyster resting near a bright coral reef. He carefully brought it aboard and opened it slowly.",
+                             
+                             "A brilliant light sparkled from inside. There lay the most beautiful pearl he had ever seen — perfectly round, glowing like a tiny moon. He rushed back to shore where his family greeted him with joy, and the entire village celebrated his success.",
+                             
+                             "His achievement was not the result of luck alone, but of patience and relentless effort. From that day forward, he and his family lived happily, always remembering that hope is the greatest treasure of all."
+
+                  ], isFavorite: false),
+            
+            // 12. The Fisherman and the Shining Pearl
+            Story(title: "The Fisherman and the Shining Pearl",
+                  genre: "Adventure",
+                  storycover: "storyCover2",
+                  pages: [
+                    
+                    "The Merchant and the Parrot",
+                    "A merchant had a beautiful parrot that could talk. Every day, the parrot greeted customers and made them smile. The merchant loved his parrot very much.",
+                    "One day, the merchant had to travel to another city for work. Before leaving, he asked the parrot, \"Do you want me to bring you anything?\"",
+                    "The parrot replied, \"Yes. If you see parrots in the forest, tell them I live in a cage and ask how they stay happy.\"",
+                    "When the merchant reached the forest, he told the wild parrots the message. Suddenly, one of the parrots fell from the tree and did not move. The merchant became sad and thought he had said something wrong.",
+                    "When he returned home, he told his parrot what had happened. As soon as the parrot heard the story, it fell down in the cage and stopped moving. The merchant thought the parrot had died, so he opened the cage door.",
+                    "Suddenly, the parrot flew out and sat on a tree. It said, \"The wild parrot was teaching me the secret of freedom.\""
+
+
+                  ], isFavorite: false),
+            
+            // 14. Juha Got Slapped
+            Story(title: "Juha Got Slapped",
+                  genre: "Comedy",
+                  storycover: "juhagotslapped",
+                  pages: [
+                    "One day, a man slapped Juha on the back of his head in the middle of the street, trying to mock him. Juha immediately grabbed the man and dragged him to the judge, refusing to accept his excuse that he had mistaken him for a friend.",
+                               
+                    "The man happened to be an acquaintance of the judge. Wanting to spare him punishment, the judge ruled that the man must either allow Juha to slap him back or pay him ten silver coins as compensation.",
+                               
+                    "Juha preferred the money and quickly asked the man, 'Do you have the coins with you?' The man, understanding the judge’s intention, replied, 'No, but I will go home and bring them shortly.'",
+                               
+                    "The judge permitted him to leave. The man went — and never returned. Juha waited for a long time until he realized the judge’s trick.",
+                               
+                    "Suddenly, Juha stepped closer to the judge as if to whisper something in his ear. Without warning, he gave the judge a strong slap and walked away, saying, 'When the man returns with the money, you may keep it on my behalf.'"
+
+                  ], isFavorite: false),
+            
+            // 13. The Merchant and the Parrot
+            Story(title: "The Merchant and the Parrot",
+                  genre: "Wisdom",
+                  storycover: "Parrot",
+                  pages: [
+                    "The Merchant and the Parrot",
+                    "A merchant had a beautiful parrot that could talk. Every day, the parrot greeted customers and made them smile. The merchant loved his parrot very much.",
+                    "One day, the merchant had to travel to another city for work. Before leaving, he asked the parrot, \"Do you want me to bring you anything?\"",
+                    "The parrot replied, \"Yes. If you see parrots in the forest, tell them I live in a cage and ask how they stay happy.\"",
+                    "When the merchant reached the forest, he told the wild parrots the message. Suddenly, one of the parrots fell from the tree and did not move. The merchant became sad and thought he had said something wrong.",
+                    "When he returned home, he told his parrot what had happened. As soon as the parrot heard the story, it fell down in the cage and stopped moving. The merchant thought the parrot had died, so he opened the cage door.",
+                    "Suddenly, the parrot flew out and sat on a tree. It said, \"The wild parrot was teaching me the secret of freedom.\""
+
+
+                  ], isFavorite: false),
+            
+            
+            
+           
+            
+
+            // 15. The Old Man in the Village
             Story(title: "The Old Man in the Village",
                   genre: "Wisdom",
                   storycover: "happyMan",

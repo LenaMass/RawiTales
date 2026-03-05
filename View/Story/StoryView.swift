@@ -387,6 +387,9 @@ struct StoryView: View {
         let url = FileManager.default
             .urls(for: .documentDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("userRecording.m4a")
+        
+        configureAudioSession()
+        
         if isPlayingRecording {
                 audioPlayer?.stop()
                 audioPlayer = nil

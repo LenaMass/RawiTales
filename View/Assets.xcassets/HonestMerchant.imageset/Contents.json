@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Gemini_Generated_Image_8ck9x98ck9x98ck9.png",
+      "filename" : "HonestMerchant.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Gemini_Generated_Image_8ck9x98ck9x98ck9 1.png",
+      "filename" : "HonestMerchant@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Gemini_Generated_Image_8ck9x98ck9x98ck9 2.png",
+      "filename" : "HonestMerchant@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
