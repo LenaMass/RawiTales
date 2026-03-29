@@ -228,8 +228,8 @@ struct StoryView: View {
                 
                 Spacer()
                 
-                // Main content card – slightly overlapped for seamless shadow
-                VStack(spacing: 7) { // Reduced spacing to bring dots closer to text
+                // Main content card – now with top padding to clear the buttons
+                VStack(spacing: 7) {
                     HStack(spacing: 20) {
                         recordButton
                             .frame(width: 56, height: 56, alignment: .center)
@@ -263,7 +263,8 @@ struct StoryView: View {
                                 .frame(width: 56, height: 56, alignment: .center)
                         }
                     }
-                    .padding(.top, 36)
+                    .padding(.top, 20) // Reduced from 36 to bring text higher
+
                     ScrollView {
                         VStack(alignment: .leading, spacing: 16) {
                             // Title – centered, with extra bottom padding
@@ -274,8 +275,8 @@ struct StoryView: View {
                                 .multilineTextAlignment(.center)
                                 .padding(.horizontal, 30)
                                 .padding(.top, 10)
-                                .padding(.bottom, 9) // 9pt space between title and story text
-                            
+                                .padding(.bottom, 9)
+
                             TappableStoryTextView(
                                 text: displayedPageText,
                                 vm: bubbleVM,
@@ -286,13 +287,13 @@ struct StoryView: View {
                             .id("\(story.currentPage)-\(displayedPageText)")
                             .font(.title3)
                             .padding(.horizontal, 30)
-                            .padding(.bottom, 30)
+                            .padding(.bottom, 15) // Reduced from 30 to move text closer to dots
                             .multilineTextAlignment(isTranslated ? .trailing : .leading)
                             .environment(\.layoutDirection, isTranslated ? .rightToLeft : .leftToRight)
                         }
                     }
                     
-                    // Page indicator dots – pushed higher by increasing bottom padding
+                    // Page indicator dots
                     HStack(spacing: 8) {
                         ForEach(0..<story.pages.count, id: \.self) { index in
                             Circle()
@@ -302,7 +303,7 @@ struct StoryView: View {
                                 .animation(.spring(response: 0.3, dampingFraction: 0.6), value: story.currentPage)
                         }
                     }
-                    .padding(.bottom, 40) // Increased from 20 to 40 to move dots upward
+                    .padding(.bottom, 40)
                 }
                 .padding(36)
                 .frame(maxWidth: .infinity)
@@ -312,7 +313,7 @@ struct StoryView: View {
                 .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: -5)
                 .contentShape(Rectangle())
                 .highPriorityGesture(dragGesture)
-                .padding(.top, -10) // Overlap for shadow
+                .padding(.top, 20) // Replaces negative padding; creates gap below buttons
             }
         }
         .edgesIgnoringSafeArea(.bottom)

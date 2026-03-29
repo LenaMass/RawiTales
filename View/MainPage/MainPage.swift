@@ -9,11 +9,6 @@ struct HomePageView: View {
     
     var onStoryTap: (Story) -> Void = { _ in }
     
-    // Filter favorite stories
-    private var favoriteStories: [Story] {
-        allStories.filter { $0.isFavorite }
-    }
-    
     var body: some View {
         ZStack {
             
@@ -29,29 +24,6 @@ struct HomePageView: View {
                     // Push the list down a little
                     Spacer().frame(height: 8)
                     
-                    // Liked Stories section (only if favorites exist)
-                    if !favoriteStories.isEmpty {
-                        // Divider above Liked Stories
-                        Divider()
-                            .background(Color.white)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 4)
-                        
-                        StoryRowView(
-                            title: "Liked Stories",
-                            stories: favoriteStories,
-                            showFilterButton: false,
-                            onStoryTap: onStoryTap
-                        )
-                        .padding(.horizontal, 16)
-                        
-                        // Divider below Liked Stories
-                        Divider()
-                            .background(Color.white)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 4)
-                    }
-
                     // Genre rows
                     ForEach(Array(viewModel.genreNames.enumerated()), id: \.element) { index, genreName in
                         // 1. Calculate the filtered list for this specific row
