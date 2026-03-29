@@ -1,4 +1,4 @@
-<h1 align="left">Rawi Tales <img src="https://github.com/user-attachments/assets/69557514-e0b7-4008-9ac8-e17c6571059d" width ="5%"/>
+<h1 align="left">Rawi Tales <img src="https://github.com/user-attachments/assets/69557514-e0b7-4008-9ac8-e17c6571059d" width ="10%"/>
 
 </h1>
 
@@ -31,9 +31,10 @@ who wants their english language to be enhanced using Saudi cultural stories to 
 
 
 <div align="center">
-<img src="https://github.com/user-attachments/assets/954707fe-699b-49d7-9506-3ae4b9a5d915" width="45%" />
-
 <img src="https://github.com/user-attachments/assets/91704cc1-c867-4ebe-a0b5-b19633809ac9" width ="45%" />
+
+<img src="https://github.com/user-attachments/assets/84e6c67e-782e-4b38-bef6-dab3b63ba648" width ="45%" />
+
 
 </div>
 
