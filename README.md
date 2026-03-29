@@ -41,7 +41,6 @@ who wants their english language to be enhanced using Saudi cultural stories to 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/c808a96e-7e2f-468e-8c10-6c91832d5d9c" width ="45%" />
 
-<img src="https://github.com/user-attachments/assets/d321bb7e-09af-40d5-8c69-9ab4ac7a9c03" width ="45%" />
 
 </div>
 
