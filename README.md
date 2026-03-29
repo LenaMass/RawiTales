@@ -3,7 +3,7 @@
 </h1>
 
 <h2 align="left">An iOS application that helps english learners
-who wants their english language to be enhanced using Saudi cultural stories to entice thier learning throught thier culture and for people who are intresetd in learning throught diffrenet culture from thier own
+who wants their english language to be enhanced using Saudi cultural stories to entice thier learning throught thier culture and for people who are intresetd in learning throught a different culture from thier own.
 
 
 <h2 align="left">App features: </h2>
