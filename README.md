@@ -1,5 +1,4 @@
-<h1 align="left">Rawi Tales <img width="1024" height="1024" alt="LOGO  1" src="https://github.com/user-attachments/assets/0396ae7f-a975-485c-af98-08c8dd803d7f" width="10%" />
-
+<h1 align="left">Rawi Tales 
 </h1>
 
 <h2 align="left">An iOS application that helps english learners
