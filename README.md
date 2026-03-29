@@ -1,4 +1,5 @@
-<h1 align="left">Rawi Tales 
+<h1 align="left">Rawi Tales <img src="https://github.com/user-attachments/assets/69557514-e0b7-4008-9ac8-e17c6571059d" width ="5%"/>
+
 </h1>
 
 <h2 align="left">An iOS application that helps english learners
@@ -32,13 +33,15 @@ who wants their english language to be enhanced using Saudi cultural stories to 
 <div align="center">
 <img src="https://github.com/user-attachments/assets/954707fe-699b-49d7-9506-3ae4b9a5d915" width="45%" />
 
- <img src="https://github.com/user-attachments/assets/1ade17e1-979a-4061-bf8a-1f59203dd3b1" width="45%" />
+<img src="https://github.com/user-attachments/assets/91704cc1-c867-4ebe-a0b5-b19633809ac9" width ="45%" />
 
 </div>
 
 <div align="center">
-  <img <img src="https://github.com/user-attachments/assets/aa633706-fef9-47a7-a33f-8a26137dd287" width="45%" />
-<img src="https://github.com/user-attachments/assets/a0d7f662-28e8-4786-af2c-14b052514532" width ="45%" />
+  <img src="https://github.com/user-attachments/assets/c808a96e-7e2f-468e-8c10-6c91832d5d9c" width ="45%" />
+
+<img src="https://github.com/user-attachments/assets/d321bb7e-09af-40d5-8c69-9ab4ac7a9c03" width ="45%" />
+
 </div>
 
 
