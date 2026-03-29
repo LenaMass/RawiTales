@@ -11,7 +11,7 @@ who wants their english language to be enhanced using Saudi cultural stories to 
  <li>
  Multiple story genres to choose from.
 </li>
-  <li>Word or sentince translation.
+  <li>Word translation.
 </li>
   <li> Full Story Translations.
 </li>
