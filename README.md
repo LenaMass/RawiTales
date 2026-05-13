@@ -2,8 +2,7 @@
 
 </h1>
 
-<h2 align="left">An iOS application that helps english learners
-who wants their english language to be enhanced using Saudi cultural stories to entice thier learning throught thier culture and for people who are intresetd in learning throught a different culture from thier own.
+<h2 align="left">RawiTales An iOS application that helps english learners who wants their english language to be enhanced using Saudi cultural stories to entice their learning through their culture and for people who are interested in learning through a different culture from their own
 
 
 <h2 align="left">App features: </h2>
