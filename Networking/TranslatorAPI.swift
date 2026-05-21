@@ -26,7 +26,7 @@ struct DeepLTranslator {
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
 
-        // ✅ Recommended auth (header)
+        //Recommended auth (header)
         request.setValue("DeepL-Auth-Key \(apiKey)", forHTTPHeaderField: "Authorization")
 
         var components = URLComponents()
