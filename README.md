@@ -45,6 +45,7 @@ turning language learning into cultural discovery.
 
 <h1>App Preview</h1>
 <div align="center">
+
 <table>
 <tr>
 <td align="center">
@@ -63,21 +64,23 @@ turning language learning into cultural discovery.
 <b>Arabic Translations</b>
 </td>
 </tr>
+</table>
+
+<table>
 <tr>
 <td align="center">
-</td>
-<td align="center">
-<img width="220" height="476" alt="Progress in Stories" src="https://github.com/user-attachments/assets/8f69db1c-565a-4b90-bed6-80f313ed3bbf" />
+<img width="220" height="476" alt="Word Bank" src="https://github.com/user-attachments/assets/8f69db1c-565a-4b90-bed6-80f313ed3bbf" />
 <br><br>
 <b>Word Bank</b>
 </td>
 <td align="center">
-<img width="220" height="476" alt="Word Bank" src="https://github.com/user-attachments/assets/3eded75c-f328-4228-89ee-8a20d1b467c9" />
+<img width="220" height="476" alt="Progress in Stories" src="https://github.com/user-attachments/assets/3eded75c-f328-4228-89ee-8a20d1b467c9" />
 <br><br>
 <b>Progress in Stories</b>
 </td>
 </tr>
 </table>
+
 </div>
 
 <h1>Future Improvements</h1>
