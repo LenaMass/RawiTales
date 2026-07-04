@@ -21,7 +21,10 @@ experience both familiar and meaningful.
 <p>
 For international readers, the app offers a window into Saudi 
 traditions, values, and heritage through engaging narrative — 
-turning language learning into cultural discovery.
+turning language learning into cultural discovery. Word and 
+story translations are powered by an open source translation 
+API, providing instant English to Arabic definitions inline 
+while reading.
 </p>
 
 <h1>Features</h1>
@@ -41,6 +44,8 @@ turning language learning into cultural discovery.
 <img src="https://img.shields.io/badge/Language-Swift-orange?style=for-the-badge&logo=swift" />
 <img src="https://img.shields.io/badge/Framework-SwiftUI-blue?style=for-the-badge&logo=swift" />
 <img src="https://img.shields.io/badge/IDE-Xcode-blue?style=for-the-badge&logo=xcode" />
+<img src="https://img.shields.io/badge/API-Translation-green?style=for-the-badge" />
+
 </p>
 
 <h1>App Preview</h1>
