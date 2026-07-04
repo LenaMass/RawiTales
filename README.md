@@ -48,26 +48,33 @@ turning language learning into cultural discovery.
 <table>
 <tr>
 <td align="center">
-<img width="260" height="560" alt="Story Selection" src="https://github.com/user-attachments/assets/91704cc1-c867-4ebe-a0b5-b19633809ac9" />
+<img width="220" height="476" alt="Story Selection" src="https://github.com/user-attachments/assets/883fc1c2-a687-41d5-b10b-06714f2325bf" />
 <br><br>
 <b>Story Selection</b>
 </td>
 <td align="center">
-<img width="260" height="560" alt="Reading View" src="https://github.com/user-attachments/assets/84e6c67e-782e-4b38-bef6-dab3b63ba648" />
+<img width="220" height="476" alt="Reading View" src="https://github.com/user-attachments/assets/fc8456b1-65ce-491d-8783-c5f48bff6644" />
 <br><br>
 <b>Reading View</b>
+</td>
+<td align="center">
+<img width="220" height="476" alt="Arabic Translations" src="https://github.com/user-attachments/assets/c2760c88-18f4-475b-8ad2-58983517c614" />
+<br><br>
+<b>Arabic Translations</b>
 </td>
 </tr>
 <tr>
 <td align="center">
-<img width="260" height="560" alt="Word Bank" src="https://github.com/user-attachments/assets/c8e6e677-aae5-478b-a6f5-5c9d53435e79" />
-<br><br>
-<b>Word Bank</b>
 </td>
 <td align="center">
-<!-- Add fourth screenshot here if available -->
+<img width="220" height="476" alt="Progress in Stories" src="https://github.com/user-attachments/assets/8f69db1c-565a-4b90-bed6-80f313ed3bbf" />
 <br><br>
-<b></b>
+<b>Progress in Stories</b>
+</td>
+<td align="center">
+<img width="220" height="476" alt="Word Bank" src="https://github.com/user-attachments/assets/3eded75c-f328-4228-89ee-8a20d1b467c9" />
+<br><br>
+<b>Word Bank</b>
 </td>
 </tr>
 </table>
