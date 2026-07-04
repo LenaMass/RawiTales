@@ -69,12 +69,12 @@ turning language learning into cultural discovery.
 <td align="center">
 <img width="220" height="476" alt="Progress in Stories" src="https://github.com/user-attachments/assets/8f69db1c-565a-4b90-bed6-80f313ed3bbf" />
 <br><br>
-<b>Progress in Stories</b>
+<b>Word Bank</b>
 </td>
 <td align="center">
 <img width="220" height="476" alt="Word Bank" src="https://github.com/user-attachments/assets/3eded75c-f328-4228-89ee-8a20d1b467c9" />
 <br><br>
-<b>Word Bank</b>
+<b>Progress in Stories</b>
 </td>
 </tr>
 </table>
